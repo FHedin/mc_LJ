@@ -1,0 +1,11 @@
+#!/usr/bin/env gnuplot
+
+set xlab "Traj Frame"
+set ylab "Energy"
+
+set term png truecolor enhanced giant size 800,600
+set output 'ener.png'
+
+plot 'ener.dat' binary format='%double' u 1 w l 
+
+
