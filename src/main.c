@@ -315,12 +315,12 @@ void getValuesFromDB(DATA *dat)
 {
     if (dat->natom==13)
     {
-        dat->E_steepD   = -42.326;
+        dat->E_steepD   = -33.0;
         dat->E_expected = -44.326801;
     }
     else if (dat->natom==19)
     {
-        dat->E_steepD   = -70.659;
+        dat->E_steepD   = -66.0;
         dat->E_expected = -72.659782;
     }
     else if (dat->natom==31)

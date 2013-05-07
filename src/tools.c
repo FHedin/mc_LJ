@@ -146,25 +146,35 @@ void adj_dmax(DATA *dat, int *step, int *acc)
     }
 }
 
+CM getCM(ATOM at[],DATA *dat)
+{
+	CM cm;
+	cm.cx=0.0;
+	cm.cy=0.0;
+	cm.cz=0.0;
+
+	for(int i=0; i<dat->natom; i++)
+	{
+		cm.cx += at[i].x;
+		cm.cy += at[i].y;
+		cm.cz += at[i].z;
+	}
+
+	cm.cx /= dat->natom;
+    	cm.cy /= dat->natom;
+    	cm.cz /= dat->natom;
+
+	return cm;
+}
+
 void recentre(ATOM at[],DATA *dat)
 {
-    double cx=0., cy=0., cz=0. ;
-    
+    CM cm = getCM(at,dat);
+
     for(int i=0; i<dat->natom; i++)
     {
-        cx += at[i].x;
-        cy += at[i].y;
-        cz += at[i].z;
-    }
-    
-    cx /= dat->natom;
-    cy /= dat->natom;
-    cz /= dat->natom;
-    
-    for(int i=0; i<dat->natom; i++)
-    {
-        at[i].x -= cx;
-        at[i].y -= cy;
-        at[i].z -= cz;
+        at[i].x -= cm.cx;
+        at[i].y -= cm.cy;
+        at[i].z -= cm.cz;
     }
 }

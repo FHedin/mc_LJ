@@ -6,6 +6,10 @@
 #include "tools.h"
 #include "ener.h"
 
+#ifndef K_CONSTRAINT
+#define K_CONSTRAINT	2.50
+#endif
+
 /* How to call this function :
  *
  *  get_LJV(at,&dat,-1) is for total energy of the whole system.
@@ -17,40 +21,69 @@ double get_LJ_V(ATOM at[],DATA *dat,int candidate)
 {
 
     int i,j;
+    double dx1,dy1,dz1;
+    double dx2,dy2,dz2;
+    double dcm;
     double d2, epsi_g, sig_g;
     double energy = 0.0;
+    
+    dat->E_constr = 0.0;
+    CM cm = getCM(at,dat);
 
     if (candidate==-1)
     {
-        for (i=0; i<(dat->natom-1); i++)
+        for (i=0; i<(dat->natom); i++)
         {
+            dx1=at[i].x;
+            dy1=at[i].y;
+            dz1=at[i].z;
+
+            dcm = X2(cm.cx-dx1) +  X2(cm.cy-dy1) + X2(cm.cz-dz1) ;
+            dat->E_constr += getExtraPot(dcm,at[i].ljp.sig,at[i].ljp.eps);
+
             for (j=i+1; j<(dat->natom); j++)
             {
-                d2 = X2(at[i].x-at[j].x) +  X2(at[i].y-at[j].y) + X2(at[i].z-at[j].z) ;
+                dx2=at[j].x;
+                dy2=at[j].y;
+                dz2=at[j].z;
+
+                d2 = X2(dx2-dx1) +  X2(dy2-dy1) + X2(dz2-dz1) ;
                 epsi_g = sqrt( at[i].ljp.eps * at[j].ljp.eps );
                 sig_g  = 0.5*( at[i].ljp.sig + at[j].ljp.sig );
 
-                energy += epsi_g *( (X12(sig_g))/(X6(d2)) - (X6(sig_g))/(X3(d2)) );
+                energy += 4.0 * epsi_g *( (X12(sig_g))/(X6(d2)) - (X6(sig_g))/(X3(d2)) );
+//                 dat->E_constr += getExtraPot(d2,sig_g,epsi_g);
             }
         }
     }
     else
     {
         i=candidate;
+
+        dx1=at[i].x;
+        dy1=at[i].y;
+        dz1=at[i].z;
+
+        dcm = X2(cm.cx-dx1) +  X2(cm.cy-dy1) + X2(cm.cz-dz1) ;
+        dat->E_constr += getExtraPot(dcm,at[i].ljp.sig,at[i].ljp.eps);
+
         for (j=0; j<(dat->natom); j++)
         {
             if (j!=i)
             {
-                d2 = X2(at[i].x-at[j].x) +  X2(at[i].y-at[j].y) + X2(at[i].z-at[j].z) ;
+                dx2=at[j].x;
+                dy2=at[j].y;
+                dz2=at[j].z;
+
+                d2 = X2(dx2-dx1) +  X2(dy2-dy1) + X2(dz2-dz1) ;
                 epsi_g = sqrt( at[i].ljp.eps * at[j].ljp.eps );
                 sig_g  = 0.5*( at[i].ljp.sig + at[j].ljp.sig );
 
-                energy += epsi_g *( (X12(sig_g))/(X6(d2)) - (X6(sig_g))/(X3(d2)) );
+                energy += 4.0 * epsi_g *( (X12(sig_g))/(X6(d2)) - (X6(sig_g))/(X3(d2)) );
+//            	dat->E_constr += getExtraPot(d2,sig_g,epsi_g);
             }
         }
     }
-
-    energy *= 4.0;
 
     return energy;
 }
@@ -144,3 +177,13 @@ double get_AZIZ_V(ATOM at[], DATA *dat, int candidate)
 
     return energy*CM1TOKJM*JTOCAL;
 }
+
+double getExtraPot(double d2, double sig, double eps)
+{
+	double vc = d2/(X2(K_CONSTRAINT*sig));
+	vc=pow(vc,10.0);
+	vc*=eps;
+
+	return vc;
+}
+

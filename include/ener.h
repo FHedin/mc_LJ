@@ -33,4 +33,7 @@ extern void aziz_ne_ne_(double *r, double *pot);
 extern void aziz_ar_ne_(double *r, double *pot);
 extern void aziz_ar_ar_(double *r, double *pot);
 
+// constraint for avoiding cluster evaporation
+double getExtraPot(double d2, double sig, double eps);
+
 #endif // ENER_H_INCLUDED

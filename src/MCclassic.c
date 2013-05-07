@@ -169,24 +169,30 @@ int make_MC_moves(ATOM at[], DATA *dat, double *ener)
 int apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int *candidate, double *ener, int *step)
 {
     //return 1 if move accepted, -1 if rejected
-    double Eold, Enew, Ediff = 0.;
-    double alpha = 0;
-    double rejParam = 0;
+    double Eold=0.0, Enew=0.0, Ediff=0.0;
+    double EconstrOld=0.0,EconstrNew=0.0,EconstrDiff=0.0;
+    double alpha = 0.;
+    double rejParam = 0.;
 
 #ifdef _OPENMP
 #pragma omp parallel
     {
 #endif
         Eold=(*get_ENER)(at,dat,*candidate);
+        EconstrOld=dat->E_constr;
+
         Enew=(*get_ENER)(at_new,dat,*candidate);
+        EconstrNew=dat->E_constr;
 #ifdef _OPENMP
     }
 #endif
 
-    Ediff = Enew - Eold;
-    fprintf(stderr,"Ediff : %lf \t",Ediff);
+    Ediff = (Enew - Eold) ;
+    EconstrDiff = (EconstrNew - EconstrOld) ;
+    
+    fprintf(stderr,"Ediff : %lf \t Econstrdiff : %lf \t",Ediff,EconstrDiff);
 
-    if (Ediff < 0.0)
+    if ( (Ediff + EconstrDiff) < 0.0 )
     {
         *ener+=Ediff;
         if((*step)!=0 && (*step)%io.esave==0)
@@ -196,7 +202,7 @@ int apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int *candidate, double *en
     }
     else
     {
-        rejParam = exp(-dat->beta*Ediff);
+        rejParam = exp(-dat->beta*(Ediff + EconstrDiff));
         alpha = get_next(dat);
         
         fprintf(stderr,"alpha : %lf ; \t rejp : %lf\n",alpha,rejParam);

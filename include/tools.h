@@ -10,6 +10,7 @@ void steepd(ATOM at[],DATA *dat);
 
 void adj_dmax(DATA *dat, int *step, int *acc);
 
+CM getCM(ATOM at[],DATA *dat);
 void recentre(ATOM at[], DATA *dat);
 
 #endif // TOOLS_H_INCLUDED

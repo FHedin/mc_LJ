@@ -34,6 +34,7 @@ typedef struct
 
     double inid ;
     double T ;
+    double E_constr;
     double E_steepD;
     double E_expected;
     double beta;
@@ -68,5 +69,10 @@ typedef struct
     char sym[4] ;
     LJPARAMS ljp;
 } ATOM;
+
+typedef struct
+{
+	double cx,cy,cz;
+} CM;
 
 #endif // GLOBAL_H_INCLUDED
