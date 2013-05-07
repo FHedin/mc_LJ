@@ -221,14 +221,22 @@ int apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
 {
     int i=0;
     double Eold=0.,Enew=0.,Ediff=0.;
+    double EconstrOld=0.0,EconstrNew=0.0,EconstrDiff=0.0;
 
     Eold=(*get_ENER)(at,dat,*candidate);
+    EconstrOld=dat->E_constr;
+    
     Enew=(*get_ENER)(at_new,dat,*candidate);
+    EconstrNew=dat->E_constr;
+    
+    
 
-    Ediff = Enew - Eold;
-    fprintf(stderr,"Ediff : %lf \t",Ediff);
+    Ediff = (Enew - Eold) ;
+    EconstrDiff = (EconstrNew - EconstrOld) ;
+    
+    fprintf(stderr,"Ediff : %lf \t Econstrdiff : %lf \t",Ediff,EconstrDiff);
 
-    if (Ediff < 0.0)
+    if ( (Ediff + EconstrDiff) < 0.0 )
     {
         *ener+=Ediff;
         if((*currStep)!=0 && (*currStep)%io.esave==0)
@@ -268,8 +276,12 @@ int apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
             {
                 for (j=0; j<spdat->neps; j++)
                 {
-                    EI[i][j] = (*get_ENER)(iniArray[i][j],dat,*candidate);
+                    EI[i][j] =  (*get_ENER)(iniArray[i][j],dat,*candidate);
+                    EI[i][j] += dat->E_constr;
+                    
                     EF[i][j] = (*get_ENER)(finArray[i][j],dat,*candidate);
+                    EF[i][j] += dat->E_constr;
+                    
 //                    fprintf(stderr,"EI[%d][%d]=%lf \t EF[%d][%d]=%lf \n",i,j,EI[i][j],i,j,EF[i][j]);
                 }
             }
