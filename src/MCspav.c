@@ -234,14 +234,14 @@ int apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
     Ediff = (Enew - Eold) ;
     EconstrDiff = (EconstrNew - EconstrOld) ;
     
-    fprintf(stderr,"Ediff : %lf \t Econstrdiff : %lf \t",Ediff,EconstrDiff);
+//     fprintf(stderr,"Ediff : %lf \t Econstrdiff : %lf \t",Ediff,EconstrDiff);
 
     if ( (Ediff + EconstrDiff) < 0.0 )
     {
         *ener+=Ediff;
         if((*currStep)!=0 && (*currStep)%io.esave==0)
             fwrite(ener,sizeof(double),1,efile);
-        fprintf(stderr,"\n");
+//         fprintf(stderr,"\n");
         return MV_ACC ;
     }
     else
@@ -325,7 +325,7 @@ int apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
 
         alpha = get_next(dat);
         
-        fprintf(stderr,"alpha : %lf ; \t rejp : %lf",alpha,rejParam);
+//         fprintf(stderr,"alpha : %lf ; \t rejp : %lf",alpha,rejParam);
 
         free(Smnew);
         free(Smold);
@@ -337,14 +337,14 @@ int apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
             *ener+=Ediff;
             if((*currStep)!=0 && (*currStep)%io.esave==0)
                 fwrite(ener,sizeof(double),1,efile);
-            fprintf(stderr,"\n");
+//             fprintf(stderr,"\n");
             return MV_ACC ;
         }
         else
         {
             if((*currStep)!=0 && (*currStep)%io.esave==0)
                 fwrite(ener,sizeof(double),1,efile);
-            fprintf(stderr,"\n");
+//             fprintf(stderr,"\n");
             return MV_REJ ;
         }
     }

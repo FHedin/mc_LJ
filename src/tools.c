@@ -116,10 +116,10 @@ void steepd(ATOM at[],DATA *dat)
 //        diff=sqrt(diff);
 //         fprintf(stderr,"diff = %lf\n",diff);
         diff = fabs( (*get_ENER)(at2,dat,-1)/at2[0].ljp.eps - dat->E_expected );
-        fprintf(stderr,"diff = %lf\n",diff);
+//         fprintf(stderr,"diff = %lf\n",diff);
         counter++;
     }
-    while (diff>prec && counter <= 10000);
+    while (diff>prec && counter <= 1000);
     
     for (i=0; i<(dat->natom); i++)
         memcpy(&at[i],&at2[i],sizeof(ATOM));
