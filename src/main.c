@@ -239,7 +239,8 @@ void start_classic(DATA *dat, ATOM at[])
     traj=fopen(io.trajtitle,"wb");
     
     write_xyz(at,dat,0,crdfile);
-
+    fclose(crdfile);
+    
     // 	sprintf(trname,"%d.dcd",i+1);
 
     ener = (*get_ENER)(at,dat,-1);
@@ -255,7 +256,7 @@ void start_classic(DATA *dat, ATOM at[])
     fprintf(stdout,"Final dmax = %lf\n",dat->d_max);
     fprintf(stdout,"End of METROP Monte-Carlo\n\n");
 
-    freopen(io.crdtitle_last,"wt",crdfile);
+    crdfile=fopen(io.crdtitle_last,"wt");
     write_xyz(at,dat,dat->nsteps,crdfile);
     
     fclose(crdfile);
@@ -287,6 +288,7 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
     traj=fopen(io.trajtitle,"wb");
     
     write_xyz(at,dat,0,crdfile);
+    fclose(crdfile);
     
     // 	stfile=fopen(stname,"w");
 
@@ -309,7 +311,7 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
     fprintf(stdout,"final dmax = %lf\n",dat->d_max);
     fprintf(stdout,"End of SPAV\n\n");
     
-    freopen(io.crdtitle_last,"wt",crdfile);
+    crdfile=fopen(io.crdtitle_last,"wt");
     write_xyz(at,dat,dat->nsteps,crdfile);
 
     fclose(crdfile);
@@ -345,6 +347,11 @@ void getValuesFromDB(DATA *dat)
     {
         dat->E_steepD   = -129.0;
         dat->E_expected = -133.586422;
+    }
+    else if (dat->natom==37)
+    {
+        dat->E_steepD   = -162;
+        dat->E_expected = -167.033672;
     }
     else if (dat->natom==38)
     {

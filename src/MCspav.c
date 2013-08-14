@@ -159,24 +159,29 @@ int launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
         if (dat->d_max_when != 0)
             adj_dmax(dat,&st,&acc);
 
-        if ((*ener)/at[0].ljp.eps <= dat->E_steepD)
-        {
-          fprintf(stdout,"Running Steepest Descent at step %d : E = %lf.\n",st,(*ener)/at[0].ljp.eps);
-          steepd(at_new,dat);
-          double E_sd = (*get_ENER)(at_new,dat,-1);
-          fprintf(stdout,"Steepest Descent done : E = %lf\n",E_sd/at[0].ljp.eps);
-          if ( fabs(E_sd/at[0].ljp.eps - dat->E_expected) <= 1.0e-04 )
-          {
-            fprintf(stdout,"Best minimum found after %d steps : E = %lf \n",st,E_sd/at[0].ljp.eps);
-            *ener=E_sd;
-            (*write_traj)(at_new,dat,st);
-            return acc2;
-          }
-          else fprintf(stdout,"Minimum not reached : continuing ...\n\n");
-        }
+//         if ((*ener)/at[0].ljp.eps <= dat->E_steepD)
+//         {
+//           fprintf(stdout,"Running Steepest Descent at step %d : E = %lf.\n",st,(*ener)/at[0].ljp.eps);
+//           steepd(at_new,dat);
+//           double E_sd = (*get_ENER)(at_new,dat,-1);
+//           fprintf(stdout,"Steepest Descent done : E = %lf\n",E_sd/at[0].ljp.eps);
+//           if ( fabs(E_sd/at[0].ljp.eps - dat->E_expected) <= 1.0e-04 )
+//           {
+//             fprintf(stdout,"Best minimum found after %d steps : E = %lf \n",st,E_sd/at[0].ljp.eps);
+//             *ener=E_sd;
+//             (*write_traj)(at_new,dat,st);
+//             return acc2;
+//           }
+//           else fprintf(stdout,"Minimum not reached : continuing ...\n\n");
+//         }
 
         if (st!=0 && st%io.trsave==0)
+        {
+            steepd(at_new,dat);
+            double E_sd = (*get_ENER)(at_new,dat,-1);
+            fprintf(stdout,"Steepest Descent done (step %d): E = %.3lf\n",st,E_sd/at[0].ljp.eps);
             (*write_traj)(at,dat,st);
+        }
         
         //energy check
         if (st!=0 && st%1000==0)
