@@ -33,7 +33,7 @@ all:$(CIBLE)
 	@echo "Compilation Success"
 
 $(CIBLE):Makefile
- 
+
 ./obj/%.o:./src/%.c 
 	$(CC) $(CC_OPT) -c $< -o $@ 
 
@@ -52,16 +52,4 @@ clean:
 
 clean_all:
 	rm -f $(CIBLE) ./obj/*.o ./obj/dSFMT/*.o
-
-rs:
-	rsync -avz ./src verdi.chemie.unibas.ch:/home/hedin/myMC/
-	rsync -avz ./include verdi.chemie.unibas.ch:/home/hedin/myMC/
-	rsync -avz ./input_file verdi.chemie.unibas.ch:/home/hedin/myMC/
-	rsync -avz ./Makefile verdi.chemie.unibas.ch:/home/hedin/myMC/
-	
-	rsync -avz ./src maia.urz.unibas.ch:/home/chemie/hedin/myMC/
-	rsync -avz ./include maia.urz.unibas.ch:/home/chemie/hedin/myMC/
-	rsync -avz ./input_file maia.urz.unibas.ch:/home/chemie/hedin/myMC/
-	rsync -avz ./Makefile maia.urz.unibas.ch:/home/chemie/hedin/myMC/
-
 
