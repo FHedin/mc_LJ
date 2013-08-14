@@ -32,10 +32,16 @@
 /**
  * 	Some global variables
  **/
-IODAT io = {NULLFILE,NULLFILE,NULLFILE,1000,1000};
+
+/*
+ *     char crdtitle_first[128],char crdtit*le_last[128],char trajtitle[128],char etitle[128];
+ *     int esave,int trsave;
+ */
+IODAT io = {NULLFILE,NULLFILE,NULLFILE,NULLFILE,1000,1000};
 
 //common use files
 FILE *traj=NULL;
+FILE *crdfile=NULL;
 FILE *efile=NULL;
 
 //is the stdout redirected ?
@@ -157,8 +163,9 @@ int main(int argc, char **argv)
 
     fprintf(stdout,"Energy      saved each %d  steps in file %s\n",io.esave,io.etitle);
     fprintf(stdout,"Trajectory  saved each %d  steps in file %s\n",io.trsave,io.trajtitle);
-    fprintf(stdout,"Initial configuration saved in file %s\n\n",io.crdtitle);
-
+    fprintf(stdout,"Initial configuration saved in file %s\n",io.crdtitle_first);
+    fprintf(stdout,"Final   configuration saved in file %s\n\n",io.crdtitle_last);
+    
     getValuesFromDB(&dat);
 
     if (charmm_units)
@@ -227,14 +234,13 @@ void start_classic(DATA *dat, ATOM at[])
     // 	sprintf(trname,"%d.xyz",i+1);
     // 	sprintf(ename,"%d.ener",i+1);
 
-    traj=fopen(io.crdtitle,"w");
+    crdfile=fopen(io.crdtitle_first,"wt");
     efile=fopen(io.etitle,"wb");
-
-    write_xyz(at,dat,0);
+    traj=fopen(io.trajtitle,"wb");
+    
+    write_xyz(at,dat,0,crdfile);
 
     // 	sprintf(trname,"%d.dcd",i+1);
-
-    freopen(io.trajtitle,"wb",traj);
 
     ener = (*get_ENER)(at,dat,-1);
 
@@ -249,6 +255,10 @@ void start_classic(DATA *dat, ATOM at[])
     fprintf(stdout,"Final dmax = %lf\n",dat->d_max);
     fprintf(stdout,"End of METROP Monte-Carlo\n\n");
 
+    freopen(io.crdtitle_last,"wt",crdfile);
+    write_xyz(at,dat,dat->nsteps,crdfile);
+    
+    fclose(crdfile);
     fclose(traj);
     fclose(efile);
 
@@ -272,15 +282,19 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
     // 	sprintf(ename,"%d.ener",i+1);
     //  	sprintf(stname,"%d.stats",i+1);
 
-    traj=fopen(io.crdtitle,"w");
+    crdfile=fopen(io.crdtitle_first,"wt");
     efile=fopen(io.etitle,"wb");
+    traj=fopen(io.trajtitle,"wb");
+    
+    write_xyz(at,dat,0,crdfile);
+    
     // 	stfile=fopen(stname,"w");
 
-    write_xyz(at,dat,0);
+//     write_xyz(at,dat,0);
 
     // 	sprintf(trname,"%d.dcd",i+1);
 
-    freopen(io.trajtitle,"wb",traj);
+//     freopen(io.trajtitle,"wb",traj);
 
     ener = (*get_ENER)(at,dat,-1);
 
@@ -294,7 +308,11 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
     fprintf(stdout,"Acceptance ratio is %lf %% \n",(double)100.0*acc/dat->nsteps);
     fprintf(stdout,"final dmax = %lf\n",dat->d_max);
     fprintf(stdout,"End of SPAV\n\n");
+    
+    freopen(io.crdtitle_last,"wt",crdfile);
+    write_xyz(at,dat,dat->nsteps,crdfile);
 
+    fclose(crdfile);
     fclose(traj);
     fclose(efile);
 
