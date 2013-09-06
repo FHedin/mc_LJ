@@ -2,8 +2,8 @@
 ########################   MakeVars   ###########################
 #################################################################
 
-CC=gcc 
-FC=gfortran
+CC=icc 
+FC=ifort
  
 CC_OPT=-I"./dSFMT" -I"./include" -Wall -Wextra -std=c99 -O2 -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937
 
