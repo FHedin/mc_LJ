@@ -116,16 +116,50 @@ void steepd(ATOM at[],DATA *dat)
 //        diff=sqrt(diff);
 //         fprintf(stderr,"diff = %lf\n",diff);
         diff = fabs( (*get_ENER)(at2,dat,-1)/at2[0].ljp.eps - dat->E_expected );
-        fprintf(stderr,"diff = %lf\n",diff);
+//         fprintf(stderr,"diff = %lf\n",diff);
         counter++;
     }
-    while (diff>prec && counter <= 10000);
+    while (diff>prec && counter <= 1000);
     
     for (i=0; i<(dat->natom); i++)
         memcpy(&at[i],&at2[i],sizeof(ATOM));
 
     free(DV);
     free(at2);
+}
+
+void steepd_ini(ATOM at[],DATA *dat)
+{
+    int i=0,j=0,counter=0;
+    
+    double step = 0.001 ;
+    double prec = 1.0e-04 ;
+    double diff;
+    double *DV = NULL ;
+    
+    DV  = malloc(3*dat->natom*sizeof *DV);
+
+    do
+    {
+        (*get_DV)(at,dat,DV);
+        for (i=0; i<(dat->natom); i++)
+        {
+            at[i].x -= step*DV[i];
+            at[i].y -= step*DV[i+dat->natom];
+            at[i].z -= step*DV[i+2*dat->natom];
+        }
+        //        diff = 0.0;
+        //        for (j=0; j<3*(dat->natom); j++)
+        //            diff += DV[j]*DV[j];
+        //        diff=sqrt(diff);
+        //         fprintf(stderr,"diff = %lf\n",diff);
+        diff = fabs( (*get_ENER)(at,dat,-1)/at[0].ljp.eps - dat->E_expected );
+        //         fprintf(stderr,"diff = %lf\n",diff);
+        counter++;
+    }
+    while (diff>prec && counter <= 1000);
+    
+    free(DV);
 }
 
 void adj_dmax(DATA *dat, int *step, int *acc)

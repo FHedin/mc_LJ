@@ -105,7 +105,13 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                     {
                         type = strtok(NULL," \n\t");
                         title = strtok(NULL," \n\t\'");
-                        sprintf(io.crdtitle,"%s",title);
+                        sprintf(io.crdtitle_first,"%s",title);
+                    }
+                    else if (!strcasecmp(what,"LAST"))
+                    {
+                        type = strtok(NULL," \n\t");
+                        title = strtok(NULL," \n\t\'");
+                        sprintf(io.crdtitle_last,"%s",title);
                     }
                     else if (!strcasecmp(what,"TRAJ"))
                     {
@@ -214,6 +220,7 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                     }
        
                     read_xyz(at,dat,start);
+                    steepd_ini(at,dat);
                     
                     fclose(start);
                 }

@@ -7,14 +7,14 @@
 
 static int dcd_header_empty=1;
 
-void write_xyz(ATOM at[], DATA *dat, int when)
+void write_xyz(ATOM at[], DATA *dat, int when, FILE *outf)
 {
     recentre(at,dat);
     
     int i=0;
-    fprintf(traj,"%d\n#step %d\n",dat->natom,when);
+    fprintf(outf,"%d\n#step %d\n",dat->natom,when);
     for (i=0; i<(dat->natom); i++)
-        fprintf(traj,"%s\t%10.5lf\t%10.5lf\t%10.5lf\n",at[i].sym,at[i].x,at[i].y,at[i].z);
+        fprintf(outf,"%s\t%10.5lf\t%10.5lf\t%10.5lf\n",at[i].sym,at[i].x,at[i].y,at[i].z);
 }
 
 void read_xyz(ATOM at[], DATA *dat, FILE *inpf)

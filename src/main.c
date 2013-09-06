@@ -32,10 +32,16 @@
 /**
  * 	Some global variables
  **/
-IODAT io = {NULLFILE,NULLFILE,NULLFILE,1000,1000};
+
+/*
+ *     char crdtitle_first[128],char crdtit*le_last[128],char trajtitle[128],char etitle[128];
+ *     int esave,int trsave;
+ */
+IODAT io = {NULLFILE,NULLFILE,NULLFILE,NULLFILE,1000,1000};
 
 //common use files
 FILE *traj=NULL;
+FILE *crdfile=NULL;
 FILE *efile=NULL;
 
 //is the stdout redirected ?
@@ -157,8 +163,9 @@ int main(int argc, char **argv)
 
     fprintf(stdout,"Energy      saved each %d  steps in file %s\n",io.esave,io.etitle);
     fprintf(stdout,"Trajectory  saved each %d  steps in file %s\n",io.trsave,io.trajtitle);
-    fprintf(stdout,"Initial configuration saved in file %s\n\n",io.crdtitle);
-
+    fprintf(stdout,"Initial configuration saved in file %s\n",io.crdtitle_first);
+    fprintf(stdout,"Final   configuration saved in file %s\n\n",io.crdtitle_last);
+    
     getValuesFromDB(&dat);
 
     if (charmm_units)
@@ -220,13 +227,24 @@ int main(int argc, char **argv)
 
 void start_classic(DATA *dat, ATOM at[])
 {
+
+    int i = 0;
     double ener = 0.0 ;
     int acc=0;
 
-    traj=fopen(io.crdtitle,"w");
-    efile=fopen(io.etitle,"wb");
+    //     char trname[16],ename[16];
+    //
+    // 	sprintf(trname,"%d.xyz",i+1);
+    // 	sprintf(ename,"%d.ener",i+1);
 
-    write_xyz(at,dat,0);
+    crdfile=fopen(io.crdtitle_first,"wt");
+    efile=fopen(io.etitle,"wb");
+    traj=fopen(io.trajtitle,"wb");
+    
+    write_xyz(at,dat,0,crdfile);
+    fclose(crdfile);
+    
+    // 	sprintf(trname,"%d.dcd",i+1);
 
     freopen(io.trajtitle,"wb",traj);
 
@@ -243,6 +261,10 @@ void start_classic(DATA *dat, ATOM at[])
     fprintf(stdout,"Final dmax = %lf\n",dat->d_max);
     fprintf(stdout,"End of METROP Monte-Carlo\n\n");
 
+    crdfile=fopen(io.crdtitle_last,"wt");
+    write_xyz(at,dat,dat->nsteps,crdfile);
+    
+    fclose(crdfile);
     fclose(traj);
     fclose(efile);
 
@@ -255,16 +277,31 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
 
     spdat->normalSize=2048;
     spdat->normalNumbs=malloc(spdat->normalSize*sizeof spdat->normalNumbs);
-    
+
+    int i = 0;
     double ener = 0.0 ;
     int acc=0;
 
-    traj=fopen(io.crdtitle,"w");
+    char /*trname[16],ename[16],*/stname[16] ;
+
+    // 	sprintf(trname,"%d.xyz",i+1);
+    // 	sprintf(ename,"%d.ener",i+1);
+    //  	sprintf(stname,"%d.stats",i+1);
+
+    crdfile=fopen(io.crdtitle_first,"wt");
     efile=fopen(io.etitle,"wb");
+    traj=fopen(io.trajtitle,"wb");
+    
+    write_xyz(at,dat,0,crdfile);
+    fclose(crdfile);
+    
+    // 	stfile=fopen(stname,"w");
 
-    write_xyz(at,dat,0);
+//     write_xyz(at,dat,0);
 
-    freopen(io.trajtitle,"wb",traj);
+    // 	sprintf(trname,"%d.dcd",i+1);
+
+//     freopen(io.trajtitle,"wb",traj);
 
     ener = (*get_ENER)(at,dat,-1);
 
@@ -278,10 +315,16 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
     fprintf(stdout,"Acceptance ratio is %lf %% \n",(double)100.0*acc/dat->nsteps);
     fprintf(stdout,"final dmax = %lf\n",dat->d_max);
     fprintf(stdout,"End of SPAV\n\n");
+    
+    crdfile=fopen(io.crdtitle_last,"wt");
+    write_xyz(at,dat,dat->nsteps,crdfile);
 
+    fclose(crdfile);
     fclose(traj);
     fclose(efile);
-    
+
+    // 	fclose(stfile);
+
     free(spdat->normalNumbs);
 }
 
@@ -309,6 +352,11 @@ void getValuesFromDB(DATA *dat)
     {
         dat->E_steepD   = -129.0;
         dat->E_expected = -133.586422;
+    }
+    else if (dat->natom==37)
+    {
+        dat->E_steepD   = -162;
+        dat->E_expected = -167.033672;
     }
     else if (dat->natom==38)
     {

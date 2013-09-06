@@ -7,6 +7,7 @@ void build_cluster(ATOM at[], DATA *dat, int from, int to, int mode);
 int  no_conflict(ATOM at[],int i);
 
 void steepd(ATOM at[],DATA *dat);
+void steepd_ini(ATOM at[],DATA *dat);
 
 void adj_dmax(DATA *dat, int *step, int *acc);
 

@@ -110,34 +110,40 @@ int make_MC_moves(ATOM at[], DATA *dat, double *ener)
         if (dat->d_max_when != 0)
           adj_dmax(dat,&st,&acc);
 
-        if ((*ener)/at[0].ljp.eps <= dat->E_steepD)
-        {
-          fprintf(stdout,"Running Steepest Descent at step %d : E = %lf.\n",st,(*ener)/at[0].ljp.eps);
-          steepd(at_new,dat);
-          double E_sd = (*get_ENER)(at_new,dat,-1);
-          fprintf(stdout,"Steepest Descent done : E = %lf\n",E_sd/at[0].ljp.eps);
-          if ( fabs(E_sd/at[0].ljp.eps - dat->E_expected ) <= 1.0e-04 )
-          {
-            fprintf(stdout,"Best minimum found after %d steps : E = %lf \n",st,E_sd/at[0].ljp.eps);
-            *ener=E_sd;
-            fwrite(ener,sizeof(double),1,efile);
-            (*write_traj)(at_new,dat,st);
-            return acc2;
-          }
-          else fprintf(stdout,"Minimum not reached : continuing ...\n\n");
-        }
+//         if ((*ener)/at[0].ljp.eps <= dat->E_steepD)
+//         {
+//           fprintf(stdout,"Running Steepest Descent at step %d : E = %lf.\n",st,(*ener)/at[0].ljp.eps);
+//           steepd(at_new,dat);
+//           double E_sd = (*get_ENER)(at_new,dat,-1);
+//           fprintf(stdout,"Steepest Descent done (step %d): E = %lf\n",st,E_sd/at[0].ljp.eps);
+//           if ( fabs(E_sd/at[0].ljp.eps - dat->E_expected ) <= 1.0e-04 )
+//           {
+//             fprintf(stdout,"Best minimum found after %d steps : E = %lf \n",st,E_sd/at[0].ljp.eps);
+//             *ener=E_sd;
+//             fwrite(ener,sizeof(double),1,efile);
+//             (*write_traj)(at_new,dat,st);
+//             return acc2;
+//           }
+//           else 
+//               fprintf(stdout,"Minimum not reached : continuing ...\n\n");
+//         }
 
         if (st!=0 && st%io.trsave==0)
+        {
+            steepd(at_new,dat);
+            double E_sd = (*get_ENER)(at_new,dat,-1);
+            fprintf(stdout,"Steepest Descent done (step %d): E = %.3lf\n",st,E_sd/at[0].ljp.eps);
             (*write_traj)(at,dat,st);
+        }
 
         //energy check
-        if (st!=0 && st%1000==0)
-        {
-          static double cum_err = 0.0;
-          double de = (*ener)-((*get_ENER)(at,dat,-1));
-          cum_err += de;
-          fprintf(stderr,"At step %d DeltaE is : %g cumulated : %g\n",st,de,cum_err);
-        }
+//         if (st!=0 && st%1000==0)
+//         {
+//           static double cum_err = 0.0;
+//           double de = (*ener)-((*get_ENER)(at,dat,-1));
+//           cum_err += de;
+// //           fprintf(stderr,"At step %d DeltaE is : %g cumulated : %g\n",st,de,cum_err);
+//         }
 
 //        if(!is_stdout_redirected && st%progress==0)
 //        {
@@ -190,14 +196,14 @@ int apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int *candidate, double *en
     Ediff = (Enew - Eold) ;
     EconstrDiff = (EconstrNew - EconstrOld) ;
     
-    fprintf(stderr,"Ediff : %lf \t Econstrdiff : %lf \t",Ediff,EconstrDiff);
+//     fprintf(stderr,"Ediff : %lf \t Econstrdiff : %lf \t",Ediff,EconstrDiff);
 
     if ( (Ediff + EconstrDiff) < 0.0 )
     {
         *ener+=Ediff;
         if((*step)!=0 && (*step)%io.esave==0)
             fwrite(ener,sizeof(double),1,efile);
-        fprintf(stderr,"\n");
+//         fprintf(stderr,"\n");
         return MV_ACC ;
     }
     else
@@ -205,7 +211,7 @@ int apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int *candidate, double *en
         rejParam = exp(-dat->beta*(Ediff + EconstrDiff));
         alpha = get_next(dat);
         
-        fprintf(stderr,"alpha : %lf ; \t rejp : %lf\n",alpha,rejParam);
+//         fprintf(stderr,"alpha : %lf ; \t rejp : %lf\n",alpha,rejParam);
         
         if (alpha < rejParam)
         {
