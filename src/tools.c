@@ -31,12 +31,12 @@ void get_vector(DATA *dat, int mv_direction, double vec[3])
 void build_cluster(ATOM at[], DATA *dat, int from, int to, int mode)
 {
     int i = 0 ;
-    if (mode==-1)	//initialisation mode
+    if (mode==-1)	//infinite initialisation mode
     {
         for (i=from; i<to; i++)
             at[i].x=at[i].y=at[i].z=9999.9;
     }
-    else if (mode==0)	//zero everywhere
+    else if (mode==0)	//zero everywhere : all at origin
     {
         for (i=from; i<to; i++)
             at[i].x=at[i].y=at[i].z=0.0;

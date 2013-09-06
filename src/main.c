@@ -172,8 +172,11 @@ int main(int argc, char **argv)
     fprintf(stdout,"T      = %lf \n",dat.T);
     fprintf(stdout,"beta   = %lf\n",dat.beta);
     
-    if(dat.d_max_when==0)                       fprintf(stdout,"dmax   = %lf (fixed) \n\n",dat.d_max);
-    else					fprintf(stdout,"dmax   = %4.2lf updated each %d steps for targeting %4.2lf %% of acceptance \n\n",dat.d_max,dat.d_max_when,dat.d_max_tgt);
+    if(dat.d_max_when==0)
+        fprintf(stdout,"dmax   = %lf (fixed) \n\n",dat.d_max);
+    else
+        fprintf(stdout,"dmax   = %4.2lf updated each %d steps for "
+                       "targeting %4.2lf %% of acceptance \n\n",dat.d_max,dat.d_max_when,dat.d_max_tgt);
 
     if (strcasecmp(dat.method,"metrop")==0)
     {
@@ -202,7 +205,7 @@ int main(int argc, char **argv)
 #endif /* unixes part */
     fprintf(stdout,"End of program\n");
     
-    //write an rst file
+    //write a rst file
     //write_rst(&dat,&spdat,at);
 
     free(dat.rn);
@@ -217,22 +220,13 @@ int main(int argc, char **argv)
 
 void start_classic(DATA *dat, ATOM at[])
 {
-
-    int i = 0;
     double ener = 0.0 ;
     int acc=0;
-
-    //     char trname[16],ename[16];
-    //
-    // 	sprintf(trname,"%d.xyz",i+1);
-    // 	sprintf(ename,"%d.ener",i+1);
 
     traj=fopen(io.crdtitle,"w");
     efile=fopen(io.etitle,"wb");
 
     write_xyz(at,dat,0);
-
-    // 	sprintf(trname,"%d.dcd",i+1);
 
     freopen(io.trajtitle,"wb",traj);
 
@@ -261,24 +255,14 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
 
     spdat->normalSize=2048;
     spdat->normalNumbs=malloc(spdat->normalSize*sizeof spdat->normalNumbs);
-
-    int i = 0;
+    
     double ener = 0.0 ;
     int acc=0;
 
-    char /*trname[16],ename[16],*/stname[16] ;
-
-    // 	sprintf(trname,"%d.xyz",i+1);
-    // 	sprintf(ename,"%d.ener",i+1);
-    //  	sprintf(stname,"%d.stats",i+1);
-
     traj=fopen(io.crdtitle,"w");
     efile=fopen(io.etitle,"wb");
-    // 	stfile=fopen(stname,"w");
 
     write_xyz(at,dat,0);
-
-    // 	sprintf(trname,"%d.dcd",i+1);
 
     freopen(io.trajtitle,"wb",traj);
 
@@ -297,9 +281,7 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
 
     fclose(traj);
     fclose(efile);
-
-    // 	fclose(stfile);
-
+    
     free(spdat->normalNumbs);
 }
 
