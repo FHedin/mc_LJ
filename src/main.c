@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     char inpf[128] = "";
 
     DATA dat ;
-    SPDAT spdat = {0.5,5,5,NULL,0};
+    SPDAT spdat = {5,5,0.5,NULL,0};
     ATOM *at = NULL;
 
     get_ENER = NULL;
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
     write_traj= &(write_dcd);
 
     //arguments parsing
-    for (i=1; i<argc; i++)
+    for (i=1; i<(uint32_t)argc; i++)
     {
         if (!strcasecmp(argv[i],"-i"))
             sprintf(inpf,"%s",argv[++i]);
@@ -136,7 +136,7 @@ int main(int argc, char **argv)
         dat.seeds[i]=(uint32_t)seed[strlen(seed)-1-i];
         dat.seeds[i]*=dat.seeds[0];
     }
-    dsfmt_init_by_array(&(dat.dsfmt),dat.seeds,strlen(seed));
+    dsfmt_init_by_array(&(dat.dsfmt),dat.seeds,(int32_t)strlen(seed));
 #endif
 
     at=parse_from_file(inpf,&dat,&spdat);
@@ -209,7 +209,8 @@ int main(int argc, char **argv)
     struct rusage infos_usage;
     getrusage(RUSAGE_SELF,&infos_usage);
     fprintf(stdout,"Memory used in kBytes is : %ld\n",infos_usage.ru_maxrss);
-    fprintf(stdout,"Execution time in Seconds : %lf\n",(double)infos_usage.ru_utime.tv_sec+infos_usage.ru_utime.tv_usec/1000000.0);
+    fprintf(stdout,"Execution time in Seconds : %lf\n",
+           (double)infos_usage.ru_utime.tv_sec+(double)infos_usage.ru_utime.tv_usec/1000000.0);
 #endif /* unixes part */
     fprintf(stdout,"End of program\n");
     
@@ -251,7 +252,7 @@ void start_classic(DATA *dat, ATOM at[])
     acc=make_MC_moves(at,dat,&ener);
 
     fprintf(stdout,"\n\nLJ final energy is : %lf\n",ener);
-    fprintf(stdout,"Acceptance ratio is %lf %% \n",(double)100.0*acc/dat->nsteps);
+    fprintf(stdout,"Acceptance ratio is %lf %% \n",100.0*(double)acc/(double)dat->nsteps);
     fprintf(stdout,"Final dmax = %lf\n",dat->d_max);
     fprintf(stdout,"End of METROP Monte-Carlo\n\n");
 
@@ -291,7 +292,7 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
     acc=launch_SPAV(at,dat,spdat,&ener);
 
     fprintf(stdout,"LJ final energy is : %lf\n",ener);
-    fprintf(stdout,"Acceptance ratio is %lf %% \n",(double)100.0*acc/dat->nsteps);
+    fprintf(stdout,"Acceptance ratio is %lf %% \n",100.0*(double)acc/(double)dat->nsteps);
     fprintf(stdout,"final dmax = %lf\n",dat->d_max);
     fprintf(stdout,"End of SPAV\n\n");
     

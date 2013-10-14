@@ -3,8 +3,8 @@
 
 void get_vector(DATA *dat,int32_t mv_direction, double vec[3]);
 
-void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, uint32_t mode);
-uint32_t  no_conflict(ATOM at[],uint32_t i);
+void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, int32_t mode);
+int32_t  no_conflict(ATOM at[],uint32_t i);
 
 void steepd(ATOM at[],DATA *dat);
 void steepd_ini(ATOM at[],DATA *dat);

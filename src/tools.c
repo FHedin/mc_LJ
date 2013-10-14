@@ -28,7 +28,7 @@ void get_vector(DATA *dat, int32_t mv_direction, double vec[3])
 /*
  * Generates a cluster for the atoms
  */
-void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, uint32_t mode)
+void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, int32_t mode)
 {
     uint32_t i = 0 ;
     if (mode==-1)	//infinite initialisation mode
@@ -67,7 +67,7 @@ void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, uint32_t mo
 }
 
 //returns 0 if no steric clash, -1 otherwise
-uint32_t  no_conflict(ATOM at[],uint32_t i)
+int32_t  no_conflict(ATOM at[],uint32_t i)
 {
 
     uint32_t j=0;
@@ -168,7 +168,7 @@ void adj_dmax(DATA *dat, uint64_t *step, uint64_t *acc)
     {
         double ratio = (double)*acc/(double)dat->d_max_when;
 //        double ratio = (double)*acc/(double)*step;
-        fprintf(stderr,"d_max update at step %d : ratio = %lf ; old = %lf ; ",*step,ratio,dat->d_max);
+        fprintf(stderr,"d_max update at step %"PRIu64" : ratio = %lf ; old = %lf ; ",*step,ratio,dat->d_max);
         if (ratio > dat->d_max_tgt/100)
             dat->d_max *= 1.10 ;
         else

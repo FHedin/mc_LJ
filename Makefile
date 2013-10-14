@@ -2,14 +2,19 @@
 ########################   MakeVars   ###########################
 #################################################################
 
-CC=gcc 
-FC=gfortran
- 
-CC_OPT=-I"./dSFMT" -I"./include" -Wall -Wextra -std=c99 -O2 -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937
+CC=icc 
+FC=ifort
 
-CC_SFMT_OPT=-I"./dSFMT" -Wall -Wextra -std=c99 -O2 -msse2 -fno-strict-aliasing -DHAVE_SSE2 -DDSFMT_MEXP=19937
+WFLAGS=-Wall -Wextra 
+#-Wdouble-promotion -Wformat -Wimplicit-int -Wuninitialized -Wfloat-equal \
+#-Wpointer-arith -Wtype-limits -Wbad-function-cast -Wcast-qual -Wconversion \
+#-Wsign-conversion
 
-FC_OPT=-Wall -Wextra -std=f95 -O2 -msse2
+CC_OPT=-I"./dSFMT" -I"./include" $(WFLAGS) -std=c99 -O2 -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937
+
+CC_SFMT_OPT=-I"./dSFMT" $(WFLAGS) -std=c99 -O2 -msse2 -fno-strict-aliasing -DHAVE_SSE2 -DDSFMT_MEXP=19937
+
+FC_OPT=$(WFLAGS) -std=f95 -O2 -msse2
 
 LD_OPT=-lm
 
@@ -19,11 +24,11 @@ TARGET=myMC
  
 SRC=$(wildcard ./src/*.c)
 dSRC=$(wildcard ./dSFMT/*.c)
-fSRC=$(wildcard ./src/*.f)
+fSRC=$(wildcard ./src/*.f90)
  
 OBJ=$(patsubst ./src/%.c,./obj/%.o,$(SRC))
 dOBJ=$(patsubst ./dSFMT/%.c,./obj/dSFMT/%.o,$(dSRC)) 
-fOBJ=$(patsubst ./src/%.f,./obj/%.o,$(fSRC))
+fOBJ=$(patsubst ./src/%.f90,./obj/%.o,$(fSRC))
  
 #################################################################
 ########################   Makefile   ###########################
@@ -37,7 +42,7 @@ $(TARGET):Makefile
 ./obj/%.o:./src/%.c 
 	$(CC) $(CC_OPT) -c $< -o $@ 
 
-./obj/%.o:./src/%.f 
+./obj/%.o:./src/%.f90 
 	$(FC) $(FC_OPT) -c $< -o $@ 
 
 ./obj/dSFMT/%.o:./dSFMT/%.c

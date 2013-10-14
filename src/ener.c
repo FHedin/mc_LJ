@@ -58,7 +58,7 @@ double get_LJ_V(ATOM at[], DATA *dat, int32_t candidate)
     }
     else
     {
-        i=candidate;
+        i = (uint32_t) candidate;
 
         dx1=at[i].x;
         dy1=at[i].y;
@@ -151,7 +151,7 @@ double get_AZIZ_V(ATOM at[], DATA *dat, int32_t candidate)
     }
     else
     {
-        i=candidate;
+        i = (uint32_t) candidate;
         for (j=0; j<(dat->natom); j++)
         {
             if (j!=i)

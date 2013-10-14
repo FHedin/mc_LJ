@@ -14,7 +14,7 @@ double get_next(DATA *dat)
         for (i=0; i<2048; i++)
             dat->rn[i]=rand()/(double)RAND_MAX;
 #else
-        dsfmt_fill_array_close_open(&dat->dsfmt,dat->rn,dat->nrn);
+        dsfmt_fill_array_close_open(&dat->dsfmt,dat->rn,(int32_t)dat->nrn);
 #endif
         dat->nrn=0;
     }

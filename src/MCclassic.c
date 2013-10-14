@@ -13,7 +13,7 @@
 
 uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 {
-    uint32_t i,j,k;
+    uint32_t /*i,*/j,k;
     uint64_t st, acc=0, acc2=0;
     int32_t accParam=0;
     
@@ -28,10 +28,10 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
     
     double randvec[3] = {0.0,0.0,0.0};
     
-    uint64_t progress=dat->nsteps/1000;
-    clock_t start,now;
+//     uint64_t progress=dat->nsteps/1000;
+//     clock_t start,now;
 
-    start=clock();
+//     start=clock();
 
     at_new=malloc( dat->natom*sizeof *at_new );
     
@@ -51,7 +51,7 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
         do
         {
             uint32_t redundant=0;
-            candidate = (int32_t) dat->natom*get_next(dat);
+            candidate = (int32_t) (dat->natom*get_next(dat));
             for(k=0; k<j; k++)
             {
                 if (ismoving[k]==candidate)
@@ -78,7 +78,7 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
         k=0;
         do
         {
-            j=ismoving[k];
+            j = (uint32_t) ismoving[k];
 //            mv_direction = (int)3*get_next(dat);
             get_vector(dat,mv_direction,randvec);
             
@@ -100,7 +100,7 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
             k=0;
             do
             {
-                j=ismoving[k];
+                j = (uint32_t) ismoving[k];
                 memcpy(&at[j],&at_new[j],sizeof(ATOM));
                 k++;
             }
@@ -132,7 +132,7 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
         {
             steepd(at_new,dat);
             double E_sd = (*get_ENER)(at_new,dat,-1);
-            fprintf(stdout,"Steepest Descent done (step %d): E = %.3lf\n",st,E_sd/at[0].ljp.eps);
+            fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,E_sd/at[0].ljp.eps);
             (*write_traj)(at,dat,st);
         }
 

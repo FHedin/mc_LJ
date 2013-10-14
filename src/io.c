@@ -12,7 +12,7 @@ void write_xyz(ATOM at[], DATA *dat, uint64_t when, FILE *outf)
     recentre(at,dat);
     
     uint32_t i=0;
-    fprintf(outf,"%d\n#step %d\n",dat->natom,when);
+    fprintf(outf,"%d\n#step %"PRIu64"\n",dat->natom,when);
     for (i=0; i<(dat->natom); i++)
         fprintf(outf,"%s\t%10.5lf\t%10.5lf\t%10.5lf\n",at[i].sym,at[i].x,at[i].y,at[i].z);
 }
@@ -49,7 +49,7 @@ void write_dcd(ATOM at[], DATA *dat, uint64_t when)
         char corp[4]="CORD";
 
         uint32_t  ICNTRL[20]= {0};
-        ICNTRL[0]=ICNTRL[3]=dat->nsteps/io.trsave;
+        ICNTRL[0]=ICNTRL[3] = (uint32_t) dat->nsteps/io.trsave;
         ICNTRL[1]=ICNTRL[2]=1;
         ICNTRL[19]=37;	//charmm version
 
@@ -86,7 +86,7 @@ void write_dcd(ATOM at[], DATA *dat, uint64_t when)
     }
 
     float x=0.f,y=0.f,z=0.f;
-    input_integer[1]=sizeof(float)*dat->natom;
+    input_integer[1]=(uint32_t)sizeof(float)*dat->natom;
 
     fwrite(&input_integer[1],sizeof(uint32_t),1,traj);
     for(i=0; i<dat->natom; i++)

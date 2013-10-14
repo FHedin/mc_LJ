@@ -49,11 +49,11 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
 
                     meps=strtok(NULL," \n\t");
                     meps=strtok(NULL," \n\t");
-                    spdat->meps = atoi(meps);
+                    spdat->meps = (uint32_t) atoi(meps);
 
                     neps=strtok(NULL," \n\t");
                     neps=strtok(NULL," \n\t");
-                    spdat->neps = atoi(neps);
+                    spdat->neps = (uint32_t) atoi(neps);
 
                     sprintf(dat->method,"%s",buff3);
                 }
@@ -93,7 +93,7 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                     sprintf(io.etitle,"%s",title);
                     each = strtok(NULL," \n\t"); //junk
                     each = strtok(NULL," \n\t");
-                    io.esave = atoi(each);
+                    io.esave = (uint32_t) atoi(each);
                 }
                 else if (!strcasecmp(buff3,"COOR"))
                 {
@@ -119,20 +119,20 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                         sprintf(io.trajtitle,"%s",title);
                         each = strtok(NULL," \n\t"); //junk
                         each = strtok(NULL," \n\t");
-                        io.trsave = atoi(each);
+                        io.trsave = (uint32_t) atoi(each);
                     }
                 }
             }
             else if (!strcasecmp(buff2,"NATOMS"))
             {
-                dat->natom=atoi(buff3);
+                dat->natom = (uint32_t) atoi(buff3);
                 at = calloc(dat->natom,sizeof *at);
                 build_cluster(at,dat,0,dat->natom,-1);	//initialise
             }
             else if (!strcasecmp(buff2,"TEMP"))
-                dat->T=atof(buff3);
+                dat->T = atof(buff3);
             else if (!strcasecmp(buff2,"NSTEPS"))
-                dat->nsteps=atol(buff3);
+                dat->nsteps = (uint64_t) strtoull(buff3,NULL,0);    //atol(buff3);
             else if (!strcasecmp(buff2,"DMAX"))
             {
                 char *mode=NULL , *each=NULL , *target=NULL;
@@ -146,7 +146,7 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                     each=strtok(NULL," \n\t");
                     target=strtok(NULL," \n\t"); //junk
                     target=strtok(NULL," \n\t");
-                    dat->d_max_when=atoi(each);
+                    dat->d_max_when = (uint32_t) atoi(each);
                     dat->d_max_tgt=atof(target);
                 }
             }
@@ -179,8 +179,8 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                 coor=strtok(NULL," \n\t");
                 coor=strtok(NULL," \n\t");
 
-                j=atoi(from)-1;
-                k=atoi(to);
+                j = (uint32_t) atoi(from) - 1;
+                k = (uint32_t) atoi(to);
 
                 if (k<=0 || k>dat->natom)
                     k=dat->natom;
