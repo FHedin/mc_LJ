@@ -11,7 +11,7 @@
 #define CONFLICT -1
 #define NO_CONFLICT 0
 
-void get_vector(DATA *dat, int mv_direction, double vec[3])
+void get_vector(DATA *dat, int32_t mv_direction, double vec[3])
 {
     vec[0] = 0.0 ;  vec[1] = 0.0 ;  vec[2] = 0.0 ;
     
@@ -28,9 +28,9 @@ void get_vector(DATA *dat, int mv_direction, double vec[3])
 /*
  * Generates a cluster for the atoms
  */
-void build_cluster(ATOM at[], DATA *dat, int from, int to, int mode)
+void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, uint32_t mode)
 {
-    int i = 0 ;
+    uint32_t i = 0 ;
     if (mode==-1)	//infinite initialisation mode
     {
         for (i=from; i<to; i++)
@@ -67,10 +67,10 @@ void build_cluster(ATOM at[], DATA *dat, int from, int to, int mode)
 }
 
 //returns 0 if no steric clash, -1 otherwise
-int  no_conflict(ATOM at[],int i)
+uint32_t  no_conflict(ATOM at[],uint32_t i)
 {
 
-    int j=0;
+    uint32_t j=0;
     double d=0.0;
     for (j=0; j<i; j++)
     {
@@ -87,7 +87,7 @@ int  no_conflict(ATOM at[],int i)
 
 void steepd(ATOM at[],DATA *dat)
 {
-    int i=0,j=0,counter=0;
+    uint32_t i=0,/*j=0,*/counter=0;
 
     double step = 0.001 ;
     double prec = 1.0e-04 ;
@@ -130,7 +130,7 @@ void steepd(ATOM at[],DATA *dat)
 
 void steepd_ini(ATOM at[],DATA *dat)
 {
-    int i=0,j=0,counter=0;
+    uint32_t i=0,/*j=0,*/counter=0;
     
     double step = 0.001 ;
     double prec = 1.0e-04 ;
@@ -162,7 +162,7 @@ void steepd_ini(ATOM at[],DATA *dat)
     free(DV);
 }
 
-void adj_dmax(DATA *dat, int *step, int *acc)
+void adj_dmax(DATA *dat, uint64_t *step, uint64_t *acc)
 {
     if (*step != 0 && *step%dat->d_max_when==0)
     {
@@ -187,7 +187,7 @@ CM getCM(ATOM at[],DATA *dat)
 	cm.cy=0.0;
 	cm.cz=0.0;
 
-	for(int i=0; i<dat->natom; i++)
+	for(uint32_t i=0; i<dat->natom; i++)
 	{
 		cm.cx += at[i].x;
 		cm.cy += at[i].y;
@@ -205,7 +205,7 @@ void recentre(ATOM at[],DATA *dat)
 {
     CM cm = getCM(at,dat);
 
-    for(int i=0; i<dat->natom; i++)
+    for(uint32_t i=0; i<dat->natom; i++)
     {
         at[i].x -= cm.cx;
         at[i].y -= cm.cy;

@@ -8,12 +8,10 @@
 #include "ener.h"
 #include "tools.h"
 
-static int lj_size = 0 ;
+static uint32_t lj_size = 0 ;
 
 ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
 {
-    int i=0;
-
     ATOM *at=NULL;
     LJPARAMS *ljpars=NULL;
 
@@ -172,7 +170,7 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
             }
             else if (!strcasecmp(buff2,"ATOM"))
             {
-                int i=0,j=0,k=0,l=0;
+                uint32_t i=0,j=0,k=0,l=0;
                 char *from=buff3 , *to=NULL , *type=NULL , 	*coor=NULL;
 
                 to=strtok(NULL," \n\t");

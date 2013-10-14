@@ -7,9 +7,9 @@
 #include "memory.h"
 
 //for allocating an array of dimensions dim1*dim2 and of bytes size si
-void** calloc_2D(int dim1, int dim2, size_t si)
+void** calloc_2D(uint32_t dim1, uint32_t dim2, size_t si)
 {
-    int i;
+    uint32_t i;
     void **array=NULL;
 
     //Here, allocation of the first dimension : rows
@@ -27,9 +27,9 @@ void** calloc_2D(int dim1, int dim2, size_t si)
 }
 
 //for freeing one or more dynamically allocated 2D arrays of first dimension dim1
-void free_2D(int dim1, ...)
+void free_2D(uint32_t dim1, ...)
 {
-    int i;
+    uint32_t i;
     void **array=NULL;
     va_list ap;
 
@@ -48,9 +48,9 @@ void free_2D(int dim1, ...)
 }
 
 //for allocating an array of dimensions dim1*dim2*dim3 and of bytes size si
-void*** calloc_3D(int dim1, int dim2, int dim3, size_t si)
+void*** calloc_3D(uint32_t dim1, uint32_t dim2, uint32_t dim3, size_t si)
 {
-    int i,j;
+    uint32_t i,j;
     void ***array=NULL;
 
     array=calloc(dim1,si);
@@ -71,9 +71,9 @@ void*** calloc_3D(int dim1, int dim2, int dim3, size_t si)
 }
 
 //for freeing one or more dynamically allocated 3D arrays of dimensions dim1,dim2
-void free_3D(int dim1, int dim2, ...)
+void free_3D(uint32_t dim1, uint32_t dim2, ...)
 {
-    int i,j;
+    uint32_t i,j;
     void ***array=NULL;
     va_list ap;
 

@@ -9,13 +9,13 @@ CC_OPT=-I"./dSFMT" -I"./include" -Wall -Wextra -std=c99 -O2 -msse2 -DHAVE_SSE2 -
 
 CC_SFMT_OPT=-I"./dSFMT" -Wall -Wextra -std=c99 -O2 -msse2 -fno-strict-aliasing -DHAVE_SSE2 -DDSFMT_MEXP=19937
 
-FC_OPT=-O2 -msse2
+FC_OPT=-Wall -Wextra -std=f95 -O2 -msse2
 
 LD_OPT=-lm
 
 MKDIR=mkdir -p ./obj/dSFMT
  
-CIBLE=myMC
+TARGET=myMC
  
 SRC=$(wildcard ./src/*.c)
 dSRC=$(wildcard ./dSFMT/*.c)
@@ -29,10 +29,10 @@ fOBJ=$(patsubst ./src/%.f,./obj/%.o,$(fSRC))
 ########################   Makefile   ###########################
 #################################################################
  
-all:$(CIBLE)
+all:$(TARGET)
 	@echo "Compilation Success"
 
-$(CIBLE):Makefile
+$(TARGET):Makefile
 
 ./obj/%.o:./src/%.c 
 	$(CC) $(CC_OPT) -c $< -o $@ 
@@ -44,12 +44,12 @@ $(CIBLE):Makefile
 	@$(MKDIR)
 	$(CC) $(CC_SFMT_OPT) -c $< -o $@
  
-$(CIBLE):$(dOBJ) $(fOBJ) $(OBJ)
+$(TARGET):$(dOBJ) $(fOBJ) $(OBJ)
 	$(CC) $(dOBJ) $(fOBJ) $(OBJ) -o $@ $(LD_OPT)
 
 clean:
-	rm -f $(CIBLE) ./obj/*.o
+	rm -f $(TARGET) ./obj/*.o
 
 clean_all:
-	rm -f $(CIBLE) ./obj/*.o ./obj/dSFMT/*.o
+	rm -f $(TARGET) ./obj/*.o ./obj/dSFMT/*.o
 

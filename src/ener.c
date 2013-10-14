@@ -17,10 +17,10 @@
  *  get_LJV(at,&dat,candidate_atom_number) is for energy evaluation of candidate_atom_number only.
  *
  */
-double get_LJ_V(ATOM at[],DATA *dat,int candidate)
+double get_LJ_V(ATOM at[], DATA *dat, int32_t candidate)
 {
 
-    int i,j;
+    uint32_t i,j;
     double dx1,dy1,dz1;
     double dx2,dy2,dz2;
     double dcm;
@@ -92,7 +92,7 @@ void get_LJ_DV(ATOM at[], DATA *dat, double DV[])
 {
     //DV[] is 3*natom length : first x values, then y then z.
 
-    int i=0 , j=0 ;
+    uint32_t i=0 , j=0 ;
     double epsi_g=0.0 , sig_g=0.0;
     double dx=0.0 , dy=0.0 , dz=0.0 , d2=0.0 ;
     double DE=0.0 ;
@@ -119,10 +119,10 @@ void get_LJ_DV(ATOM at[], DATA *dat, double DV[])
     }
 }
 
-double get_AZIZ_V(ATOM at[], DATA *dat, int candidate)
+double get_AZIZ_V(ATOM at[], DATA *dat, int32_t candidate)
 {
 
-    int i,j;
+    uint32_t i,j;
     double d, d2, energy=0.0, etmp;
 
     if (candidate==-1)

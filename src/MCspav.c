@@ -14,21 +14,21 @@
 
 int launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
 {
-    int acc=0, acc2=0 ;
-    int st=0 ;
+    uint64_t acc=0, acc2=0 ;
+    uint64_t st=0 ;
     
-    int i=0,j=0,k=0,l=0;
+    uint32_t i=0,j=0,k=0,l=0;
     
-    int candidate = -1;
-    int n_moving = 1;
-    int *ismoving = NULL;
-    //int unicMove = -1;
-    int mv_direction = -1;
+    int32_t candidate = -1;
+    uint32_t n_moving = 1;
+    int32_t *ismoving = NULL;
+    //int32_t unicMove = -1;
+    int32_t mv_direction = -1;
     
     double randvec[3] = {0.0,0.0,0.0};
 
-    int is_accepted = 0 ;
-    int progress=dat->nsteps/1000;
+    int32_t is_accepted = 0 ;
+    uint64_t progress=dat->nsteps/1000;
     clock_t start,now;
     
     start=clock();
@@ -68,8 +68,8 @@ int launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
         j=0;
         do
         {
-          int redundant=0;
-          candidate = (int) dat->natom*get_next(dat);
+          uint32_t redundant=0;
+          candidate = (uint32_t) dat->natom*get_next(dat);
           for(k=0; k<j; k++)
           {
             if (ismoving[k]==candidate)
@@ -221,10 +221,9 @@ int launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
     return acc2;
 }
 
-int apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
-                          ATOM ***iniArray, ATOM ***finArray, int *candidate, double *ener, int *currStep)
+int32_t apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
+                          ATOM ***iniArray, ATOM ***finArray, int32_t *candidate, double *ener, uint64_t *currStep)
 {
-    int i=0;
     double Eold=0.,Enew=0.,Ediff=0.;
     double EconstrOld=0.0,EconstrNew=0.0,EconstrDiff=0.0;
 
@@ -251,7 +250,7 @@ int apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
     }
     else
     {
-        int j,k = 0 ;
+        uint32_t i,j,k = 0 ;
         double delta = 0. ;
         double sigma = 0. ;
         double rejParam = 0. ;

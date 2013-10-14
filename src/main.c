@@ -9,7 +9,7 @@
 #include <omp.h>
 #endif
 
-#if ( defined __linux__ || defined __FreeBSD__ )
+#if __unix__
 #include <sys/resource.h>
 #endif /* for some unixes */
 
@@ -35,7 +35,7 @@
 
 /*
  *     char crdtitle_first[128],char crdtit*le_last[128],char trajtitle[128],char etitle[128];
- *     int esave,int trsave;
+ *     uint32_t esave,uint32_t trsave;
  */
 IODAT io = {NULLFILE,NULLFILE,NULLFILE,NULLFILE,1000,1000};
 
@@ -45,13 +45,13 @@ FILE *crdfile=NULL;
 FILE *efile=NULL;
 
 //is the stdout redirected ?
-int is_stdout_redirected=0;
+uint32_t is_stdout_redirected=0;
 //are we using charmm units ?
-int charmm_units=0;
+uint32_t charmm_units=0;
 
 #ifdef _OPENMP
 //for para execution
-int ncpus=1,nthreads=1;
+uint32_t ncpus=1,nthreads=1;
 #endif
 
 /**
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
     //os-independant redirection of stderr to the null file
     freopen(NULLFILE,"w",stderr);
 
-    int i;
+    uint32_t i;
     char seed[128] = "";
     char inpf[128] = "";
 
@@ -126,11 +126,12 @@ int main(int argc, char **argv)
     dat.nrn = 2048 ;
     dat.rn = calloc(dat.nrn,sizeof dat.rn);
 #else
-    if (!strlen(seed)) sprintf(seed,"%d",(int)time(NULL)) ;
+    if (!strlen(seed))
+        sprintf(seed,"%d",(int)time(NULL)) ;
     dat.nrn = 2048 ;
     dat.rn = calloc(dat.nrn,sizeof dat.rn);
     dat.seeds = calloc(strlen(seed),sizeof dat.seeds);
-    for (i=0; i<(int)strlen(seed); i++)
+    for (i=0; i<(uint32_t)strlen(seed); i++)
     {
         dat.seeds[i]=(uint32_t)seed[strlen(seed)-1-i];
         dat.seeds[i]*=dat.seeds[0];
@@ -227,15 +228,8 @@ int main(int argc, char **argv)
 
 void start_classic(DATA *dat, ATOM at[])
 {
-
-    int i = 0;
     double ener = 0.0 ;
-    int acc=0;
-
-    //     char trname[16],ename[16];
-    //
-    // 	sprintf(trname,"%d.xyz",i+1);
-    // 	sprintf(ename,"%d.ener",i+1);
+    uint64_t acc=0;
 
     crdfile=fopen(io.crdtitle_first,"wt");
     efile=fopen(io.etitle,"wb");
@@ -278,15 +272,8 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
     spdat->normalSize=2048;
     spdat->normalNumbs=malloc(spdat->normalSize*sizeof spdat->normalNumbs);
 
-    int i = 0;
     double ener = 0.0 ;
-    int acc=0;
-
-    char /*trname[16],ename[16],*/stname[16] ;
-
-    // 	sprintf(trname,"%d.xyz",i+1);
-    // 	sprintf(ename,"%d.ener",i+1);
-    //  	sprintf(stname,"%d.stats",i+1);
+    uint64_t acc=0;
 
     crdfile=fopen(io.crdtitle_first,"wt");
     efile=fopen(io.etitle,"wb");
@@ -295,14 +282,6 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
     write_xyz(at,dat,0,crdfile);
     fclose(crdfile);
     
-    // 	stfile=fopen(stname,"w");
-
-//     write_xyz(at,dat,0);
-
-    // 	sprintf(trname,"%d.dcd",i+1);
-
-//     freopen(io.trajtitle,"wb",traj);
-
     ener = (*get_ENER)(at,dat,-1);
 
     fprintf(stdout,"\nStarting SPAV\n");

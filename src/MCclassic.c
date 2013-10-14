@@ -11,24 +11,24 @@
 #include "ener.h"
 #include "io.h"
 
-int make_MC_moves(ATOM at[], DATA *dat, double *ener)
+uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 {
-    int i,j,k;
-    int st;
-    int accParam=0, acc=0, acc2=0;
+    uint32_t i,j,k;
+    uint64_t st, acc=0, acc2=0;
+    int32_t accParam=0;
     
     ATOM *at_new;
     
 //     double *dmax;
-    int candidate=-1;
-    int n_moving=   1    ;//dat->natom;
-    int *ismoving = NULL;
-    //int unicMove=    1;//-1;
-    int mv_direction= -1;
+    int32_t candidate=-1;
+    uint32_t n_moving=   1    ;//dat->natom;
+    int32_t *ismoving = NULL;
+    //int32_t unicMove=    1;//-1;
+    int32_t mv_direction= -1;
     
     double randvec[3] = {0.0,0.0,0.0};
     
-    int progress=dat->nsteps/1000;
+    uint64_t progress=dat->nsteps/1000;
     clock_t start,now;
 
     start=clock();
@@ -50,8 +50,8 @@ int make_MC_moves(ATOM at[], DATA *dat, double *ener)
         j=0;
         do
         {
-            int redundant=0;
-            candidate = (int) dat->natom*get_next(dat);
+            uint32_t redundant=0;
+            candidate = (int32_t) dat->natom*get_next(dat);
             for(k=0; k<j; k++)
             {
                 if (ismoving[k]==candidate)
@@ -172,7 +172,7 @@ int make_MC_moves(ATOM at[], DATA *dat, double *ener)
     return acc2;
 }
 
-int apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int *candidate, double *ener, int *step)
+int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, double *ener, uint64_t *step)
 {
     //return 1 if move accepted, -1 if rejected
     double Eold=0.0, Enew=0.0, Ediff=0.0;
