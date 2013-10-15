@@ -1,9 +1,20 @@
+#
+# Copyright (c) 2013, Florent Hedin, Markus Meuwly, and the University of Basel
+# All rights reserved.
+#
+# The 3-clause BSD license is applied to this software.
+# see LICENSE.txt
+# 
+#
+
 #################################################################
 ########################   MakeVars   ###########################
 #################################################################
 
-CC=icc 
-FC=ifort
+# CC=icc 
+# FC=ifort
+CC=gcc
+FC=gfortran
 
 WFLAGS=-Wall -Wextra 
 #-Wdouble-promotion -Wformat -Wimplicit-int -Wuninitialized -Wfloat-equal \

@@ -1,3 +1,19 @@
+/** 
+ * @file main.c
+ *
+ * @brief C program for MC simulations applied to Lennard Jones clusters only.
+ *
+ * @author Florent Hedin (University of Basel, Switzerland)
+ * @author Markus Meuwly (University of Basel, Switzerland)
+ * 
+ * Copyright (c) 2013, Florent Hedin, Markus Meuwly, and the University of Basel
+ * All rights reserved.
+ *
+ * The 3-clause BSD license is applied to this software.
+ * see LICENSE.txt
+ * 
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -33,13 +49,9 @@
  * 	Some global variables
  **/
 
-/*
- *     char crdtitle_first[128],char crdtit*le_last[128],char trajtitle[128],char etitle[128];
- *     uint32_t esave,uint32_t trsave;
- */
 IODAT io = {NULLFILE,NULLFILE,NULLFILE,NULLFILE,1000,1000};
 
-//common use files
+//commonly used files
 FILE *traj=NULL;
 FILE *crdfile=NULL;
 FILE *efile=NULL;
@@ -54,11 +66,7 @@ uint32_t charmm_units=0;
 uint32_t ncpus=1,nthreads=1;
 #endif
 
-/**
- * End
- **/
-
-//prototypes
+//prototypes of functions present in this main.c
 int  main(int argc, char **argv);
 void start_classic(DATA *dat, ATOM at[]);
 void start_spav(DATA *dat, SPDAT *spdat, ATOM at[]);

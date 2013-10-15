@@ -1,3 +1,12 @@
+!
+! Copyright (c) 2013, Florent Hedin, Markus Meuwly, and the University of Basel
+! All rights reserved.
+!
+! The 3-clause BSD license is applied to this software.
+! see LICENSE.txt
+! 
+!
+
 subroutine aziz_ne_ne(r,pot)
     ! HFD-B potential from Aziz, Chem. Phys. 130 (1989) p 187
     ! reads r in angstroems gives potential energy in cm-1.
