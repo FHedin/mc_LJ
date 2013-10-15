@@ -20,6 +20,9 @@
 #include "ener.h"
 #include "io.h"
 
+#define MV_ACC 1
+#define MV_REJ -1
+
 uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 {
     uint32_t /*i,*/j,k;

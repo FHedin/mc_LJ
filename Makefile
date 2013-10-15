@@ -31,7 +31,7 @@ LD_OPT=-lm
 
 MKDIR=mkdir -p ./obj/dSFMT
  
-TARGET=myMC
+TARGET=mc_LJ
  
 SRC=$(wildcard ./src/*.c)
 dSRC=$(wildcard ./dSFMT/*.c)

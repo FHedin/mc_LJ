@@ -87,7 +87,7 @@ int32_t  no_conflict(ATOM at[],uint32_t i)
         d = sqrt(d);
         if (d < ((at[i].ljp.sig+at[j].ljp.sig)/2.0))
         {
-            fprintf(stderr,"Atoms %3d and %3d too close for starting configuration : generating new coordinates for atom %3d\n",j,i,i);
+            fprintf(stderr,"[Info] Atoms %3d and %3d too close for starting configuration : generating new coordinates for atom %3d\n",j,i,i);
             return CONFLICT;
         }
     }
@@ -177,7 +177,7 @@ void adj_dmax(DATA *dat, uint64_t *step, uint64_t *acc)
     {
         double ratio = (double)*acc/(double)dat->d_max_when;
 //        double ratio = (double)*acc/(double)*step;
-        fprintf(stderr,"d_max update at step %"PRIu64" : ratio = %lf ; old = %lf ; ",*step,ratio,dat->d_max);
+        fprintf(stderr,"[Info] d_max update at step %"PRIu64" : ratio = %lf ; old = %lf ; ",*step,ratio,dat->d_max);
         if (ratio > dat->d_max_tgt/100)
             dat->d_max *= 1.10 ;
         else

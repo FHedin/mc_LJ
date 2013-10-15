@@ -21,6 +21,9 @@
 #include "ener.h"
 #include "io.h"
 
+#define MV_ACC 1
+#define MV_REJ -1
+
 uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
 {
     uint64_t acc=0, acc2=0 ;

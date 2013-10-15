@@ -9,6 +9,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
+#include <string.h>
 
 #include "global.h"
 #include "io.h"
@@ -51,75 +53,92 @@ void write_dcd(ATOM at[], DATA *dat, uint64_t when)
     recentre(at,dat);
     
     uint32_t i=0;
-    uint32_t input_integer[2]= {0};
+    uint32_t sizeB = 0;
 
     if (dcd_header_empty)
     {
-        char corp[4]="CORD";
+        char corp[4]={'C','O','R','D'};
 
         uint32_t  ICNTRL[20]= {0};
         ICNTRL[0]=ICNTRL[3] = (uint32_t) dat->nsteps/io.trsave;
         ICNTRL[1]=ICNTRL[2]=1;
-        ICNTRL[19]=37;	//charmm version
+        ICNTRL[19]=39;	//charmm version
 
-        uint32_t NTITLE=2;
-        char TITLE[80]="";
+        uint32_t NTITLE=3;
+        char TITLE[3][80]={"","",""};
+        
+        // add to title info about date, user, machine, etc... if available
+        time_t rawtime;
+        struct tm *timeinfo;
+        char *user=NULL , *host=NULL , *pwd=NULL;
+        char tmp[4096]="";
+        time(&rawtime);
+        timeinfo = localtime(&rawtime);
+        user=getenv("USER");
+        host=getenv("HOSTNAME");
+        pwd=getenv("PWD");
+        sprintf(tmp,"* CREATION DATE : %s",asctime(timeinfo));
+        // strncat : char * strncat ( char * destination, const char * source, size_t num );
+        // Appends the first num characters of source to destination, plus a terminating null-character.
+        strncat(TITLE[0],tmp,79);
+        sprintf(tmp,"* USER : %s HOSTNAME : %s",(user!=NULL)?user:"UNKNOWN",(host!=NULL)?host:"UNKNOWN");
+        strncat(TITLE[1],tmp,79);
+        sprintf(tmp,"* PWD : %s",(pwd!=NULL)?pwd:"UNKNOWN");
+        strncat(TITLE[2],tmp,79);
 
         uint32_t NATOM=dat->natom;
 
-        input_integer[0] = sizeof(corp) + sizeof(ICNTRL);
-        input_integer[1] = sizeof(NTITLE);
-
-        fwrite(&input_integer[0],sizeof(uint32_t),1,traj);
+        sizeB = sizeof(corp) + sizeof(ICNTRL);
+        fwrite(&sizeB,sizeof(uint32_t),1,traj);
         {
             fwrite(corp,sizeof(char),4,traj);
             fwrite(ICNTRL,sizeof(uint32_t),20,traj);
         }
-        fwrite(&input_integer[0],sizeof(uint32_t),1,traj);
+        fwrite(&sizeB,sizeof(uint32_t),1,traj);
 
-
-        fwrite(&input_integer[0],sizeof(uint32_t),1,traj);
+        sizeB = sizeof(NTITLE) + NTITLE*80*sizeof(char);
+        fwrite(&sizeB,sizeof(uint32_t),1,traj);
         {
             fwrite(&NTITLE,sizeof(uint32_t),1,traj);
             for (i=0; i<NTITLE; i++)
-                fwrite(TITLE,sizeof(char),80,traj);
+                fwrite(TITLE[i],sizeof(char),80,traj);
         }
-        fwrite(&input_integer[1],sizeof(uint32_t),1,traj);
+        fwrite(&sizeB,sizeof(uint32_t),1,traj);
 
-
-        fwrite(&input_integer[1],sizeof(uint32_t),1,traj);
+        sizeB = sizeof(NATOM);
+        fwrite(&sizeB,sizeof(uint32_t),1,traj);
         fwrite(&NATOM,sizeof(uint32_t),1,traj);
-        fwrite(&input_integer[1],sizeof(uint32_t),1,traj);
+        fwrite(&sizeB,sizeof(uint32_t),1,traj);
 
         dcd_header_empty=0;
     }
 
     float x=0.f,y=0.f,z=0.f;
-    input_integer[1]=(uint32_t)sizeof(float)*dat->natom;
+    sizeB=(uint32_t)sizeof(float)*dat->natom;
 
-    fwrite(&input_integer[1],sizeof(uint32_t),1,traj);
+    fwrite(&sizeB,sizeof(uint32_t),1,traj);
     for(i=0; i<dat->natom; i++)
     {
         x=(float)at[i].x;
         fwrite(&x,sizeof(float),1,traj);
     }
-    fwrite(&input_integer[1],sizeof(uint32_t),1,traj);
+    fwrite(&sizeB,sizeof(uint32_t),1,traj);
 
-    fwrite(&input_integer[1],sizeof(uint32_t),1,traj);
+    fwrite(&sizeB,sizeof(uint32_t),1,traj);
     for(i=0; i<dat->natom; i++)
     {
         y=(float)at[i].y;
         fwrite(&y,sizeof(float),1,traj);
     }
-    fwrite(&input_integer[1],sizeof(uint32_t),1,traj);
+    fwrite(&sizeB,sizeof(uint32_t),1,traj);
 
-    fwrite(&input_integer[1],sizeof(uint32_t),1,traj);
+    fwrite(&sizeB,sizeof(uint32_t),1,traj);
     for(i=0; i<dat->natom; i++)
     {
         z=(float)at[i].z;
         fwrite(&z,sizeof(float),1,traj);
     }
-    fwrite(&input_integer[1],sizeof(uint32_t),1,traj);
+    fwrite(&sizeB,sizeof(uint32_t),1,traj);
 
 }
 

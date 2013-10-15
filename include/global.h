@@ -16,9 +16,6 @@
 #define X6(a)   X4(a)*X2(a)
 #define X12(a)  X6(a)*X6(a)
 
-#define MV_ACC 1
-#define MV_REJ -1
-
 #include <stdint.h>
 #include <inttypes.h>
 

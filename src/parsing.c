@@ -37,6 +37,13 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
 
     while(fgets(buff1,1024,ifile)!=NULL)
     {
+       // skip comment line, but print it in stderr for debugging purpose
+       if (buff1[0]=='#')
+       {
+           fprintf(stderr,"[Info] Skipping line %s",buff1);
+           continue;
+       }
+        
         buff2=strtok(buff1," \n\t");
 
         while (buff2 != NULL)
