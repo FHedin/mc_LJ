@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2013, Florent Hedin, Markus Meuwly, and the University of Basel
+ * All rights reserved.
+ *
+ * The 3-clause BSD license is applied to this software.
+ * see LICENSE.txt
+ * 
+ */
+
 #ifndef GLOBAL_H_INCLUDED
 #define GLOBAL_H_INCLUDED
 
@@ -7,29 +16,29 @@
 #define X6(a)   X4(a)*X2(a)
 #define X12(a)  X6(a)*X6(a)
 
-#define MV_ACC 1
-#define MV_REJ -1
+#include <stdint.h>
+#include <inttypes.h>
 
 #ifndef STDRAND
 #include "dSFMT.h"
 #endif
 
-extern int is_stdout_redirected;
-extern int charmm_units;
+extern uint32_t is_stdout_redirected;
+extern uint32_t charmm_units;
 
 #ifdef _OPENMP
-extern int ncpus;
-extern int nthreads;
+extern uint32_t ncpus;
+extern uint32_t nthreads;
 #endif
 
 typedef struct
 {
-    int natom ;
+    uint32_t natom ;
     char method[32];
-    long int nsteps ;
+    uint64_t nsteps ;
 
     double d_max ;
-    int d_max_when;
+    uint32_t d_max_when;
     double d_max_tgt;
 
     double inid ;
@@ -43,17 +52,17 @@ typedef struct
     dsfmt_t dsfmt;
     uint32_t *seeds;
 #endif
-    int nrn ;
+    uint32_t nrn ;
     double *rn ;
 } DATA;
 
 typedef struct
 {
-    int meps;
-    int neps;
+    uint32_t meps;
+    uint32_t neps;
     double weps;
     double *normalNumbs;
-    int normalSize;
+    uint32_t normalSize;
 } SPDAT;
 
 typedef struct

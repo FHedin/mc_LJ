@@ -1,0 +1,51 @@
+#!/usr/bin/env mc_LJ
+
+# Input file for the mc_LJ software
+# All lines starting with # are ignored
+# This file is case insensitive. You can separate the couples "keyword value"
+# by using blank spaces or tabulations.
+
+# we can use Lennard-Jones or Aziz potential
+POTENTIAL   LJ
+# Aziz potential is currently available only for Argon and Neon (mixtures are allowed)
+#POTENTIAL  AZIZ
+
+# unit of energy can be REDUCED (k_boltz*t/epsilon) or CHARMM (kcal/mol)
+UNITS   REDUCED
+#UNITS  CHARMM
+
+#set the numb. of atoms
+NATOMS  13
+
+# reduced temperature
+TEMP    0.25
+# or temperature in Kelvin if CHARMM units are used
+#TEMP   110
+
+# number of steps : coded as an unsigned 64-bits integer so values of several billions
+# are perfectly valid !
+NSTEPS  5000000
+
+#constant correcting factor for MC moves
+#DMAX   0.15
+# or automatically optimised dmax : each UPDATE steps dmax is adjust for reaching
+# TARGET (in %) of acceptance
+DMAX    0.15    UPDATE  100 TARGET  30.0
+
+# For each type of atom, set the Lennard Jones parameters
+# Here example for reduced units
+LJPARAMS    AR  EPSILON 1.0 SIGMA   1.0
+# Currently all parameters for the Aziz potential are hard coded, nothing to specify here
+
+ATOM	1	TO	END		AR	COOR	RANDOM
+
+#SAVE	ENER			'ener.dat'	EACH    10000
+
+SAVE	COOR	FIRST	XYZ	'init.xyz'
+#SAVE    COOR    LAST   XYZ 'init.xyz'
+
+SAVE	COOR	TRAJ	DCD	'traj.dcd' 	EACH	10000
+
+#METHOD	SPAV	WEPS	0.15	MEPS	10	NEPS	10
+METHOD	METROP
+

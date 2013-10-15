@@ -1,7 +1,9 @@
-first.xyz
 res/
 res_new/
 obj
-myMC
-/*kdev*
+mc_LJ
+*kdev*
+*.dat
+*.xyz
+*.dcd
 

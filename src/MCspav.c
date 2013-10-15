@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2013, Florent Hedin, Markus Meuwly, and the University of Basel
+ * All rights reserved.
+ *
+ * The 3-clause BSD license is applied to this software.
+ * see LICENSE.txt
+ * 
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -12,26 +21,29 @@
 #include "ener.h"
 #include "io.h"
 
-int launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
+#define MV_ACC 1
+#define MV_REJ -1
+
+uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
 {
-    int acc=0, acc2=0 ;
-    int st=0 ;
+    uint64_t acc=0, acc2=0 ;
+    uint64_t st=0 ;
     
-    int i=0,j=0,k=0,l=0;
+    uint32_t i=0,j=0,k=0,l=0;
     
-    int candidate = -1;
-    int n_moving = 1;
-    int *ismoving = NULL;
-    //int unicMove = -1;
-    int mv_direction = -1;
+    int32_t candidate = -1;
+    uint32_t n_moving = 1;
+    int32_t *ismoving = NULL;
+    //int32_t unicMove = -1;
+    int32_t mv_direction = -1;
     
     double randvec[3] = {0.0,0.0,0.0};
 
-    int is_accepted = 0 ;
-    int progress=dat->nsteps/1000;
-    clock_t start,now;
+    int32_t is_accepted = 0 ;
+//     uint64_t progress=dat->nsteps/1000;
+//     clock_t start,now;
     
-    start=clock();
+//     start=clock();
 
     ATOM *at_new=NULL;
     at_new=malloc( dat->natom*sizeof *at_new );
@@ -68,8 +80,8 @@ int launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
         j=0;
         do
         {
-          int redundant=0;
-          candidate = (int) dat->natom*get_next(dat);
+          uint32_t redundant=0;
+          candidate = (int32_t) (dat->natom*get_next(dat));
           for(k=0; k<j; k++)
           {
             if (ismoving[k]==candidate)
@@ -95,7 +107,7 @@ int launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
 
         for (l=0; l<n_moving; l++)
         {
-          k=ismoving[l];
+          k = (uint32_t) ismoving[l];
 //          k=ismoving[0];
 //          mv_direction = (int)3*get_next(dat);
           get_vector(dat,mv_direction,randvec);
@@ -149,7 +161,7 @@ int launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
             acc2++;
             for (l=0; l<n_moving; l++)
             {
-                j=ismoving[l];
+                j = (uint32_t) ismoving[l];
                 
                 at[j].x = at_new[j].x ;
                 at[j].y = at_new[j].y ;
@@ -179,7 +191,7 @@ int launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
         {
             steepd(at_new,dat);
             double E_sd = (*get_ENER)(at_new,dat,-1);
-            fprintf(stdout,"Steepest Descent done (step %d): E = %.3lf\n",st,E_sd/at[0].ljp.eps);
+            fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,(E_sd/at[0].ljp.eps) );
             (*write_traj)(at,dat,st);
         }
         
@@ -189,7 +201,7 @@ int launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
           static double cum_err = 0.0;
           double de = (*ener)-((*get_ENER)(at,dat,-1));
           cum_err += de;
-          fprintf(stderr,"At step %d DeltaE is : %g cumulated : %g\n",st,de,cum_err);
+          fprintf(stderr,"At step %"PRIu64" DeltaE is : %g cumulated : %g\n",st,de,cum_err);
         }
 
 //        if(!is_stdout_redirected && st%progress==0)
@@ -221,10 +233,9 @@ int launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
     return acc2;
 }
 
-int apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
-                          ATOM ***iniArray, ATOM ***finArray, int *candidate, double *ener, int *currStep)
+int32_t apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
+                          ATOM ***iniArray, ATOM ***finArray, int32_t *candidate, double *ener, uint64_t *currStep)
 {
-    int i=0;
     double Eold=0.,Enew=0.,Ediff=0.;
     double EconstrOld=0.0,EconstrNew=0.0,EconstrDiff=0.0;
 
@@ -251,7 +262,7 @@ int apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
     }
     else
     {
-        int j,k = 0 ;
+        uint32_t i,j/*,k*/ = 0 ;
         double delta = 0. ;
         double sigma = 0. ;
         double rejParam = 0. ;

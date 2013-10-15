@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2013, Florent Hedin, Markus Meuwly, and the University of Basel
+ * All rights reserved.
+ *
+ * The 3-clause BSD license is applied to this software.
+ * see LICENSE.txt
+ * 
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -11,27 +20,30 @@
 #include "ener.h"
 #include "io.h"
 
-int make_MC_moves(ATOM at[], DATA *dat, double *ener)
+#define MV_ACC 1
+#define MV_REJ -1
+
+uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 {
-    int i,j,k;
-    int st;
-    int accParam=0, acc=0, acc2=0;
+    uint32_t /*i,*/j,k;
+    uint64_t st, acc=0, acc2=0;
+    int32_t accParam=0;
     
     ATOM *at_new;
     
 //     double *dmax;
-    int candidate=-1;
-    int n_moving=   1    ;//dat->natom;
-    int *ismoving = NULL;
-    //int unicMove=    1;//-1;
-    int mv_direction= -1;
+    int32_t candidate=-1;
+    uint32_t n_moving=   1    ;//dat->natom;
+    int32_t *ismoving = NULL;
+    //int32_t unicMove=    1;//-1;
+    int32_t mv_direction= -1;
     
     double randvec[3] = {0.0,0.0,0.0};
     
-    int progress=dat->nsteps/1000;
-    clock_t start,now;
+//     uint64_t progress=dat->nsteps/1000;
+//     clock_t start,now;
 
-    start=clock();
+//     start=clock();
 
     at_new=malloc( dat->natom*sizeof *at_new );
     
@@ -50,8 +62,8 @@ int make_MC_moves(ATOM at[], DATA *dat, double *ener)
         j=0;
         do
         {
-            int redundant=0;
-            candidate = (int) dat->natom*get_next(dat);
+            uint32_t redundant=0;
+            candidate = (int32_t) (dat->natom*get_next(dat));
             for(k=0; k<j; k++)
             {
                 if (ismoving[k]==candidate)
@@ -78,7 +90,7 @@ int make_MC_moves(ATOM at[], DATA *dat, double *ener)
         k=0;
         do
         {
-            j=ismoving[k];
+            j = (uint32_t) ismoving[k];
 //            mv_direction = (int)3*get_next(dat);
             get_vector(dat,mv_direction,randvec);
             
@@ -100,7 +112,7 @@ int make_MC_moves(ATOM at[], DATA *dat, double *ener)
             k=0;
             do
             {
-                j=ismoving[k];
+                j = (uint32_t) ismoving[k];
                 memcpy(&at[j],&at_new[j],sizeof(ATOM));
                 k++;
             }
@@ -132,7 +144,7 @@ int make_MC_moves(ATOM at[], DATA *dat, double *ener)
         {
             steepd(at_new,dat);
             double E_sd = (*get_ENER)(at_new,dat,-1);
-            fprintf(stdout,"Steepest Descent done (step %d): E = %.3lf\n",st,E_sd/at[0].ljp.eps);
+            fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,E_sd/at[0].ljp.eps);
             (*write_traj)(at,dat,st);
         }
 
@@ -172,7 +184,7 @@ int make_MC_moves(ATOM at[], DATA *dat, double *ener)
     return acc2;
 }
 
-int apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int *candidate, double *ener, int *step)
+int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, double *ener, uint64_t *step)
 {
     //return 1 if move accepted, -1 if rejected
     double Eold=0.0, Enew=0.0, Ediff=0.0;

@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2013, Florent Hedin, Markus Meuwly, and the University of Basel
+ * All rights reserved.
+ *
+ * The 3-clause BSD license is applied to this software.
+ * see LICENSE.txt
+ * 
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -11,7 +20,7 @@
 #define CONFLICT -1
 #define NO_CONFLICT 0
 
-void get_vector(DATA *dat, int mv_direction, double vec[3])
+void get_vector(DATA *dat, int32_t mv_direction, double vec[3])
 {
     vec[0] = 0.0 ;  vec[1] = 0.0 ;  vec[2] = 0.0 ;
     
@@ -28,9 +37,9 @@ void get_vector(DATA *dat, int mv_direction, double vec[3])
 /*
  * Generates a cluster for the atoms
  */
-void build_cluster(ATOM at[], DATA *dat, int from, int to, int mode)
+void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, int32_t mode)
 {
-    int i = 0 ;
+    uint32_t i = 0 ;
     if (mode==-1)	//infinite initialisation mode
     {
         for (i=from; i<to; i++)
@@ -67,10 +76,10 @@ void build_cluster(ATOM at[], DATA *dat, int from, int to, int mode)
 }
 
 //returns 0 if no steric clash, -1 otherwise
-int  no_conflict(ATOM at[],int i)
+int32_t  no_conflict(ATOM at[],uint32_t i)
 {
 
-    int j=0;
+    uint32_t j=0;
     double d=0.0;
     for (j=0; j<i; j++)
     {
@@ -78,7 +87,7 @@ int  no_conflict(ATOM at[],int i)
         d = sqrt(d);
         if (d < ((at[i].ljp.sig+at[j].ljp.sig)/2.0))
         {
-            fprintf(stderr,"Atoms %3d and %3d too close for starting configuration : generating new coordinates for atom %3d\n",j,i,i);
+            fprintf(stderr,"[Info] Atoms %3d and %3d too close for starting configuration : generating new coordinates for atom %3d\n",j,i,i);
             return CONFLICT;
         }
     }
@@ -87,7 +96,7 @@ int  no_conflict(ATOM at[],int i)
 
 void steepd(ATOM at[],DATA *dat)
 {
-    int i=0,j=0,counter=0;
+    uint32_t i=0,/*j=0,*/counter=0;
 
     double step = 0.001 ;
     double prec = 1.0e-04 ;
@@ -130,7 +139,7 @@ void steepd(ATOM at[],DATA *dat)
 
 void steepd_ini(ATOM at[],DATA *dat)
 {
-    int i=0,j=0,counter=0;
+    uint32_t i=0,/*j=0,*/counter=0;
     
     double step = 0.001 ;
     double prec = 1.0e-04 ;
@@ -162,13 +171,13 @@ void steepd_ini(ATOM at[],DATA *dat)
     free(DV);
 }
 
-void adj_dmax(DATA *dat, int *step, int *acc)
+void adj_dmax(DATA *dat, uint64_t *step, uint64_t *acc)
 {
     if (*step != 0 && *step%dat->d_max_when==0)
     {
         double ratio = (double)*acc/(double)dat->d_max_when;
 //        double ratio = (double)*acc/(double)*step;
-        fprintf(stderr,"d_max update at step %d : ratio = %lf ; old = %lf ; ",*step,ratio,dat->d_max);
+        fprintf(stderr,"[Info] d_max update at step %"PRIu64" : ratio = %lf ; old = %lf ; ",*step,ratio,dat->d_max);
         if (ratio > dat->d_max_tgt/100)
             dat->d_max *= 1.10 ;
         else
@@ -187,7 +196,7 @@ CM getCM(ATOM at[],DATA *dat)
 	cm.cy=0.0;
 	cm.cz=0.0;
 
-	for(int i=0; i<dat->natom; i++)
+	for(uint32_t i=0; i<dat->natom; i++)
 	{
 		cm.cx += at[i].x;
 		cm.cy += at[i].y;
@@ -205,7 +214,7 @@ void recentre(ATOM at[],DATA *dat)
 {
     CM cm = getCM(at,dat);
 
-    for(int i=0; i<dat->natom; i++)
+    for(uint32_t i=0; i<dat->natom; i++)
     {
         at[i].x -= cm.cx;
         at[i].y -= cm.cy;
