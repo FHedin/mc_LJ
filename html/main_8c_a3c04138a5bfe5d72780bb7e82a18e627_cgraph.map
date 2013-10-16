@@ -1,0 +1,6 @@
+<map id="main" name="main">
+<area shape="rect" id="node3" href="$main_8c.html#a6d6a48e3841bf9007929f691d654614c" title="This function simply prints a basic help message." alt="" coords="146,5,193,32"/>
+<area shape="rect" id="node5" href="$main_8c.html#a615b073b56c47d081fa023abfe46d6a9" title="This sets variables used when minimising the energy function." alt="" coords="105,56,234,83"/>
+<area shape="rect" id="node7" href="$main_8c.html#a2a4c71f955b6d59b5772ec1e94aab94b" title="This function starts a standard Metropolis Monte Carlo simulation." alt="" coords="121,107,217,133"/>
+<area shape="rect" id="node9" href="$main_8c.html#a7c883a0d4dd25b989c0592e46da5ddcd" title="This function starts a Spatial Averaging Monte Carlo (SA&#45;MC) simulation." alt="" coords="128,157,211,184"/>
+</map>

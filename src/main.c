@@ -1,16 +1,16 @@
 /** 
- * @file main.c
+ * \file main.c
  *
- * @brief C program for MC simulations applied to Lennard Jones clusters only.
+ * \brief C program for MC simulations applied to Lennard Jones clusters only.
  *
- * @author Florent Hedin (University of Basel, Switzerland)
- * @author Markus Meuwly (University of Basel, Switzerland)
+ * \authors Florent Hedin (University of Basel, Switzerland) \n
+ *          Markus Meuwly (University of Basel, Switzerland)
  * 
- * Copyright (c) 2013, Florent Hedin, Markus Meuwly, and the University of Basel
- * All rights reserved.
- *
- * The 3-clause BSD license is applied to this software.
- * see LICENSE.txt
+ * \copyright Copyright (c) 2013, Florent Hedin, Markus Meuwly, and the University of Basel. \n
+ *            All rights reserved. \n
+ *            The 3-clause BSD license is applied to this software. \n
+ *            See LICENSE.txt
+ *            
  * 
  */
 
@@ -21,12 +21,12 @@
 #include <time.h>
 #include <math.h>
 
-/* if parallel execution is implemented by using openMP */
+// if parallel execution is implemented by using openMP
 #ifdef _OPENMP
 #include <omp.h>
 #endif
 
-/* for some unixes : usage info (total time, memory ...) */
+// for some unixes : usage info (total time, memory ...)
 #ifdef __unix__
 #include <sys/resource.h>
 #endif
@@ -50,11 +50,13 @@
 // -----------------------------------------------------------------------------------------
 
 /*
- * 	Some global variables initialisation here
+ * Some global variables initialisation here
  */
 
-// initialise the io structure containing file names
-// by default everything is discarded to NULLFILE
+/*
+ * Initialise the io structure containing file names,
+ * by default everything is discarded to NULLFILE
+ */
 IODAT io = {NULLFILE,NULLFILE,NULLFILE,NULLFILE,1000,1000};
 
 // pointer to FILE for trajectory, coordinates, energy
@@ -62,10 +64,12 @@ FILE *traj=NULL;
 FILE *crdfile=NULL;
 FILE *efile=NULL;
 
-// boolean like values
-//is the stdout redirected ?
+/*
+ * boolean like values
+ * is the stdout redirected ?
+ * are we using charmm units ?
+ */
 uint32_t is_stdout_redirected=0;
-//are we using charmm units ?
 uint32_t charmm_units=0;
 
 #ifdef _OPENMP
@@ -87,11 +91,19 @@ void help(char **argv);
 void getValuesFromDB(DATA *dat);
 
 // -----------------------------------------------------------------------------------------
-// main entry of the program 
+/**
+ * \brief   Main entry of the programm
+ * \details The 2 variables \b argc and \b argv are used for extracting 
+ *          command line parameters.
+ * \param   argc Number of arguments, at least one as \b argv contains at least the program's name.
+ * \param   argv[] Array of character strings containing the arguments.
+ * \return  On exit returns EXIT_SUCCESS, EXIT_FAILURE otherwise.
+ */
 int main(int argc, char **argv)
 {
-    // arguments parsing, we need at least "prog_name -i an_input_file"
-    // prints some more instructions if needed
+    /* arguments parsing, we need at least "prog_name -i an_input_file"
+     * prints some more instructions if needed
+     */
     if (argc < 3)
     {
         fprintf(stdout,"[Info] No input file ! \n");
@@ -115,7 +127,7 @@ int main(int argc, char **argv)
     get_DV = NULL;
     write_traj= &(write_dcd);
 
-    //arguments parsing
+    // arguments parsing
     for (i=1; i<(uint32_t)argc; i++)
     {
         // get name of input file
@@ -160,6 +172,7 @@ int main(int argc, char **argv)
         else
         {
             fprintf(stdout,"[Error] Argument '%s' not recognised.\n",argv[i]);
+            help(argv);
             exit(-2);
         }
     }
@@ -199,7 +212,7 @@ int main(int argc, char **argv)
     // parse input file, initialise atom list
     at=parse_from_file(inpf,&dat,&spdat);
 
-    //set the pointer to the default energy function
+    // set the pointer to the default energy function
     if(get_ENER==NULL && get_DV==NULL)
     {
         get_ENER = &(get_LJ_V);
@@ -214,7 +227,7 @@ int main(int argc, char **argv)
     fprintf(stdout,"Starting program in sequential mode\n\n");
 #endif
 
-    fprintf(stdout,"SEED   = %s \n\n",seed);
+    fprintf(stdout,"Seed   = %s \n\n",seed);
 
     if (get_ENER==&(get_LJ_V))          fprintf(stdout,"Using L-J potential\n");
     else if (get_ENER==&(get_AZIZ_V))   fprintf(stdout,"Using Aziz potential\n");
@@ -278,8 +291,8 @@ int main(int argc, char **argv)
 #endif
     fprintf(stdout,"End of program\n");
     
-    //write a rst file
-    //write_rst(&dat,&spdat,at);
+    // write a rst file
+    // write_rst(&dat,&spdat,at);
 
     // free memory and exit properly
     free(dat.rn);
@@ -293,7 +306,16 @@ int main(int argc, char **argv)
 }
 
 // -----------------------------------------------------------------------------------------
-
+/**
+ * \brief   This function starts a standard Metropolis Monte Carlo simulation.
+ * 
+ * \details This function is first in charge of opening all the output (coordinates, trajectory and energy) files.\n
+ *          Then the function \b #make_MC_moves starting the simulation is called.\n
+ *          In the end it prints results, close the files and goes back to the function \b #main.
+ * 
+ * \param   dat is a structure containing control parameters common to all simulations.
+ * \param   at[] is an array of structures ATOM containing coordinates and other variables.
+ */
 void start_classic(DATA *dat, ATOM at[])
 {
     double ener = 0.0 ;
@@ -305,8 +327,6 @@ void start_classic(DATA *dat, ATOM at[])
     
     write_xyz(at,dat,0,crdfile);
     fclose(crdfile);
-    
-    // 	sprintf(trname,"%d.dcd",i+1);
 
     freopen(io.trajtitle,"wb",traj);
 
@@ -333,7 +353,17 @@ void start_classic(DATA *dat, ATOM at[])
 }
 
 // -----------------------------------------------------------------------------------------
-
+/**
+ * \brief   This function starts a Spatial Averaging Monte Carlo  (SA-MC) simulation.
+ * 
+ * \details This function is first in charge of opening all the output (coordinates, trajectory and energy) files.\n
+ *          Then the function \b #launch_SPAV starting the simulation is called.\n
+ *          In the end it prints results, close the files and goes back to the function \b #main.
+ * 
+ * \param   dat is a structure containing control parameters common to all simulations.
+ * \param   spdat is a structure containing control parameters dedicated to Spatial Averaging simulations.
+ * \param   at[] is an array of structures ATOM containing coordinates and other variables.
+ */
 void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
 {
     fprintf(stdout,"SPAV parameters are :\n");
@@ -372,13 +402,19 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
     fclose(traj);
     fclose(efile);
 
-    // 	fclose(stfile);
-
     free(spdat->normalNumbs);
 }
 
 // -----------------------------------------------------------------------------------------
-
+/**
+ * \brief   This function simply prints a basic help message.
+ * 
+ * \details If any of \b -h or \b -help or \b --help are provided on the command line this help message is printed.\n
+ *          If no command line parameter is present this message is also printed.\n
+ *          If an unknown command line parameter is present this message is also printed.
+ * 
+ * \param   argv Simply the same array of command line parameters, from function \b #main.
+ */
 void help(char **argv)
 {
     fprintf(stdout,"Need at least one argument : %s -i an_input_file\n",argv[0]);
@@ -387,7 +423,15 @@ void help(char **argv)
 }
 
 // -----------------------------------------------------------------------------------------
-
+/**
+ * \brief   This sets variables used when minimising the energy function.
+ * 
+ * \details Depending of the value of \b dat->natom this sets the variables \b dat->E_steepD,
+ *          which may be used as a threshold for starting Steepest Descent minimisation, and
+ *          \b dat->E_expected which is the energy of the best minimum.
+ * 
+ * \param   dat is a structure containing control parameters common to all simulations.
+ */
 void getValuesFromDB(DATA *dat)
 {
     if (dat->natom==13)
