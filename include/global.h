@@ -16,6 +16,13 @@
 #define X6(a)   X4(a)*X2(a)
 #define X12(a)  X6(a)*X6(a)
 
+//define where is the null file
+#ifdef __unix__
+#define NULLFILE "/dev/null"
+#else ifdef _WIN32
+#define NULLFILE "nul"
+#endif
+
 #include <stdint.h>
 #include <inttypes.h>
 

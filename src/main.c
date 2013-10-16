@@ -39,13 +39,7 @@
 #include "ener.h"
 #include "io.h"
 #include "parsing.h"
-
-//define where is the null file
-#ifdef __unix__
-#define NULLFILE "/dev/null"
-#else ifdef _WIN32
-#define NULLFILE "nul"
-#endif
+#include "logger.h"
 
 // -----------------------------------------------------------------------------------------
 
@@ -76,6 +70,14 @@ uint32_t charmm_units=0;
 //for para execution we will try to get the number of cpus and threads available
 uint32_t ncpus=1,nthreads=1;
 #endif
+
+/*
+ * Errors, warning, etc ... --> logging.
+ * Default Level is LOG_WARNING, which means that everything which is at least
+ * a warning is printed (it includes Errors also).
+ * See logger.h for other possibilities.
+ */
+LOG_LEVELS LOG_SEVERITY = LOG_WARNING;
 
 /*
  *  End of global variables initialisation
