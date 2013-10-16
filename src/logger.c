@@ -77,57 +77,105 @@ static void print_time()
 
 /**
  * \brief log_print
+ * 
  * \param filename
  * \param line
+ * \param mesg_severity
  * \param fmt
+ * \param ...
+ * 
+ * 
  */
-void log_print(char* filename, int line, char *fmt,...)
+void log_print(char* filename, int line, LOG_LEVELS mesg_severity, char *fmt, ...)
 {
-    va_list list;
-    char *p, *r;
-    int e;
-
-    
-
-    fprintf(fp,"%s ",print_time());
-    va_start( list, fmt );
-
-    for ( p = fmt ; *p ; ++p )
+    if (mesg_severity != LOG_NOTHING)
     {
-        if ( *p != '%' )//If simple string
+        
+        va_list list;
+        char* fmt_buff;
+        
+        FILE *FP=NULL;
+        
+        switch(mesg_severity)
         {
-            fputc( *p,fp );
+            case LOG_ERROR:
+                FP = F_ERROR;
+                fprintf(FP,"[Error ");
+                break;
+                
+            case LOG_WARNING:
+                FP = F_WARN;
+                fprintf(FP,"[Warning ");
+                break;
+                
+            case LOG_INFO:
+                FP = F_INFO;
+                fprintf(FP,"[Info ");
+                break;
+                
+            case LOG_DEBUG:
+                FP = F_DEBUG;
+                fprintf(FP,"[Debug ");
+                break;
         }
-        else
+        
+        fprintf(FP,"%s]  ",EVENT_DATE);
+        
+        va_start( list, fmt );
+        
+        for ( fmt_buff = fmt ; *fmt_buff ; ++fmt_buff )
         {
-            switch ( *++p )
-            {
-                /* string */
-            case 's':
-            {
-                r = va_arg( list, char * );
-
-                fprintf(fp,"%s", r);
-                continue;
-            }
-
-            /* integer */
-            case 'd':
-            {
-                e = va_arg( list, int );
-
-                fprintf(fp,"%d", e);
-                continue;
-            }
-
-            default:
-                fputc( *p, fp );
-            }
         }
+    
+//      va_list         list;
+//     char            *p, *r;
+//     int             e;
+// 
+//     if(SESSION_TRACKER > 0)
+//       fp = fopen ("log.txt","a+");
+//     else
+//       fp = fopen ("log.txt","w");
+//     
+//     fprintf(fp,"%s ",print_time());
+//     va_start( list, fmt );
+// 
+//     for ( p = fmt ; *p ; ++p )
+//     {
+//         if ( *p != '%' )//If simple string
+//         {
+//             fputc( *p,fp );
+//         }
+//         else
+//         {
+//             switch ( *++p )
+//             {
+//                 /* string */
+//             case 's':
+//             {
+//                 r = va_arg( list, char * );
+// 
+//                 fprintf(fp,"%s", r);
+//                 continue;
+//             }
+// 
+//             /* integer */
+//             case 'd':
+//             {
+//                 e = va_arg( list, int );
+// 
+//                 fprintf(fp,"%d", e);
+//                 continue;
+//             }
+// 
+//             default:
+//                 fputc( *p, fp );
+//             }
+//         }
+//     }
+//     va_end( list );
+//     fprintf(fp," [%s][line: %d] ",filename,line);
+//     fputc( '\n', fp );
+//     SESSION_TRACKER++;
+//     fclose(fp);
     }
-    va_end( list );
-    fprintf(fp," [%s][line: %d] ",filename,line);
-    fputc( '\n', fp );
-    SESSION_TRACKER++;
-    fclose(fp);
 }
