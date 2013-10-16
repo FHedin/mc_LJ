@@ -62,9 +62,9 @@ void close_logfiles()
 }
 
 /**
- * \brief Puts in a string the current date, then used for logging.
+ * \brief Puts in a string the current date, later used for logging.
  */
-static void print_time()
+static void get_time()
 {
     time_t rawtime;
     struct tm * timeinfo;
@@ -95,6 +95,8 @@ void log_print(char* filename, int line, LOG_LEVELS mesg_severity, char *fmt, ..
         char* fmt_buff;
         
         FILE *FP=NULL;
+
+	get_time();
         
         switch(mesg_severity)
         {
@@ -116,6 +118,8 @@ void log_print(char* filename, int line, LOG_LEVELS mesg_severity, char *fmt, ..
             case LOG_DEBUG:
                 FP = F_DEBUG;
                 fprintf(FP,"[Debug ");
+                break;
+            default:
                 break;
         }
         

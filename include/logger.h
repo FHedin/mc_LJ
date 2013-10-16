@@ -49,14 +49,14 @@
 *   The default is set to \b #LOG_WARNING. \n
 * 
 */
-typedef enum LOG_LEVELS
+typedef enum 
 {
     LOG_NOTHING = 0, /*!< No log file is created : this is not recommended as no information is reported */
     LOG_ERROR = 1,   /*!< Only errors are reported to \b error.log */
     LOG_WARNING = 2, /*!< Warnings are reported to \b warning.log , and also errors to \b error.log. This is the default. */
     LOG_INFO = 3,    /*!< Info messages are reported to \b info.log , and also warnings and errors to their respective files. */
     LOG_DEBUG = 4    /*!< A large amount of debugging messages are written to \b debug.log . The previous levels are still written to their respective files. */
-};
+}LOG_LEVELS;
 
 extern LOG_LEVELS LOG_SEVERITY;
 

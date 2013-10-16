@@ -10,6 +10,14 @@
 #ifndef GLOBAL_H_INCLUDED
 #define GLOBAL_H_INCLUDED
 
+#include <stdint.h>
+#include <inttypes.h>
+
+#ifndef STDRAND
+#include "dSFMT.h"
+#endif
+
+// macro for powers
 #define X2(a)   (a)*(a)
 #define X3(a)   X2(a)*(a)
 #define X4(a)   X2(a)*X2(a)
@@ -19,15 +27,8 @@
 //define where is the null file
 #ifdef __unix__
 #define NULLFILE "/dev/null"
-#else ifdef _WIN32
+#else
 #define NULLFILE "nul"
-#endif
-
-#include <stdint.h>
-#include <inttypes.h>
-
-#ifndef STDRAND
-#include "dSFMT.h"
 #endif
 
 extern uint32_t is_stdout_redirected;
