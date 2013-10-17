@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['log_5fprint',['log_print',['../logger_8c.html#abd2d19eeef46a8184a2302d33c6c7397',1,'logger.c']]]
+  ['log_5fprint',['LOG_PRINT',['../logger_8c.html#a83f416e0cf6a24d3d2206cdd43e2e880',1,'LOG_PRINT(LOG_LEVELS mesg_severity, char *fmt,...):&#160;logger.c'],['../logger_8h.html#a83f416e0cf6a24d3d2206cdd43e2e880',1,'LOG_PRINT(LOG_LEVELS mesg_severity, char *fmt,...):&#160;logger.c']]]
 ];

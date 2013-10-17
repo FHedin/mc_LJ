@@ -1,4 +1,9 @@
 <map id="include/logger.h" name="include/logger.h">
 <area shape="rect" id="node3" href="$logger_8c.html" title="Logging functions with a basic severity/level check." alt="" coords="5,80,96,107"/>
 <area shape="rect" id="node5" href="$main_8c.html" title="C program for MC simulations applied to Lennard Jones clusters only." alt="" coords="120,80,203,107"/>
+<area shape="rect" id="node7" href="$MCclassic_8c_source.html" title="src/MCclassic.c" alt="" coords="227,80,344,107"/>
+<area shape="rect" id="node9" href="$MCspav_8c_source.html" title="src/MCspav.c" alt="" coords="368,80,472,107"/>
+<area shape="rect" id="node11" href="$parsing_8c_source.html" title="src/parsing.c" alt="" coords="497,80,593,107"/>
+<area shape="rect" id="node13" href="$rand_8c_source.html" title="src/rand.c" alt="" coords="619,80,699,107"/>
+<area shape="rect" id="node15" href="$tools_8c_source.html" title="src/tools.c" alt="" coords="723,80,805,107"/>
 </map>

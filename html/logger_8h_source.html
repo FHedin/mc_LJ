@@ -91,20 +91,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#ifndef LOGGER_H_INCLUDED</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define LOGGER_H_INCLUDED</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99">   52</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span> <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99" title="The available logging Levels.">LOG_LEVELS</a></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a51e6844559fc055c4856fcb153a47ae0">   54</a></span>&#160;    <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a51e6844559fc055c4856fcb153a47ae0">LOG_NOTHING</a> = 0, </div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a230506cce5c68c3bac5a821c42ed3473">   55</a></span>&#160;    <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a230506cce5c68c3bac5a821c42ed3473">LOG_ERROR</a> = 1,   </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a8f6fe15bfe15104da6d1b360194a5400">   56</a></span>&#160;    <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a8f6fe15bfe15104da6d1b360194a5400">LOG_WARNING</a> = 2, </div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a6e98ff471e3ce6c4ef2d75c37ee51837">   57</a></span>&#160;    <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a6e98ff471e3ce6c4ef2d75c37ee51837">LOG_INFO</a> = 3,    </div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99ab9f002c6ffbfd511da8090213227454e">   58</a></span>&#160;    <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99ab9f002c6ffbfd511da8090213227454e">LOG_DEBUG</a> = 4    </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;};</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">extern</span> <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99" title="The available logging Levels.">LOG_LEVELS</a> LOG_SEVERITY;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99">   54</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">enum</span> </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;{</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a51e6844559fc055c4856fcb153a47ae0">   56</a></span>&#160;    <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a51e6844559fc055c4856fcb153a47ae0">LOG_NOTHING</a> = 0, </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a230506cce5c68c3bac5a821c42ed3473">   57</a></span>&#160;    <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a230506cce5c68c3bac5a821c42ed3473">LOG_ERROR</a> = 1,   </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a8f6fe15bfe15104da6d1b360194a5400">   58</a></span>&#160;    <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a8f6fe15bfe15104da6d1b360194a5400">LOG_WARNING</a> = 2, </div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a6e98ff471e3ce6c4ef2d75c37ee51837">   59</a></span>&#160;    <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a6e98ff471e3ce6c4ef2d75c37ee51837">LOG_INFO</a> = 3,    </div>
+<div class="line"><a name="l00060"></a><span class="lineno"><a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99ab9f002c6ffbfd511da8090213227454e">   60</a></span>&#160;    <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99ab9f002c6ffbfd511da8090213227454e">LOG_DEBUG</a> = 4    </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}<a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99" title="The available logging Levels.">LOG_LEVELS</a>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#define LOG_PRINT(...) log_print(__FILE__, __LINE__, __VA_ARGS__ )</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif // LOGGER_H_INCLUDED</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">extern</span> <a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99" title="The available logging Levels.">LOG_LEVELS</a> LOG_SEVERITY;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">// #define LOG_PRINT(...) log_print(__FILE__, __LINE__, __VA_ARGS__ )</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8c.html#a8e14d2d7ea0c11faa1c12698d09713c9" title="Prepares LOGGING I/O if necessary, depending of the value of #LOG_SEVERITY.">init_logfiles</a>();</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordtype">void</span> <a class="code" href="logger_8c.html#a8eb5adfe35f04d99790bc18f64fda17c" title="Before exiting the program, closes properly the logging files.">close_logfiles</a>();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordtype">char</span>* <a class="code" href="logger_8c.html#a2c2db3d641ad3450911faa7dcc2f22dd" title="Returns a string corresponding to the logging level.">get_loglevel_string</a>();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;uint32_t <a class="code" href="logger_8c.html#a83f416e0cf6a24d3d2206cdd43e2e880" title="log_print">LOG_PRINT</a>(<a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99" title="The available logging Levels.">LOG_LEVELS</a> mesg_severity, <span class="keywordtype">char</span> *fmt, ...);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif // LOGGER_H_INCLUDED</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

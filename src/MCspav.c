@@ -52,8 +52,11 @@ uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
     ATOM ***iniArray=(ATOM***)calloc_3D(spdat->meps,spdat->neps,dat->natom,sizeof ***iniArray);
     ATOM ***finArray=(ATOM***)calloc_3D(spdat->meps,spdat->neps,dat->natom,sizeof ***finArray);
 
-    for (st=0; st<dat->nsteps; st++)
+    for (st=1; st<=dat->nsteps; st++)
     {
+        LOG_PRINT(LOG_DEBUG,"----------------------"
+                    " STEP %"PRIu64" ----------------------\n",st);
+                
         for (i=0; i<spdat->meps; i++)
         {
             for (j=0; j<spdat->neps; j++)
@@ -101,10 +104,10 @@ uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
         }
         while(j<n_moving);
         
-//        fprintf(stderr,"%d atoms moving for step %d \n",n_moving,st);
-//        for (j=0;j<n_moving;j++)
-//          fprintf(stderr,"%d\t",ismoving[j]);
-//        fprintf(stderr,"\n");
+       LOG_PRINT(LOG_DEBUG,"%d atoms moving for step %"PRIu64" --> ",n_moving,st);
+       for (j=0;j<n_moving;j++)
+         LOG_PRINT_SHORT(LOG_DEBUG,"%d ",ismoving[j]);
+       LOG_PRINT_SHORT(LOG_DEBUG,"\n");
 
         for (l=0; l<n_moving; l++)
         {
@@ -252,14 +255,13 @@ int32_t apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
     Ediff = (Enew - Eold) ;
     EconstrDiff = (EconstrNew - EconstrOld) ;
     
-//     fprintf(stderr,"Ediff : %lf \t Econstrdiff : %lf \t",Ediff,EconstrDiff);
+    LOG_PRINT(LOG_DEBUG,"Ediff : %lf \t Econstrdiff : %lf \n",Ediff,EconstrDiff);
 
     if ( (Ediff + EconstrDiff) < 0.0 )
     {
         *ener+=Ediff;
         if((*currStep)!=0 && (*currStep)%io.esave==0)
             fwrite(ener,sizeof(double),1,efile);
-//         fprintf(stderr,"\n");
         return MV_ACC ;
     }
     else
@@ -343,7 +345,7 @@ int32_t apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
 
         alpha = get_next(dat);
         
-//         fprintf(stderr,"alpha : %lf ; \t rejp : %lf",alpha,rejParam);
+        LOG_PRINT(LOG_DEBUG,"alpha : %lf ; \t rejp : %lf\n",alpha,rejParam);
 
         free(Smnew);
         free(Smold);
@@ -355,14 +357,12 @@ int32_t apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
             *ener+=Ediff;
             if((*currStep)!=0 && (*currStep)%io.esave==0)
                 fwrite(ener,sizeof(double),1,efile);
-//             fprintf(stderr,"\n");
             return MV_ACC ;
         }
         else
         {
             if((*currStep)!=0 && (*currStep)%io.esave==0)
                 fwrite(ener,sizeof(double),1,efile);
-//             fprintf(stderr,"\n");
             return MV_REJ ;
         }
     }

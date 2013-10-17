@@ -6,7 +6,7 @@ var searchData=
   ['log_5finfo',['LOG_INFO',['../logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a6e98ff471e3ce6c4ef2d75c37ee51837',1,'logger.h']]],
   ['log_5flevels',['LOG_LEVELS',['../logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99',1,'logger.h']]],
   ['log_5fnothing',['LOG_NOTHING',['../logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a51e6844559fc055c4856fcb153a47ae0',1,'logger.h']]],
-  ['log_5fprint',['log_print',['../logger_8c.html#abd2d19eeef46a8184a2302d33c6c7397',1,'logger.c']]],
+  ['log_5fprint',['LOG_PRINT',['../logger_8c.html#a83f416e0cf6a24d3d2206cdd43e2e880',1,'LOG_PRINT(LOG_LEVELS mesg_severity, char *fmt,...):&#160;logger.c'],['../logger_8h.html#a83f416e0cf6a24d3d2206cdd43e2e880',1,'LOG_PRINT(LOG_LEVELS mesg_severity, char *fmt,...):&#160;logger.c']]],
   ['log_5fwarning',['LOG_WARNING',['../logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a8f6fe15bfe15104da6d1b360194a5400',1,'logger.h']]],
   ['logger_2ec',['logger.c',['../logger_8c.html',1,'']]],
   ['logger_2eh',['logger.h',['../logger_8h.html',1,'']]]

@@ -15,7 +15,7 @@ UNITS   REDUCED
 #UNITS  CHARMM
 
 #set the numb. of atoms
-NATOMS  13
+NATOMS  38
 
 # reduced temperature
 TEMP    0.25
@@ -24,7 +24,7 @@ TEMP    0.25
 
 # number of steps : coded as an unsigned 64-bits integer so values of several billions
 # are perfectly valid !
-NSTEPS  50000
+NSTEPS  100000
 
 #constant correcting factor for MC moves
 #DMAX   0.15

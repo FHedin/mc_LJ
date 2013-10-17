@@ -66,6 +66,10 @@ extern LOG_LEVELS LOG_SEVERITY;
 
 void init_logfiles();
 void close_logfiles();
+char* get_loglevel_string();
+char* get_time();
+
 uint32_t LOG_PRINT(LOG_LEVELS mesg_severity, char *fmt, ...);
+uint32_t LOG_PRINT_SHORT(LOG_LEVELS mesg_severity, char *fmt, ...);
 
 #endif // LOGGER_H_INCLUDED

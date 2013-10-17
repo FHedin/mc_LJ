@@ -21,11 +21,11 @@ WFLAGS=-Wall -Wextra
 #-Wpointer-arith -Wtype-limits -Wbad-function-cast -Wcast-qual -Wconversion \
 #-Wsign-conversion
 
-CC_OPT=-I"./dSFMT" -I"./include" $(WFLAGS) -std=c99 -O2 -g -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937
+CC_OPT=-I"./dSFMT" -I"./include" $(WFLAGS) -std=c99 -O2 -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937
 
-CC_SFMT_OPT=-I"./dSFMT" $(WFLAGS) -std=c99 -O2 -g -msse2 -fno-strict-aliasing -DHAVE_SSE2 -DDSFMT_MEXP=19937
+CC_SFMT_OPT=-I"./dSFMT" $(WFLAGS) -std=c99 -O2 -msse2 -fno-strict-aliasing -DHAVE_SSE2 -DDSFMT_MEXP=19937
 
-FC_OPT=$(WFLAGS) -std=f95 -O2 -g -msse2
+FC_OPT=$(WFLAGS) -std=f95 -O2 -msse2
 
 LD_OPT=-lm
 

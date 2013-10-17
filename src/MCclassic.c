@@ -35,7 +35,7 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 //     double *dmax;
     int32_t candidate=-1;
     uint32_t n_moving=   1    ;//dat->natom;
-    int32_t *ismoving = NULL;
+    int32_t* ismoving = NULL;
     //int32_t unicMove=    1;//-1;
     int32_t mv_direction= -1;
     
@@ -52,8 +52,12 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 //     for (i=0; i<(dat->natom); i++)
 //       dmax[i] = dat->d_max;
 
-    for (st=0; st<(dat->nsteps); st++) //main loop
+    for (st=1; st<=(dat->nsteps); st++) //main loop
     {
+        
+        LOG_PRINT(LOG_DEBUG,"----------------------"
+                            " STEP %"PRIu64" ----------------------\n",st);
+        
         for (j=0; j<(dat->natom); j++)
             memcpy(&at_new[j],&at[j],sizeof(ATOM));
 
@@ -83,10 +87,10 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
         }
         while(j<n_moving);
 
-//         fprintf(stderr,"%d atoms moving for step %d \n",n_moving,st);
-//         for (j=0;j<n_moving;j++)
-//             fprintf(stderr,"%d\t",ismoving[j]);
-//         fprintf(stderr,"\n");
+        LOG_PRINT(LOG_DEBUG,"%d atoms moving for step %"PRIu64" --> ",n_moving,st);
+        for (j=0;j<n_moving;j++)
+            LOG_PRINT_SHORT(LOG_DEBUG,"%d ",ismoving[j]);
+        LOG_PRINT_SHORT(LOG_DEBUG,"\n");
 
         k=0;
         do
@@ -155,7 +159,7 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 //           static double cum_err = 0.0;
 //           double de = (*ener)-((*get_ENER)(at,dat,-1));
 //           cum_err += de;
-// //           fprintf(stderr,"At step %d DeltaE is : %g cumulated : %g\n",st,de,cum_err);
+// //           fprintf(stderr,"At step %d DeltaE is : %g ; cumulated : %g\n",st,de,cum_err);
 //         }
 
 //        if(!is_stdout_redirected && st%progress==0)
@@ -209,14 +213,16 @@ int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, do
     Ediff = (Enew - Eold) ;
     EconstrDiff = (EconstrNew - EconstrOld) ;
     
-//     fprintf(stderr,"Ediff : %lf \t Econstrdiff : %lf \t",Ediff,EconstrDiff);
+    LOG_PRINT(LOG_DEBUG,"Ediff : %lf \t Econstrdiff : %lf \n",Ediff,EconstrDiff);
 
     if ( (Ediff + EconstrDiff) < 0.0 )
     {
         *ener+=Ediff;
         if((*step)!=0 && (*step)%io.esave==0)
             fwrite(ener,sizeof(double),1,efile);
-//         fprintf(stderr,"\n");
+        
+        LOG_PRINT(LOG_DEBUG,"MOVE ACCEPTED\n");
+        
         return MV_ACC ;
     }
     else
@@ -224,19 +230,25 @@ int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, do
         rejParam = exp(-dat->beta*(Ediff + EconstrDiff));
         alpha = get_next(dat);
         
-//         fprintf(stderr,"alpha : %lf ; \t rejp : %lf\n",alpha,rejParam);
+        LOG_PRINT(LOG_DEBUG,"alpha : %lf ; \t rejp : %lf\n",alpha,rejParam);
         
         if (alpha < rejParam)
         {
             *ener+=Ediff;
             if((*step)!=0 && (*step)%io.esave==0)
                 fwrite(ener,sizeof(double),1,efile);
+            
+            LOG_PRINT(LOG_DEBUG,"MOVE ACCEPTED\n");
+            
             return MV_ACC ;
         }
         else
         {
             if((*step)!=0 && (*step)%io.esave==0)
                 fwrite(ener,sizeof(double),1,efile);
+            
+            LOG_PRINT(LOG_DEBUG,"MOVE REJECTED\n");
+            
             return MV_REJ ;
         }
     }

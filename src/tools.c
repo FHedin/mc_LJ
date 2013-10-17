@@ -188,9 +188,6 @@ void adj_dmax(DATA *dat, uint64_t *step, uint64_t *acc)
         if (new_dmax > 1.0) new_dmax = 1.0;
         if (new_dmax < 0.01) new_dmax = 0.01;
         
-//         fprintf(stderr,"[Info] d_max update at step %"PRIu64" : ratio = %lf ; old = %lf ; ",*step,ratio,dat->d_max);
-//         fprintf(stderr,"new = %lf\n",dat->d_max);
-        
         LOG_PRINT(LOG_INFO,"d_max update at step %"PRIu64" : ratio = %lf ; old_dmax = %lf ; new_dmax = %lf\n",*step,ratio,dat->d_max,new_dmax);
         dat->d_max = new_dmax;
     }
