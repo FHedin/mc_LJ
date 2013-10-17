@@ -25,7 +25,6 @@
 
 // those variabes arepersistent but only accessible from this file
 static FILE *F_ERROR , *F_WARN , *F_INFO , *F_DEBUG ;
-static char EVENT_DATE[32];
 
 /**
  * \brief   Prepares LOGGING I/O if necessary, depending of the value of \b #LOG_SEVERITY
@@ -68,7 +67,7 @@ void close_logfiles()
 /**
  * \brief Puts in a string the current date, later used for logging.
  */
-static void get_time()
+static void get_time(char date[32])
 {
     time_t rawtime;
     struct tm * timeinfo;
@@ -76,7 +75,8 @@ static void get_time()
     time (&rawtime);
     timeinfo = localtime (&rawtime);
     
-    strftime(EVENT_DATE,32,"%d/%m/%Y-%T-%Z",timeinfo);
+    strftime(date,32,"%d/%m/%Y-%T-%Z",timeinfo);
+    
 }
 
 /**
@@ -97,34 +97,41 @@ uint32_t LOG_PRINT(LOG_LEVELS mesg_severity, char *fmt, ...)
     {
         
         va_list list;
-        char* fmt_buff;
+//         char* fmt_buff;
         
         FILE *FP=NULL;
 
+        char event_date[32]="";
+        char message[50]="";
+        
         // get the date string 
-	    get_time();
+	    get_time(event_date);
         
         // depending of the severity, chose the correct file for writting
         switch(mesg_severity)
         {
             case LOG_ERROR:
                 FP = F_ERROR;
-                fprintf(FP,"[Error @ ");
+//                 fprintf(FP,"[Error @ ");
+                sprintf(message,"[Error @ ");
                 break;
                 
             case LOG_WARNING:
                 FP = F_WARN;
-                fprintf(FP,"[Warning @ ");
+//                 fprintf(FP,"[Warning @ ");
+                sprintf(message,"[Warning @ ");
                 break;
                 
             case LOG_INFO:
                 FP = F_INFO;
-                fprintf(FP,"[Info @ ");
+//                 fprintf(FP,"[Info @ ");
+                sprintf(message,"[Info @ ");
                 break;
                 
             case LOG_DEBUG:
                 FP = F_DEBUG;
-                fprintf(FP,"[Debug @ ");
+//                 fprintf(FP,"[Debug @ ");
+                sprintf(message,"[Debug @ ");
                 break;
                 
             default:
@@ -132,54 +139,61 @@ uint32_t LOG_PRINT(LOG_LEVELS mesg_severity, char *fmt, ...)
                 break;
         }
         
-        // write date contained in EVENT_DATE
-        fprintf(FP,"%s]\t",EVENT_DATE);
+        // write date contained in event_date to message
+        strncat(message,event_date,32);
+        strncat(message,"]\t",2);
+        
+        // print message to file
+        fprintf(FP,"%s",message);
         
         // prepare processing of the variable arguments list
         // fmt is the last non-optional argument
-        va_start( list, fmt );
+        va_start(list,fmt);
+        
+        // now forward what have to be printed to vfprintf
+        vfprintf(FP,fmt,list);
         
         /* fmt is a printf-like string containing % for indicating which type of variables
          * are going to be printed : by iterating through this string we can know what are
          * the primitive types of the passed variables.
         */
         // This for means that we iterate until *fmt_buff == '\0', the end of string
-        for ( fmt_buff = fmt ; *fmt_buff ; ++fmt_buff )
-        {
-            // if not % the character is just forwarded to the log file
-            if( *fmt_buff != '%' )
-            {
-                fputc(*fmt_buff,FP);
-            }
-            // else we need to determine the type of the variable
-            else
-            {
-                switch(*++fmt_buff)
-                {
-                    // a variable argument is a string
-                    case 's':
-                    {
-                        char *tmp_s = va_arg( list, char* );
-                        fprintf(FP,"%s",tmp_s);
-                        continue;
-                    }
-                    break;
-                    
-                    // a variable argument is an integer
-                    case 'd':
-                    {
-                        int32_t tmp_d = va_arg( list, int32_t );
-                        fprintf(FP,"%d",tmp_d);
-                        continue;
-                    }
-                    break;
-                    
-                    default:
-                        fputc(*fmt_buff,FP);
-                        break;
-                }
-            }
-        } // end of for on the format string
+//         for ( fmt_buff = fmt ; *fmt_buff ; ++fmt_buff )
+//         {
+//             // if not % the character is just forwarded to the log file
+//             if( *fmt_buff != '%' )
+//             {
+//                 fputc(*fmt_buff,FP);
+//             }
+//             // else we need to determine the type of the variable
+//             else
+//             {
+//                 switch(*++fmt_buff)
+//                 {
+//                     // a variable argument is a string
+//                     case 's':
+//                     {
+//                         char *tmp_s = va_arg( list, char* );
+//                         fprintf(FP,"%s",tmp_s);
+//                         continue;
+//                     }
+//                     break;
+//                     
+//                     // a variable argument is an integer
+//                     case 'd':
+//                     {
+//                         int32_t tmp_d = va_arg( list, int32_t );
+//                         fprintf(FP,"%d",tmp_d);
+//                         continue;
+//                     }
+//                     break;
+//                     
+//                     default:
+//                         fputc(*fmt_buff,FP);
+//                         break;
+//                 }
+//             }
+//         } // end of for on the format string
  
         va_end( list );
 //         fputc('\n',FP);

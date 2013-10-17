@@ -16,6 +16,7 @@
 #include "tools.h"
 #include "rand.h"
 #include "ener.h"
+#include "logger.h"
 
 #define CONFLICT -1
 #define NO_CONFLICT 0
@@ -87,7 +88,8 @@ int32_t  no_conflict(ATOM at[],uint32_t i)
         d = sqrt(d);
         if (d < ((at[i].ljp.sig+at[j].ljp.sig)/2.0))
         {
-            fprintf(stderr,"[Info] Atoms %3d and %3d too close for starting configuration : generating new coordinates for atom %3d\n",j,i,i);
+//             fprintf(stderr,"[Info] Atoms %3d and %3d too close for starting configuration : generating new coordinates for atom %3d\n",j,i,i);
+            LOG_PRINT(LOG_INFO,"Atoms %d and %d too close for starting configuration : generating new coordinates for atom %3d\n",j,i,i);
             return CONFLICT;
         }
     }
@@ -176,16 +178,21 @@ void adj_dmax(DATA *dat, uint64_t *step, uint64_t *acc)
     if (*step != 0 && *step%dat->d_max_when==0)
     {
         double ratio = (double)*acc/(double)dat->d_max_when;
-//        double ratio = (double)*acc/(double)*step;
-        fprintf(stderr,"[Info] d_max update at step %"PRIu64" : ratio = %lf ; old = %lf ; ",*step,ratio,dat->d_max);
+        double new_dmax = dat->d_max;
+
         if (ratio > dat->d_max_tgt/100)
-            dat->d_max *= 1.10 ;
+            new_dmax *= 1.10 ;
         else
-            dat->d_max *= 0.90 ;
+            new_dmax *= 0.90 ;
         *acc = 0 ;
-        if (dat->d_max > 1.0) dat->d_max = 1.0;
-        if (dat->d_max < 0.01) dat->d_max = 0.01;
-        fprintf(stderr,"new = %lf\n",dat->d_max);
+        if (new_dmax > 1.0) new_dmax = 1.0;
+        if (new_dmax < 0.01) new_dmax = 0.01;
+        
+//         fprintf(stderr,"[Info] d_max update at step %"PRIu64" : ratio = %lf ; old = %lf ; ",*step,ratio,dat->d_max);
+//         fprintf(stderr,"new = %lf\n",dat->d_max);
+        
+        LOG_PRINT(LOG_INFO,"d_max update at step %"PRIu64" : ratio = %lf ; old_dmax = %lf ; new_dmax = %lf\n",*step,ratio,dat->d_max,new_dmax);
+        dat->d_max = new_dmax;
     }
 }
 

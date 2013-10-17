@@ -16,6 +16,7 @@
 #include "io.h"
 #include "ener.h"
 #include "tools.h"
+#include "logger.h"
 
 static uint32_t lj_size = 0 ;
 
@@ -40,7 +41,8 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
        // skip comment line, but print it in stderr for debugging purpose
        if (buff1[0]=='#')
        {
-           fprintf(stderr,"[Info] Skipping line %s",buff1);
+//            fprintf(stderr,"[Info] Skipping line %s",buff1);
+           LOG_PRINT(LOG_INFO,"Skipping line %s",buff1);
            continue;
        }
         

@@ -13,6 +13,7 @@
 
 #include "global.h"
 #include "rand.h"
+#include "logger.h"
 
 double get_next(DATA *dat)
 {

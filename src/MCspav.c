@@ -20,6 +20,7 @@
 #include "memory.h"
 #include "ener.h"
 #include "io.h"
+#include "logger.h"
 
 #define MV_ACC 1
 #define MV_REJ -1
