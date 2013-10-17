@@ -16,6 +16,8 @@
 #ifndef LOGGER_H_INCLUDED
 #define LOGGER_H_INCLUDED
 
+#include <stdint.h>
+
 /**
 *   \enum       LOG_LEVELS
 * 
@@ -60,6 +62,10 @@ typedef enum
 
 extern LOG_LEVELS LOG_SEVERITY;
 
-#define LOG_PRINT(...) log_print(__FILE__, __LINE__, __VA_ARGS__ )
+// #define LOG_PRINT(...) log_print(__FILE__, __LINE__, __VA_ARGS__ )
+
+void init_logfiles();
+void close_logfiles();
+uint32_t LOG_PRINT(LOG_LEVELS mesg_severity, char *fmt, ...);
 
 #endif // LOGGER_H_INCLUDED

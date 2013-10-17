@@ -201,7 +201,8 @@ uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
           static double cum_err = 0.0;
           double de = (*ener)-((*get_ENER)(at,dat,-1));
           cum_err += de;
-          fprintf(stderr,"At step %"PRIu64" DeltaE is : %g cumulated : %g\n",st,de,cum_err);
+//           fprintf(stderr,"At step %"PRIu64" DeltaE is : %g cumulated : %g\n",st,de,cum_err);
+//           LOG_PRINT(LOG_INFO,"At step %"PRIu64" DeltaE is : %g cumulated : %g\n",st,de,cum_err);
         }
 
 //        if(!is_stdout_redirected && st%progress==0)

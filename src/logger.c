@@ -15,13 +15,15 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdarg.h>
 
 #include <time.h>
 #include <string.h>
 
+#include <stdarg.h>
+
 #include "logger.h"
 
+// those variabes arepersistent but only accessible from this file
 static FILE *F_ERROR , *F_WARN , *F_INFO , *F_DEBUG ;
 static char EVENT_DATE[32];
 
@@ -30,6 +32,8 @@ static char EVENT_DATE[32];
  */
 void init_logfiles()
 {
+    F_ERROR = F_WARN = F_INFO = F_DEBUG = NULL;
+    
     if(LOG_SEVERITY > LOG_NOTHING )
         F_ERROR = fopen("error.log","wt");
     
@@ -86,9 +90,10 @@ static void get_time()
  * 
  * 
  */
-void log_print(char* filename, int line, LOG_LEVELS mesg_severity, char *fmt, ...)
+uint32_t LOG_PRINT(LOG_LEVELS mesg_severity, char *fmt, ...)
 {
-    if (mesg_severity != LOG_NOTHING)
+    // if the severity of the current message is at least equal to the gloval level we print it
+    if (mesg_severity <= LOG_SEVERITY)
     {
         
         va_list list;
@@ -96,90 +101,92 @@ void log_print(char* filename, int line, LOG_LEVELS mesg_severity, char *fmt, ..
         
         FILE *FP=NULL;
 
-	get_time();
+        // get the date string 
+	    get_time();
         
+        // depending of the severity, chose the correct file for writting
         switch(mesg_severity)
         {
             case LOG_ERROR:
                 FP = F_ERROR;
-                fprintf(FP,"[Error ");
+                fprintf(FP,"[Error @ ");
                 break;
                 
             case LOG_WARNING:
                 FP = F_WARN;
-                fprintf(FP,"[Warning ");
+                fprintf(FP,"[Warning @ ");
                 break;
                 
             case LOG_INFO:
                 FP = F_INFO;
-                fprintf(FP,"[Info ");
+                fprintf(FP,"[Info @ ");
                 break;
                 
             case LOG_DEBUG:
                 FP = F_DEBUG;
-                fprintf(FP,"[Debug ");
+                fprintf(FP,"[Debug @ ");
                 break;
+                
             default:
+                return -1;
                 break;
         }
         
-        fprintf(FP,"%s]  ",EVENT_DATE);
+        // write date contained in EVENT_DATE
+        fprintf(FP,"%s]\t",EVENT_DATE);
         
+        // prepare processing of the variable arguments list
+        // fmt is the last non-optional argument
         va_start( list, fmt );
         
+        /* fmt is a printf-like string containing % for indicating which type of variables
+         * are going to be printed : by iterating through this string we can know what are
+         * the primitive types of the passed variables.
+        */
+        // This for means that we iterate until *fmt_buff == '\0', the end of string
         for ( fmt_buff = fmt ; *fmt_buff ; ++fmt_buff )
         {
-        }
+            // if not % the character is just forwarded to the log file
+            if( *fmt_buff != '%' )
+            {
+                fputc(*fmt_buff,FP);
+            }
+            // else we need to determine the type of the variable
+            else
+            {
+                switch(*++fmt_buff)
+                {
+                    // a variable argument is a string
+                    case 's':
+                    {
+                        char *tmp_s = va_arg( list, char* );
+                        fprintf(FP,"%s",tmp_s);
+                        continue;
+                    }
+                    break;
+                    
+                    // a variable argument is an integer
+                    case 'd':
+                    {
+                        int32_t tmp_d = va_arg( list, int32_t );
+                        fprintf(FP,"%d",tmp_d);
+                        continue;
+                    }
+                    break;
+                    
+                    default:
+                        fputc(*fmt_buff,FP);
+                        break;
+                }
+            }
+        } // end of for on the format string
+ 
+        va_end( list );
+//         fputc('\n',FP);
+        
+        return 0;
+
+    } // end of if (mesg_severity >= LOG_SEVERITY)
     
-//      va_list         list;
-//     char            *p, *r;
-//     int             e;
-// 
-//     if(SESSION_TRACKER > 0)
-//       fp = fopen ("log.txt","a+");
-//     else
-//       fp = fopen ("log.txt","w");
-//     
-//     fprintf(fp,"%s ",print_time());
-//     va_start( list, fmt );
-// 
-//     for ( p = fmt ; *p ; ++p )
-//     {
-//         if ( *p != '%' )//If simple string
-//         {
-//             fputc( *p,fp );
-//         }
-//         else
-//         {
-//             switch ( *++p )
-//             {
-//                 /* string */
-//             case 's':
-//             {
-//                 r = va_arg( list, char * );
-// 
-//                 fprintf(fp,"%s", r);
-//                 continue;
-//             }
-// 
-//             /* integer */
-//             case 'd':
-//             {
-//                 e = va_arg( list, int );
-// 
-//                 fprintf(fp,"%d", e);
-//                 continue;
-//             }
-// 
-//             default:
-//                 fputc( *p, fp );
-//             }
-//         }
-//     }
-//     va_end( list );
-//     fprintf(fp," [%s][line: %d] ",filename,line);
-//     fputc( '\n', fp );
-//     SESSION_TRACKER++;
-//     fclose(fp);
-    }
+    return 1;
 }

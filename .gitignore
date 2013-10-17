@@ -6,4 +6,5 @@ mc_LJ
 *.dat
 *.xyz
 *.dcd
+*.log
 
