@@ -118,23 +118,23 @@ void adj_dmax(DATA *dat, uint64_t *step, uint64_t *acc)
 
 CM getCM(ATOM at[],DATA *dat)
 {
-	CM cm;
-	cm.cx=0.0;
-	cm.cy=0.0;
-	cm.cz=0.0;
+    CM cm;
+    cm.cx=0.0;
+    cm.cy=0.0;
+    cm.cz=0.0;
 
-	for(uint32_t i=0; i<dat->natom; i++)
-	{
-		cm.cx += at[i].x;
-		cm.cy += at[i].y;
-		cm.cz += at[i].z;
-	}
+    for(uint32_t i=0; i<dat->natom; i++)
+    {
+        cm.cx += at[i].x;
+        cm.cy += at[i].y;
+        cm.cz += at[i].z;
+    }
 
-	cm.cx /= dat->natom;
-    	cm.cy /= dat->natom;
-    	cm.cz /= dat->natom;
+    cm.cx /= dat->natom;
+    cm.cy /= dat->natom;
+    cm.cz /= dat->natom;
 
-	return cm;
+    return cm;
 }
 
 void recentre(ATOM at[],DATA *dat)

@@ -50,7 +50,7 @@ void steepd(ATOM at[],DATA *dat)
     uint32_t i=0,/*j=0,*/counter=0;
 
     double alpha[3] = {1.0e-03,1.0e-03,1.0e-03} ;
-    double prec = 1.0e-04 ;
+    double prec = 1.0e-05 ;
     double e1=0. , e2=0.;
     double diff;
     
@@ -93,7 +93,7 @@ void steepd(ATOM at[],DATA *dat)
         
         counter++;
     }
-    while (diff>prec && counter < 10000);
+    while (diff>prec && counter < 5000);
     
 //     for (i=0; i<(dat->natom); i++)
 //         memcpy(&at[i],&at2[i],sizeof(ATOM)); 

@@ -16,7 +16,7 @@
 #include "ener.h"
 
 #ifndef K_CONSTRAINT
-#define K_CONSTRAINT	2.50
+#define K_CONSTRAINT	3.50
 #endif
 
 /* How to call this function :
