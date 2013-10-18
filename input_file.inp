@@ -24,13 +24,13 @@ TEMP    0.25
 
 # number of steps : coded as an unsigned 64-bits integer so values of several billions
 # are perfectly valid !
-NSTEPS  100000
+NSTEPS  100000000
 
 #constant correcting factor for MC moves
 #DMAX   0.15
 # or automatically optimised dmax : each UPDATE steps dmax is adjust for reaching
 # TARGET (in %) of acceptance
-DMAX    0.15    UPDATE  100 TARGET  30.0
+DMAX    0.15    UPDATE  1000 TARGET  30.0
 
 # For each type of atom, set the Lennard Jones parameters
 # Here example for reduced units

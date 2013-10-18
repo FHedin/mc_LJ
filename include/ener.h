@@ -29,11 +29,11 @@
 
 //pointers to the desired energy and force functions
 double (*get_ENER)(ATOM at[], DATA *dat, int32_t candidate);
-void   (*get_DV)(ATOM at[], DATA *dat, double DV[]);
+void   (*get_DV)(ATOM at[], DATA *dat, double fx[], double fy[], double fz[]);
 
 //ener and force for lennard-jones
 double get_LJ_V(ATOM at[], DATA *dat, int32_t candidate);
-void   get_LJ_DV(ATOM at[], DATA *dat, double DV[]);
+void get_LJ_DV(ATOM at[], DATA *dat, double fx[], double fy[], double fz[]);
 
 //ener for aziz potential
 double get_AZIZ_V(ATOM at[], DATA *dat, int32_t candidate);

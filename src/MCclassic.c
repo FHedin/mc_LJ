@@ -18,6 +18,7 @@
 #include "tools.h"
 #include "rand.h"
 #include "ener.h"
+#include "minim.h"
 #include "io.h"
 #include "logger.h"
 
@@ -35,7 +36,7 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 //     double *dmax;
     int32_t candidate=-1;
     uint32_t n_moving=   1    ;//dat->natom;
-    int32_t* ismoving = NULL;
+    int32_t *ismoving = NULL;
     //int32_t unicMove=    1;//-1;
     int32_t mv_direction= -1;
     
@@ -46,7 +47,8 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 
 //     start=clock();
 
-    at_new=malloc( dat->natom*sizeof *at_new );
+    at_new=malloc(dat->natom*sizeof *at_new);
+    ismoving=calloc(dat->natom,sizeof *ismoving);
     
 //     dmax=malloc(dat->natom*sizeof *dmax);
 //     for (i=0; i<(dat->natom); i++)
@@ -62,7 +64,6 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
             memcpy(&at_new[j],&at[j],sizeof(ATOM));
 
 //         n_moving=(int) dat->natom*get_next(dat) + 1;
-        ismoving=calloc(n_moving,sizeof *ismoving);
 
         j=0;
         do
@@ -178,11 +179,12 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 //            fflush(stdout);
 //        }
 
-        free(ismoving);
+        
         
     }//end of main loop
 
     free(at_new) ;
+    free(ismoving);
 
     (*write_traj)(at,dat,st);
 

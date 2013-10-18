@@ -37,6 +37,7 @@
 #include "tools.h"
 #include "rand.h"
 #include "ener.h"
+#include "minim.h"
 #include "io.h"
 #include "parsing.h"
 #include "logger.h"
@@ -256,6 +257,9 @@ int main(int argc, char **argv)
         get_ENER = &(get_LJ_V);
         get_DV = &(get_LJ_DV);
     }
+    
+    // allocate arrays used by energy minimisation function
+    alloc_minim(&dat);
 
     // sum up parameters to output file
     
@@ -337,6 +341,7 @@ int main(int argc, char **argv)
     free(dat.seeds);
 #endif
     free(at);
+    dealloc_minim();
     
     // closing log files is the last thing to do as errors may occur at the end
     close_logfiles();

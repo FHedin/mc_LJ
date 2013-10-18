@@ -19,6 +19,7 @@
 #include "rand.h"
 #include "memory.h"
 #include "ener.h"
+#include "minim.h"
 #include "io.h"
 #include "logger.h"
 
@@ -46,6 +47,8 @@ uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
     
 //     start=clock();
 
+    ismoving=calloc(n_moving,sizeof *ismoving);
+    
     ATOM *at_new=NULL;
     at_new=malloc( dat->natom*sizeof *at_new );
 
@@ -79,7 +82,6 @@ uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
         }
 
         //n_moving=(int) dat->natom*get_next(dat) + 1;
-        ismoving=calloc(n_moving,sizeof *ismoving);
        
         j=0;
         do
@@ -224,14 +226,14 @@ uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
 //            fprintf(stdout,"Progress : %5.1lf %% done \t Estimated remaining time : %8.1lf seconds\r",pr,remaining);
 //            fflush(stdout);
 //        }
-
-        free(ismoving);
         
     } //END OF MAIN FOR
 
     free_3D(spdat->meps,spdat->neps,iniArray,finArray,NULL);
 
     free(at_new);
+    
+    free(ismoving);
 
     (*write_traj)(at,dat,st);
 

@@ -61,7 +61,6 @@ double get_LJ_V(ATOM at[], DATA *dat, int32_t candidate)
                 sig_g  = 0.5*( at[i].ljp.sig + at[j].ljp.sig );
 
                 energy += 4.0 * epsi_g *( (X12(sig_g))/(X6(d2)) - (X6(sig_g))/(X3(d2)) );
-//                 dat->E_constr += getExtraPot(d2,sig_g,epsi_g);
             }
         }
     }
@@ -97,20 +96,18 @@ double get_LJ_V(ATOM at[], DATA *dat, int32_t candidate)
     return energy;
 }
 
-void get_LJ_DV(ATOM at[], DATA *dat, double DV[])
+void get_LJ_DV(ATOM at[], DATA *dat, double fx[], double fy[], double fz[])
 {
-    //DV[] is 3*natom length : first x values, then y then z.
-
     uint32_t i=0 , j=0 ;
     double epsi_g=0.0 , sig_g=0.0;
     double dx=0.0 , dy=0.0 , dz=0.0 , d2=0.0 ;
-    double DE=0.0 ;
+    double de=0.0 ;
 
     for (i=0 ; i < dat->natom ; i++ )
     {
-        DV[i] = 0.0 ;
-        DV[i+dat->natom] = 0.0 ;
-        DV[i+2*dat->natom] = 0.0 ;
+        fx[i] = 0.0 ;
+        fy[i] = 0.0 ;
+        fz[i] = 0.0 ;
         for (j=0 ; j < dat->natom ; j++ )
         {
             if (i==j) continue ;
@@ -120,10 +117,10 @@ void get_LJ_DV(ATOM at[], DATA *dat, double DV[])
             dy = at[i].y - at[j].y ;
             dz = at[i].z - at[j].z ;
             d2  = dx*dx + dy*dy + dz*dz ;
-            DE = -24.0*epsi_g*( 2.0*(X12(sig_g))/(X6(d2)) - (X6(sig_g))/(X3(d2)) ) / d2 ;
-            DV[i] += DE*dx;
-            DV[i+dat->natom] += DE*dy;
-            DV[i+2*dat->natom] += DE*dz;
+            de = -24.0*epsi_g*( 2.0*(X12(sig_g))/(X6(d2)) - (X6(sig_g))/(X3(d2)) ) / d2 ;
+            fx[i] += de*dx;
+            fy[i] += de*dy;
+            fz[i] += de*dz;
         }
     }
 }

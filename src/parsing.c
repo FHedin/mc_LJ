@@ -236,7 +236,7 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                     }
        
                     read_xyz(at,dat,start);
-                    steepd_ini(at,dat);
+//                     steepd_ini(at,dat);
                     
                     fclose(start);
                 }

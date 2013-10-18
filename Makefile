@@ -13,10 +13,10 @@
 
 # CC=icc 
 # FC=ifort
-#CC=gcc
-#FC=gfortran
-CC=gcc48
-FC=gfortran48
+CC=gcc
+FC=gfortran
+# CC=gcc48
+# FC=gfortran48
 
 WFLAGS=-Wall -Wextra 
 #-Wdouble-promotion -Wformat -Wimplicit-int -Wuninitialized -Wfloat-equal \
