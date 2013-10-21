@@ -298,7 +298,7 @@ int main(int argc, char** argv)
     // again print parameters
     fprintf(stdout,"method = %s\n",dat.method);
     fprintf(stdout,"natom  = %d\n",dat.natom);
-    fprintf(stdout,"nsteps = %ld\n",dat.nsteps);
+    fprintf(stdout,"nsteps = %"PRIu64"\n",dat.nsteps);
     fprintf(stdout,"T      = %lf \n",dat.T);
     fprintf(stdout,"beta   = %lf\n",dat.beta);
     

@@ -107,8 +107,8 @@ char* get_loglevel_string()
  * \brief Puts in a string the current date, later used for logging.
  * 
  * \details This function returns the date with the following format :
- * \li DAY/MONTH/YEAR-HH:MM:SS-TIME_ZONE_INDICATOR
- * \li For example : 17/10/2013-16:26:36-CEST
+ * \li DAY/MONTH/YEAR-HH:MM:SS
+ * \li For example : 17/10/2013-16:26:36
  * 
  * \param date A character string filled with the date and hour
  */
@@ -123,7 +123,7 @@ static void get_time_ptr(char date[32])
     {
         rawtime = newtime;
         timeinfo = localtime(&rawtime);
-        strftime(date,32,"%d/%m/%Y-%T-%Z",timeinfo);
+        strftime(date,32,"%d/%b/%Y-%H:%M:%S",timeinfo);
     }   
 }
 
@@ -131,8 +131,8 @@ static void get_time_ptr(char date[32])
  * \brief Puts in a string the current date, and returns it
  * 
  * \details This function returns the date with the following format :
- * \li DAY/MONTH/YEAR-HH:MM:SS-TIME_ZONE_INDICATOR
- * \li For example : 17/10/2013-16:26:36-CEST
+ * \li DAY/MONTH/YEAR-HH:MM:SS
+ * \li For example : 17/10/2013-16:26:36
  * 
  * \return A character string filled with the date and hour
  */
@@ -145,7 +145,7 @@ char* get_time()
     time(&newtime);
 
     timeinfo = localtime(&newtime);
-    strftime(date,32,"%d/%m/%Y-%T-%Z",timeinfo);
+    strftime(date,32,"%d/%b/%Y-%H:%M:%S",timeinfo);
  
     return date;
 }
@@ -240,47 +240,30 @@ uint32_t LOG_PRINT_SHORT(LOG_LEVELS mesg_severity, char *fmt, ...)
         va_list list;
         
         FILE *FP=NULL;
-
-//         static char event_date[32]="";
-//         char message[50]="";
-        
-        // get the date string 
-//         get_time(event_date);
         
         // depending of the severity, chose the correct file for writting
         switch(mesg_severity)
         {
             case LOG_ERROR:
                 FP = F_ERROR;
-//                 sprintf(message,"[Error @ ");
                 break;
                 
             case LOG_WARNING:
                 FP = F_WARN;
-//                 sprintf(message,"[Warning @ ");
                 break;
                 
             case LOG_INFO:
                 FP = F_INFO;
-//                 sprintf(message,"[Info @ ");
                 break;
                 
             case LOG_DEBUG:
                 FP = F_DEBUG;
-//                 sprintf(message,"[Debug @ ");
                 break;
                 
             default:
                 return -1;
                 break;
         }
-        
-        // write date contained in event_date to message
-//         strncat(message,event_date,32);
-//         strncat(message,"]\t",2);
-        
-        // print message to file
-//         fprintf(FP,"%s",message);
         
         // prepare processing of the variable arguments list
         // fmt is the last non-optional argument

@@ -24,7 +24,7 @@ TEMP    0.25
 
 # number of steps : coded as an unsigned 64-bits integer so values of several billions
 # are perfectly valid !
-NSTEPS  10000000
+NSTEPS  1000000
 
 #constant correcting factor for MC moves
 #DMAX   0.15

@@ -11,12 +11,19 @@
 ########################   MakeVars   ###########################
 #################################################################
 
+# intel compiler
 # CC=icc 
 # FC=ifort
+
 CC=gcc
 FC=gfortran
+
 # CC=gcc48
 # FC=gfortran48
+
+# For compiling MS-Windows executable on linux 
+# CC=x86_64-w64-mingw32-gcc
+# FC=x86_64-w64-mingw32-gfortran
 
 WFLAGS=-Wall -Wextra 
 #-Wdouble-promotion -Wformat -Wimplicit-int -Wuninitialized -Wfloat-equal \
