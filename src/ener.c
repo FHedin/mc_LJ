@@ -186,10 +186,11 @@ double get_AZIZ_V(ATOM at[], DATA *dat, int32_t candidate)
 
 double getExtraPot(double d2, double sig, double eps)
 {
-	double vc = d2/(X2(K_CONSTRAINT*sig));
-	vc=pow(vc,10.0);
-	vc*=eps;
-
-	return vc;
+//     double vc = d2/(X2(K_CONSTRAINT*sig));
+//     vc=pow(vc,10.0);
+//     vc*=eps;
+// 
+//     return vc;
+    return 0.0;
 }
 

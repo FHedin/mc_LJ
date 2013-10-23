@@ -15,7 +15,7 @@ UNITS   REDUCED
 #UNITS  CHARMM
 
 #set the numb. of atoms
-NATOMS  92
+NATOMS  38
 
 # reduced temperature
 TEMP    0.25

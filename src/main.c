@@ -41,6 +41,7 @@
 #include "io.h"
 #include "parsing.h"
 #include "logger.h"
+#include "plugins_lua.h"
 
 // -----------------------------------------------------------------------------------------
 
@@ -265,12 +266,16 @@ int main(int argc, char** argv)
     // allocate arrays used by energy minimisation function
     alloc_minim(&dat);
 
+    // initialise lua
+//     init_lua("plugins/lj_n_m.lua");
+//     get_ENER = &(get_lua_V);
+    
     // sum up parameters to output file
     
 #ifdef _OPENMP
     fprintf(stdout,"\nStarting program with %d threads (%d cpus available)\n\n",nthreads,ncpus);
 #else
-    fprintf(stdout,"Starting program in sequential mode\n\n");
+    fprintf(stdout,"\nStarting program in sequential mode\n\n");
 #endif
 
     fprintf(stdout,"Seed   = %s \n\n",seed);
@@ -345,6 +350,7 @@ int main(int argc, char** argv)
     free(dat.seeds);
 #endif
     free(at);
+//     end_lua();
     dealloc_minim();
     
     // closing log files is the last thing to do as errors may occur at the end
@@ -379,9 +385,16 @@ void start_classic(DATA *dat, ATOM at[])
     freopen(io.trajtitle,"wb",traj);
 
     ener = (*get_ENER)(at,dat,-1);
-
     fprintf(stdout,"\nStarting METROP Monte-Carlo\n");
     fprintf(stdout,"LJ initial energy is : %lf \n\n",ener);
+    
+//     get_ENER = &(get_LJ_V);
+//     ener = (*get_ENER)(at,dat,-1);
+//     fprintf(stdout,"\nStarting METROP Monte-Carlo\n");
+//     fprintf(stdout,"LJ initial energy is : %lf \n\n",ener);
+//     
+//     exit(0);
+    
     fwrite(&ener,sizeof(double),1,efile);
 
     acc=make_MC_moves(at,dat,&ener);

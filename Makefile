@@ -36,7 +36,8 @@ CC_SFMT_OPT=-I"./dSFMT" $(WFLAGS) -std=c99 -O2 -msse2 -fno-strict-aliasing -DHAV
 
 FC_OPT=$(WFLAGS) -std=f95 -O2 -msse2
 
-LD_OPT=-lm
+LD_OPT= -lluajit-5.1 -lm
+# LD_OPT= -lm
 
 MKDIR=mkdir -p ./obj/dSFMT
  
