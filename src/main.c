@@ -266,9 +266,11 @@ int main(int argc, char** argv)
     // allocate arrays used by energy minimisation function
     alloc_minim(&dat);
 
+#ifdef LUA_PLUGINS
     // initialise lua
     init_lua("plugins/lj_n_m_ffi.lua");
     get_ENER = &(get_lua_V_ffi);
+#endif //LUA_PLUGINS
     
     // sum up parameters to output file
     
@@ -350,8 +352,11 @@ int main(int argc, char** argv)
     free(dat.seeds);
 #endif
     free(at);
-    end_lua();
     dealloc_minim();
+    
+#ifdef LUA_PLUGINS
+    end_lua();
+#endif //LUA_PLUGINS
     
     // closing log files is the last thing to do as errors may occur at the end
     close_logfiles();

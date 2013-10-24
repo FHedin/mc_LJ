@@ -10,6 +10,8 @@
 #ifndef PLUGINS_LUA_H_INCLUDED
 #define PLUGINS_LUA_H_INCLUDED
 
+#ifdef LUA_PLUGINS
+
 void init_lua(char plugin_file_name[]);
 // void register_lua_function(char plugin_function_name[]);
 void end_lua();
@@ -18,5 +20,7 @@ void end_lua();
  'double (*get_ENER)' from ener.h*/
 double get_lua_V(ATOM at[], DATA *dat, int32_t candidate);
 double get_lua_V_ffi(ATOM at[], DATA *dat, int32_t candidate);
+
+#endif //LUA_PLUGINS
 
 #endif // PLUGINS_LUA_H_INCLUDED

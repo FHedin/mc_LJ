@@ -14,8 +14,8 @@
 --
 -- See for example : http://www.sklogwiki.org/SklogWiki/index.php/Lennard-Jones_model#n-m_Lennard-Jones_potential
 --
--- This file uses FFI, alibrary embedded with luajit (see http://luajit.org/ and http://luajit.org/ext_ffi.html) 
--- FFI allows a direct interactionf withe the c structures, making the calculations much faster 
+-- This file uses FFI, a library embedded with luajit (see http://luajit.org/ and http://luajit.org/ext_ffi.html) 
+-- FFI allows a direct interaction with the c structures, making the calculations much faster 
 -- than by using the standard lj_n_m.lua file.
 --
 

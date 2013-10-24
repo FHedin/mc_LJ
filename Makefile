@@ -30,7 +30,7 @@ WFLAGS=-Wall -Wextra
 #-Wpointer-arith -Wtype-limits -Wbad-function-cast -Wcast-qual -Wconversion \
 #-Wsign-conversion
 
-CC_OPT=-I"./dSFMT" -I"./include" $(WFLAGS) -std=c99 -O2 -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937
+CC_OPT=-I"./dSFMT" -I"./include" $(WFLAGS) -std=c99 -O2 -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS
 
 CC_SFMT_OPT=-I"./dSFMT" $(WFLAGS) -std=c99 -O2 -msse2 -fno-strict-aliasing -DHAVE_SSE2 -DDSFMT_MEXP=19937
 

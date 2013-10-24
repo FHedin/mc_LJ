@@ -6,6 +6,8 @@
  * see LICENSE.txt
  * 
  */
+
+#ifdef LUA_PLUGINS
  
 #include <stdlib.h>
 
@@ -187,3 +189,5 @@ double get_lua_V_ffi(ATOM at[], DATA *dat, int32_t candidate)
     
     return energy;
 }
+
+#endif //LUA_PLUGINS

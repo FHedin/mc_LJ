@@ -13,7 +13,9 @@
 -- Where n and m are integers and n>m ; C is a constant depending of both n and m
 --
 -- See for example : http://www.sklogwiki.org/SklogWiki/index.php/Lennard-Jones_model#n-m_Lennard-Jones_potential
-
+--
+-- at least 4 times faster when using luajit (see http://luajit.org/ )
+--
 -- This function estimates the LJ n-m potential between a pair of atoms a and b
 function lj_v_n_m_pair(xa, ya, za, xb, yb, zb, eps_a, eps_b, sig_a, sig_b, c, n, m)
     
