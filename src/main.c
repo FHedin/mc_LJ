@@ -267,8 +267,8 @@ int main(int argc, char** argv)
     alloc_minim(&dat);
 
     // initialise lua
-//     init_lua("plugins/lj_n_m.lua");
-//     get_ENER = &(get_lua_V);
+    init_lua("plugins/lj_n_m_ffi.lua");
+    get_ENER = &(get_lua_V_ffi);
     
     // sum up parameters to output file
     
@@ -350,7 +350,7 @@ int main(int argc, char** argv)
     free(dat.seeds);
 #endif
     free(at);
-//     end_lua();
+    end_lua();
     dealloc_minim();
     
     // closing log files is the last thing to do as errors may occur at the end

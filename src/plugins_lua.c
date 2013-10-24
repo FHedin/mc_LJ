@@ -160,8 +160,30 @@ double get_lua_V(ATOM at[], DATA *dat, int32_t candidate)
         }
     } // end if-else on candidate
     
-//     LOG_PRINT(LOG_DEBUG,"LUA n,m potential : %lf\n",energy);
+    LOG_PRINT(LOG_DEBUG,"LUA n,m potential : %lf\n",energy);
     
     return energy;
 }
 
+double get_lua_V_ffi(ATOM at[], DATA *dat, int32_t candidate)
+{
+    double energy=0.0;
+        
+    lua_getglobal(L, "lj_v_n_m_ffi");
+    
+    lua_pushinteger(L, dat->natom);
+    lua_pushlightuserdata(L, (void*) at);
+    lua_pushinteger(L, candidate);
+    lua_pushnumber(L, 4.0);
+    lua_pushnumber(L, 12.0);
+    lua_pushnumber(L, 6.0);
+    lua_call(L,6,1);
+    
+    /* get the result */
+    energy += (double)lua_tonumber(L, -1);
+    lua_pop(L, 1);
+    
+    LOG_PRINT(LOG_DEBUG,"LUA n,m potential : %lf\n",energy);
+    
+    return energy;
+}

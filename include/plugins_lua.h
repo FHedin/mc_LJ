@@ -17,5 +17,6 @@ void end_lua();
 /* compatible with pointer of type 
  'double (*get_ENER)' from ener.h*/
 double get_lua_V(ATOM at[], DATA *dat, int32_t candidate);
+double get_lua_V_ffi(ATOM at[], DATA *dat, int32_t candidate);
 
 #endif // PLUGINS_LUA_H_INCLUDED
