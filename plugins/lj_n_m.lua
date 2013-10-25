@@ -19,9 +19,9 @@
 
 -- parameters to tune for adapting the potential
 -- this set is the same than the standard 12,6 potential
-local c = 4
-local n = 12
-local m = 6
+local c = 4.0
+local n = 12.0
+local m = 6.0
 
 -- This function estimates the LJ n-m potential between a pair of atoms a and b
 function lj_v_n_m_pair(xa, ya, za, xb, yb, zb, eps_a, eps_b, sig_a, sig_b)
@@ -42,4 +42,34 @@ function lj_v_n_m_pair(xa, ya, za, xb, yb, zb, eps_a, eps_b, sig_a, sig_b)
     return pot
     
 end
+
+---------------------------------------------------------------------------------
+
+-- This function estimates the LJ n-m gradient contribution of one atom on another one
+function lj_dv_n_m_pair(xa, ya, za, xb, yb, zb, eps_a, eps_b, sig_a, sig_b)
+    
+    -- Lorentz-Berthelot rules
+    local eps = math.sqrt(eps_a*eps_b)
+    local sig = 0.5*(sig_a + sig_b)
+    
+    -- distance calculation
+    local dx = xa - xb
+    local dy = ya - yb
+    local dz = za - zb
+    local r2 = dx*dx + dy*dy + dz*dz
+    local r = math.sqrt(r2)
+    
+    -- evaluate gradient
+    local dv = -c*eps*( n*math.pow(sig/r,n) - m*math.pow(sig/r,m) )/r2
+    local fx = dv*dx
+    local fy = dv*dy
+    local fz = dv*dz
+    
+    -- not that we return fz first and fx last, as lua is stack based.
+    -- By doing that the c code will take first fx as it is on top of the stack
+    return fz,fy,fx
+    
+end
+
+
 

@@ -6,18 +6,18 @@
 # by using blank spaces or tabulations.
 
 # we can use hard coded Lennard-Jones or Aziz potential
-#POTENTIAL   LJ
+# POTENTIAL   LJ
 # Aziz potential is currently available only for Argon and Neon (mixtures are allowed)
 #POTENTIAL  AZIZ
 
 # ... or a user defined potential written in LUA
-# it as to be : POTENTIAL PLUGIN {type} {path to plugin file} {custom function name}
+# it as to be : POTENTIAL PLUGIN {type} {path to plugin file} {potential function name} {gradient function name}
 # for the moment {type} is PAIR or FFI :
 # - PAIR means that the lua function just works on a pair of atoms
 # - FFI  means that the lua function uses LUAJIT/FFI allowing to work on the whole atomic system
 # Examples : 
-POTENTIAL PLUGIN PAIR plugins/lj_n_m.lua       lj_v_n_m_pair
-#POTENTIAL PLUGIN FFI  plugins/lj_n_m_ffi.lua   lj_v_n_m_ffi
+# POTENTIAL PLUGIN PAIR plugins/lj_n_m.lua       lj_v_n_m_pair    lj_dv_n_m_pair
+POTENTIAL PLUGIN FFI  plugins/lj_n_m_ffi.lua   lj_v_n_m_ffi     lj_dv_n_m_ffi
 
 # unit of energy can be REDUCED (k_boltz*t/epsilon) or CHARMM (kcal/mol)
 UNITS   REDUCED

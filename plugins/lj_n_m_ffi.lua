@@ -38,9 +38,9 @@ ffi.cdef[[
     
 -- parameters to tune for adapting the potential
 -- this set is the same than the standard 12,6 potential
-local c = 4
-local n = 12
-local m = 6
+local c = 4.0
+local n = 12.0
+local m = 6.0
 
 -- This function estimates the LJ n-m potential of a whole system
 function lj_v_n_m_ffi(natom, at_list, candidate)
@@ -106,4 +106,47 @@ function lj_v_n_m_ffi(natom, at_list, candidate)
     return ener
     
 end -- end of function
+
+function lj_dv_n_m_ffi(natom, at_list, fx, fy, fz)
+    
+    local at  = ffi.new("ATOM*",at_list)
+    
+    local lfx = ffi.new("double*",fx)
+    local lfy = ffi.new("double*",fy)
+    local lfz = ffi.new("double*",fz)
+    
+    local i,j
+    
+    for i=0,natom-1
+    do
+        lfx[i] = 0.0 ;
+        lfy[i] = 0.0 ;
+        lfz[i] = 0.0 ;
+        
+        for j=0,natom-1
+        do
+            if(j~=i) then
+                
+                local dx= at[i].x - at[j].x
+                local dy= at[i].y - at[j].y
+                local dz= at[i].z - at[j].z
+                
+                local eps = math.sqrt( at[i].ljp.eps * at[j].ljp.eps )
+                local sig = 0.5*( at[i].ljp.sig + at[j].ljp.sig )
+                local r2 = dx^2 + dy^2 + dz^2
+                local r  = math.sqrt(r2)
+                
+                -- evaluate gradient
+                local dv = -c*eps*( n*math.pow(sig/r,n) - m*math.pow(sig/r,m) )/r2
+                lfx[i] = lfx[i] + dv*dx
+                lfy[i] = lfy[i] + dv*dy
+                lfz[i] = lfz[i] + dv*dz
+    
+            end
+        end
+        
+    end
+        
+end
+
 

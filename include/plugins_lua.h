@@ -21,13 +21,14 @@ typedef enum
 extern PLUGIN_TYPE lua_plugin_type;
 
 void init_lua(char *plugin_file_name);
-void register_lua_function(char *plugin_function_name);
+void register_lua_function(char *plugin_function_name, uint32_t type);
 void end_lua();
 
-/* compatible with pointer of type
- 'double (*get_ENER)' from ener.h*/
 double get_lua_V(ATOM at[], DATA *dat, int32_t candidate);
+void get_lua_DV(ATOM at[], DATA *dat, double fx[], double fy[], double fz[]);
+
 double get_lua_V_ffi(ATOM at[], DATA *dat, int32_t candidate);
+void get_lua_DV_ffi(ATOM at[], DATA *dat, double fx[], double fy[], double fz[]);
 
 #endif //LUA_PLUGINS
 

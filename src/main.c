@@ -252,7 +252,7 @@ int main(int argc, char** argv)
 #endif
 
     // parse input file, initialise atom list
-    at=parse_from_file(inpf,&dat,&spdat);
+    parse_from_file(inpf,&dat,&spdat,&at);
 
     // set the pointer to the default energy function
     if(get_ENER==NULL)

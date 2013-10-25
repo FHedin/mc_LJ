@@ -10,6 +10,6 @@
 #ifndef PARSING_H_INCLUDED
 #define PARSING_H_INCLUDED
 
-ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat);
+void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at);
 
 #endif // PARSING_H_INCLUDED

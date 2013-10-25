@@ -21,9 +21,8 @@
 
 static uint32_t lj_size = 0 ;
 
-ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
+void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at)
 {
-    ATOM *at=NULL;
     LJPARAMS *ljpars=NULL;
 
     char buff1[FILENAME_MAX]="", *buff2=NULL, *buff3=NULL ;
@@ -99,20 +98,23 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                     }
                     else if (!strcasecmp(buff3,"PLUGIN"))
                     {
-                        char *buff4=NULL , *buff5=NULL , *buff6=NULL;
+                        char *buff4=NULL , *buff5=NULL , *buff6=NULL , *buff7=NULL;
                         buff4=strtok(NULL," \n\t");
                         buff5=strtok(NULL," \n\t");
                         buff6=strtok(NULL," \n\t");
+                        buff7=strtok(NULL," \n\t");
                         
                         if (!strcasecmp(buff4,"PAIR"))
                         {
                             lua_plugin_type = PAIR;
                             get_ENER = &(get_lua_V);
+                            get_DV = &(get_lua_DV);
                         }
                         else if (!strcasecmp(buff4,"FFI"))
                         {
                             lua_plugin_type = FFI;
                             get_ENER = &(get_lua_V_ffi);
+                            get_DV = &(get_lua_DV_ffi);
                         }
                         else
                         {
@@ -122,8 +124,8 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                         
                         // open lua file and register function name
                         init_lua(buff5);
-                        register_lua_function(buff6);
-                        
+                        register_lua_function(buff6,0);
+                        register_lua_function(buff7,1);
                     }
                 }
             }
@@ -181,8 +183,8 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
             else if (!strcasecmp(buff2,"NATOMS"))
             {
                 dat->natom = (uint32_t) atoi(buff3);
-                at = calloc(dat->natom,sizeof *at);
-                build_cluster(at,dat,0,dat->natom,-1);	//initialise
+                *at = malloc(dat->natom*sizeof(ATOM));
+                build_cluster(*at,dat,0,dat->natom,-1);	//initialise
             }
             else if (!strcasecmp(buff2,"TEMP"))
                 dat->T = atof(buff3);
@@ -242,22 +244,22 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
 
                 for(i=j; i<k; i++)
                 {
-                    sprintf(at[i].sym,"%s",type);
+                    sprintf((*at)[i].sym,"%s",type);
                     for(l=0; l<lj_size; l++)
                     {
-                        if (!strcasecmp(ljpars[l].sym,at[i].sym))
+                        if (!strcasecmp(ljpars[l].sym,(*at)[i].sym))
                         {
-                            at[i].ljp.eps=ljpars[l].eps;
-                            at[i].ljp.sig=ljpars[l].sig;
+                            (*at)[i].ljp.eps=ljpars[l].eps;
+                            (*at)[i].ljp.sig=ljpars[l].sig;
                             break;
                         }
                     }
                 }
 
                 if(!strcasecmp(coor,"RANDOM"))
-                    build_cluster(at,dat,j,k,1);
+                    build_cluster(*at,dat,j,k,1);
                 else if (!strcasecmp(coor,"ZERO"))
-                    build_cluster(at,dat,j,k,0);
+                    build_cluster(*at,dat,j,k,0);
                 else if (!strcasecmp(coor,"FILE"))
                 {
                     // initial structure read from an xyz file
@@ -273,16 +275,16 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                         exit(-1);
                     }
 
-                    read_xyz(at,dat,start);
+                    read_xyz(*at,dat,start);
                     
-//                     steepd_ini(at,dat);
+//                     steepd_ini(*at,dat);
 
                     fclose(start);
                 }
                 else
                 {
                     //random is default
-                    build_cluster(at,dat,j,k,1);
+                    build_cluster(*at,dat,j,k,1);
                 }
             }
 
@@ -292,8 +294,4 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
 
     fclose(ifile);
     free(ljpars);
-
-//     build_cluster(at,dat,0,dat->natom,1);
-
-    return at;
 }
