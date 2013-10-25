@@ -4,7 +4,7 @@
  *
  * The 3-clause BSD license is applied to this software.
  * see LICENSE.txt
- * 
+ *
  */
 
 #include <stdlib.h>
@@ -21,7 +21,7 @@ static uint32_t dcd_header_empty=1;
 void write_xyz(ATOM at[], DATA *dat, uint64_t when, FILE *outf)
 {
     recentre(at,dat);
-    
+
     uint32_t i=0;
     fprintf(outf,"%d\n#step %"PRIu64"\n",dat->natom,when);
     for (i=0; i<(dat->natom); i++)
@@ -33,31 +33,31 @@ void read_xyz(ATOM at[], DATA *dat, FILE *inpf)
     uint32_t i;
     uint32_t nat=0;
     char comm[1024]="";
-    
+
     fscanf(inpf,"%d\n",&nat);
     fgets(comm,1024,inpf);
-    
+
     if (nat != dat->natom)
     {
-      fprintf(stdout,"Error : natom in the xyz file differs from the declaration in the input file.\n");
-      exit(-1);
+        fprintf(stdout,"Error : natom in the xyz file differs from the declaration in the input file.\n");
+        exit(-1);
     }
-    
-    for (i=0;i<nat;i++)
-      fscanf(inpf,"%s %lf %lf %lf\n",at[i].sym,&(at[i].x),&(at[i].y),&(at[i].z));
-    
+
+    for (i=0; i<nat; i++)
+        fscanf(inpf,"%s %lf %lf %lf\n",at[i].sym,&(at[i].x),&(at[i].y),&(at[i].z));
+
 }
 
 void write_dcd(ATOM at[], DATA *dat, uint64_t when)
 {
     recentre(at,dat);
-    
+
     uint32_t i=0;
     uint32_t sizeB = 0;
 
     if (dcd_header_empty)
     {
-        char corp[4]={'C','O','R','D'};
+        char corp[4]= {'C','O','R','D'};
 
         uint32_t  ICNTRL[20]= {0};
         ICNTRL[0]=ICNTRL[3] = (uint32_t) dat->nsteps/io.trsave;
@@ -65,8 +65,8 @@ void write_dcd(ATOM at[], DATA *dat, uint64_t when)
         ICNTRL[19]=39;	//charmm version
 
         uint32_t NTITLE=3;
-        char TITLE[3][80]={"","",""};
-        
+        char TITLE[3][80]= {"","",""};
+
         // add to title info about date, user, machine, etc... if available
         time_t rawtime;
         struct tm *timeinfo;
@@ -146,7 +146,7 @@ void write_rst(DATA *dat, SPDAT *spdat, ATOM at[])
 {
     FILE *rstfile=NULL;
     rstfile=fopen("restart.dat","wb");
-    
+
     /** From global.h **/
     // 1 : write global variables
     fwrite(&is_stdout_redirected,sizeof(uint32_t),1,rstfile);
@@ -155,32 +155,32 @@ void write_rst(DATA *dat, SPDAT *spdat, ATOM at[])
     fwrite(&ncpus,sizeof(uint32_t),1,rstfile);
     fwrite(&nthreads,sizeof(uint32_t),1,rstfile);
 #endif
-    
+
     // 2 : structure DATA
     fwrite(&dat->natom,sizeof(uint32_t),1,rstfile);
     fwrite(dat->method,sizeof(char),32,rstfile);
     fwrite(&dat->nsteps,sizeof(uint64_t),1,rstfile);
-    
+
     fwrite(&dat->d_max,sizeof(double),1,rstfile);
     fwrite(&dat->d_max_when,sizeof(uint32_t),1,rstfile);
     fwrite(&dat->d_max_tgt,sizeof(double),1,rstfile);
-    
+
     fwrite(&dat->inid,sizeof(double),1,rstfile);
     fwrite(&dat->T,sizeof(double),1,rstfile);
     fwrite(&dat->E_steepD,sizeof(double),1,rstfile);
     fwrite(&dat->E_expected,sizeof(double),1,rstfile);
     fwrite(&dat->beta,sizeof(double),1,rstfile);
-    
+
     // 2 : structure SPDAT
     fwrite(&spdat->meps,sizeof(uint32_t),1,rstfile);
     fwrite(&spdat->neps,sizeof(uint32_t),1,rstfile);
     fwrite(&spdat->weps,sizeof(double),1,rstfile);
     fwrite(&spdat->normalSize,sizeof(uint32_t),1,rstfile);
     fwrite(spdat->normalNumbs,sizeof(double),spdat->normalSize,rstfile);
-    
+
     // 3 : structure ATOM
     fwrite(at,sizeof(ATOM),dat->natom,rstfile);
-    
+
     /** END **/
     //fclose(rstfile);
 }

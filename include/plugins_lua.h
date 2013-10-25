@@ -4,7 +4,7 @@
  *
  * The 3-clause BSD license is applied to this software.
  * see LICENSE.txt
- * 
+ *
  */
 
 #ifndef PLUGINS_LUA_H_INCLUDED
@@ -12,11 +12,19 @@
 
 #ifdef LUA_PLUGINS
 
-void init_lua(char plugin_file_name[]);
-// void register_lua_function(char plugin_function_name[]);
+typedef enum
+{
+    PAIR,
+    FFI
+}PLUGIN_TYPE;
+
+extern PLUGIN_TYPE lua_plugin_type;
+
+void init_lua(char *plugin_file_name);
+void register_lua_function(char *plugin_function_name);
 void end_lua();
 
-/* compatible with pointer of type 
+/* compatible with pointer of type
  'double (*get_ENER)' from ener.h*/
 double get_lua_V(ATOM at[], DATA *dat, int32_t candidate);
 double get_lua_V_ffi(ATOM at[], DATA *dat, int32_t candidate);

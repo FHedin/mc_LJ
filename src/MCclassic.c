@@ -4,7 +4,7 @@
  *
  * The 3-clause BSD license is applied to this software.
  * see LICENSE.txt
- * 
+ *
  */
 
 #include <stdlib.h>
@@ -30,18 +30,18 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
     uint32_t /*i,*/j,k;
     uint64_t st, acc=0, acc2=0;
     int32_t accParam=0;
-    
+
     ATOM *at_new;
-    
+
 //     double *dmax;
     int32_t candidate=-1;
     uint32_t n_moving=   1    ;//dat->natom;
     int32_t *ismoving = NULL;
     //int32_t unicMove=    1;//-1;
     int32_t mv_direction= -1;
-    
+
     double randvec[3] = {0.0,0.0,0.0};
-    
+
 //     uint64_t progress=dat->nsteps/1000;
 //     clock_t start,now;
 
@@ -49,17 +49,17 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 
     at_new=malloc(dat->natom*sizeof *at_new);
     ismoving=calloc(dat->natom,sizeof *ismoving);
-    
+
 //     dmax=malloc(dat->natom*sizeof *dmax);
 //     for (i=0; i<(dat->natom); i++)
 //       dmax[i] = dat->d_max;
 
     for (st=1; st<=(dat->nsteps); st++) //main loop
     {
-        
+
         LOG_PRINT(LOG_DEBUG,"----------------------"
-                            " STEP %"PRIu64" ----------------------\n",st);
-        
+                  " STEP %"PRIu64" ----------------------\n",st);
+
         for (j=0; j<(dat->natom); j++)
             memcpy(&at_new[j],&at[j],sizeof(ATOM));
 
@@ -89,7 +89,7 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
         while(j<n_moving);
 
         LOG_PRINT(LOG_DEBUG,"%d atoms moving for step %"PRIu64" --> ",n_moving,st);
-        for (j=0;j<n_moving;j++)
+        for (j=0; j<n_moving; j++)
             LOG_PRINT_SHORT(LOG_DEBUG,"%d ",ismoving[j]);
         LOG_PRINT_SHORT(LOG_DEBUG,"\n");
 
@@ -99,14 +99,14 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
             j = (uint32_t) ismoving[k];
 //            mv_direction = (int)3*get_next(dat);
             get_vector(dat,mv_direction,randvec);
-            
+
             at_new[j].x += (dat->d_max)*randvec[0] ;
             at_new[j].y += (dat->d_max)*randvec[1] ;
             at_new[j].z += (dat->d_max)*randvec[2] ;
             k++;
         }
         while(k<n_moving);
-        
+
         accParam=apply_Metrop(at,at_new,dat,&ismoving[0],ener,&st);
 //         accParam=apply_Metrop(at,at_new,dat,&unicMove,ener,&st);
 
@@ -126,7 +126,7 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
         }
 
         if (dat->d_max_when != 0)
-          adj_dmax(dat,&st,&acc);
+            adj_dmax(dat,&st,&acc);
 
 //         if ((*ener)/at[0].ljp.eps <= dat->E_steepD)
 //         {
@@ -142,7 +142,7 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 //             (*write_traj)(at_new,dat,st);
 //             return acc2;
 //           }
-//           else 
+//           else
 //               fprintf(stdout,"Minimum not reached : continuing ...\n\n");
 //         }
 
@@ -179,8 +179,8 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 //            fflush(stdout);
 //        }
 
-        
-        
+
+
     }//end of main loop
 
     free(at_new) ;
@@ -200,7 +200,7 @@ int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, do
     double rejParam = 0.;
 
 #ifdef _OPENMP
-#pragma omp parallel
+    #pragma omp parallel
     {
 #endif
         Eold=(*get_ENER)(at,dat,*candidate);
@@ -214,7 +214,7 @@ int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, do
 
     Ediff = (Enew - Eold) ;
     EconstrDiff = (EconstrNew - EconstrOld) ;
-    
+
     LOG_PRINT(LOG_DEBUG,"Ediff : %lf \t Econstrdiff : %lf \n",Ediff,EconstrDiff);
 
     if ( (Ediff + EconstrDiff) < 0.0 )
@@ -222,35 +222,35 @@ int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, do
         *ener+=Ediff;
         if((*step)!=0 && (*step)%io.esave==0)
             fwrite(ener,sizeof(double),1,efile);
-        
+
         LOG_PRINT(LOG_DEBUG,"MOVE ACCEPTED\n");
-        
+
         return MV_ACC ;
     }
     else
     {
         rejParam = exp(-dat->beta*(Ediff + EconstrDiff));
         alpha = get_next(dat);
-        
+
         LOG_PRINT(LOG_DEBUG,"alpha : %lf ; \t rejp : %lf\n",alpha,rejParam);
-        
+
         if (alpha < rejParam)
         {
             *ener+=Ediff;
             if((*step)!=0 && (*step)%io.esave==0)
                 fwrite(ener,sizeof(double),1,efile);
-            
+
             LOG_PRINT(LOG_DEBUG,"MOVE ACCEPTED\n");
-            
+
             return MV_ACC ;
         }
         else
         {
             if((*step)!=0 && (*step)%io.esave==0)
                 fwrite(ener,sizeof(double),1,efile);
-            
+
             LOG_PRINT(LOG_DEBUG,"MOVE REJECTED\n");
-            
+
             return MV_REJ ;
         }
     }

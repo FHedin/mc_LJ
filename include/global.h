@@ -4,7 +4,7 @@
  *
  * The 3-clause BSD license is applied to this software.
  * see LICENSE.txt
- * 
+ *
  */
 
 #ifndef GLOBAL_H_INCLUDED
@@ -55,7 +55,7 @@ typedef struct
     double E_steepD;
     double E_expected;
     double beta;
-    
+
 #ifndef STDRAND
     dsfmt_t dsfmt;
     uint32_t *seeds;
@@ -89,7 +89,7 @@ typedef struct
 
 typedef struct
 {
-	double cx,cy,cz;
+    double cx,cy,cz;
 } CM;
 
 #endif // GLOBAL_H_INCLUDED

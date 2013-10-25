@@ -4,7 +4,7 @@
  *
  * The 3-clause BSD license is applied to this software.
  * see LICENSE.txt
- * 
+ *
  */
 
 #include <stdlib.h>
@@ -35,7 +35,7 @@ double get_LJ_V(ATOM at[], DATA *dat, int32_t candidate)
     double dcm;
     double d2, epsi_g, sig_g;
     double energy = 0.0;
-    
+
     dat->E_constr = 0.0;
     CM cm = getCM(at,dat);
 
@@ -189,7 +189,7 @@ double getExtraPot(double d2, double sig, double eps)
 //     double vc = d2/(X2(K_CONSTRAINT*sig));
 //     vc=pow(vc,10.0);
 //     vc*=eps;
-// 
+//
 //     return vc;
     return 0.0;
 }

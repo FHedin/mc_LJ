@@ -4,7 +4,7 @@
  *
  * The 3-clause BSD license is applied to this software.
  * see LICENSE.txt
- * 
+ *
  */
 
 #include <stdlib.h>
@@ -23,8 +23,10 @@
 
 void get_vector(DATA *dat, int32_t mv_direction, double vec[3])
 {
-    vec[0] = 0.0 ;  vec[1] = 0.0 ;  vec[2] = 0.0 ;
-    
+    vec[0] = 0.0 ;
+    vec[1] = 0.0 ;
+    vec[2] = 0.0 ;
+
     if (mv_direction==-1)
     {
         vec[0] = 2.*get_next(dat)-1.;
@@ -110,7 +112,7 @@ void adj_dmax(DATA *dat, uint64_t *step, uint64_t *acc)
         *acc = 0 ;
         if (new_dmax > 1.0) new_dmax = 1.0;
         if (new_dmax < 0.01) new_dmax = 0.01;
-        
+
         LOG_PRINT(LOG_INFO,"d_max update at step %"PRIu64" : ratio = %lf ; old_dmax = %lf ; new_dmax = %lf\n",*step,ratio,dat->d_max,new_dmax);
         dat->d_max = new_dmax;
     }

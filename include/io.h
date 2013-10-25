@@ -4,25 +4,25 @@
  *
  * The 3-clause BSD license is applied to this software.
  * see LICENSE.txt
- * 
+ *
  */
 
 #ifndef IO_H_INCLUDED
 #define IO_H_INCLUDED
 
-// structure containing files name and frequency of writting, for things related to the simulation (errors handled separately)
+// structure containing files path and frequency of writting, for things related to the simulation (errors handled separately)
 typedef struct
 {
-    // names for files where initial and final crds are stored in xyz format
+    // path for files where initial and final crds are stored in xyz format
     char crdtitle_first[FILENAME_MAX];
     char crdtitle_last[FILENAME_MAX];
-    
-    // name for file where the trajectory is stored
+
+    // path for file where the trajectory is stored
     char trajtitle[FILENAME_MAX];
-    
-    // name for file where the energy is stored
+
+    // path for file where the energy is stored
     char etitle[FILENAME_MAX];
-    
+
     // frequency for saving energy and trajectory
     uint32_t esave;
     uint32_t trsave;
@@ -31,7 +31,7 @@ typedef struct
 // the previous structure is a global variable initialised in main.c
 extern IODAT io;
 
-// FILEs are opened in main.c and are global 
+// FILEs are opened in main.c and are global
 extern FILE *crdfile;
 extern FILE *traj;
 extern FILE *efile;

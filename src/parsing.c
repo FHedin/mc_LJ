@@ -4,7 +4,7 @@
  *
  * The 3-clause BSD license is applied to this software.
  * see LICENSE.txt
- * 
+ *
  */
 
 #include <stdlib.h>
@@ -17,6 +17,7 @@
 #include "ener.h"
 #include "tools.h"
 #include "logger.h"
+#include "plugins_lua.h"
 
 static uint32_t lj_size = 0 ;
 
@@ -25,33 +26,32 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
     ATOM *at=NULL;
     LJPARAMS *ljpars=NULL;
 
-    char buff1[1024]="", *buff2=NULL, *buff3=NULL ;
+    char buff1[FILENAME_MAX]="", *buff2=NULL, *buff3=NULL ;
 
     FILE *ifile=NULL;
     ifile=fopen(fname,"r");
 
     if (ifile==NULL)
     {
-        fprintf(stdout,"Error while opening the file '%s'\n",fname);
+//         fprintf(stdout,"Error while opening the file '%s'\n",fname);
+        LOG_PRINT(LOG_ERROR,"Error while opening the file '%s'\n",fname);
         exit(-1);
     }
 
-    while(fgets(buff1,1024,ifile)!=NULL)
+    while(fgets(buff1,FILENAME_MAX,ifile)!=NULL)
     {
-       // skip comment line, but print it in stderr for debugging purpose
-       if (buff1[0]=='#')
-       {
-//            fprintf(stderr,"[Info] Skipping line %s",buff1);
-           LOG_PRINT(LOG_INFO,"Skipping line %s",buff1);
-           continue;
-       }
-        
+        // skip comment line, but print it to LOG_INFO , may be useful for debugging a bad input file
+        if (buff1[0]=='#')
+        {
+            LOG_PRINT(LOG_INFO,"Skipping line %s",buff1);
+            continue;
+        }
+
         buff2=strtok(buff1," \n\t");
 
         while (buff2 != NULL)
         {
             buff3=strtok(NULL," \n\t");
-// 			printf("%s %s\n",buff2,buff3);
 
             if (!strcasecmp(buff2,"METHOD"))
             {
@@ -76,12 +76,18 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                     sprintf(dat->method,"%s",buff3);
                 }
                 else
-                    fprintf(stdout,"Warning : %s %s is unknown. Should be METROP or SPAV.\n",buff2,buff3);
+                {
+                    LOG_PRINT(LOG_WARNING,"%s %s is unknown. Should be METROP or SPAV.\n",buff2,buff3);
+//                     fprintf(stdout,"Warning : %s %s is unknown. Should be METROP or SPAV.\n",buff2,buff3);
+                }
             }
             else if (!strcasecmp(buff2,"POTENTIAL"))
             {
-                if (strcasecmp(buff3,"LJ") && strcasecmp(buff3,"AZIZ"))
-                    fprintf(stdout,"Warning : %s %s is unknown. Should be LJ or AZIZ.\n",buff2,buff3);
+                if (strcasecmp(buff3,"LJ") && strcasecmp(buff3,"AZIZ") && strcasecmp(buff3,"PLUGIN"))
+                {
+                    LOG_PRINT(LOG_WARNING,"%s %s is unknown. Should be LJ or AZIZ or PLUGIN.\n",buff2,buff3);
+//                     fprintf(stdout,"Warning : %s %s is unknown. Should be LJ or AZIZ or PLUGIN.\n",buff2,buff3);
+                }
                 else
                 {
                     if (!strcasecmp(buff3,"AZIZ"))
@@ -90,6 +96,34 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                     {
                         get_ENER = &(get_LJ_V);
                         get_DV = &(get_LJ_DV);
+                    }
+                    else if (!strcasecmp(buff3,"PLUGIN"))
+                    {
+                        char *buff4=NULL , *buff5=NULL , *buff6=NULL;
+                        buff4=strtok(NULL," \n\t");
+                        buff5=strtok(NULL," \n\t");
+                        buff6=strtok(NULL," \n\t");
+                        
+                        if (!strcasecmp(buff4,"PAIR"))
+                        {
+                            lua_plugin_type = PAIR;
+                            get_ENER = &(get_lua_V);
+                        }
+                        else if (!strcasecmp(buff4,"FFI"))
+                        {
+                            lua_plugin_type = FFI;
+                            get_ENER = &(get_lua_V_ffi);
+                        }
+                        else
+                        {
+                            LOG_PRINT(LOG_ERROR,"Plugin type %s is unknown. Must be PAIR or FFI.\n",buff4);
+                            exit(-1);
+                        }
+                        
+                        // open lua file and register function name
+                        init_lua(buff5);
+                        register_lua_function(buff6);
+                        
                     }
                 }
             }
@@ -100,7 +134,10 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                 else if (!strcasecmp(buff3,"CHARMM"))
                     charmm_units=1;
                 else
-                    fprintf(stdout,"Warning : %s %s is unknown. Must be CHARMM or REDUCED.\n",buff2,buff3);
+                {
+                    LOG_PRINT(LOG_WARNING,"%s %s is unknown. Must be CHARMM or REDUCED.\n",buff2,buff3);
+//                     fprintf(stdout,"Warning : %s %s is unknown. Must be CHARMM or REDUCED.\n",buff2,buff3);
+                }
             }
             else if (!strcasecmp(buff2,"SAVE"))
             {
@@ -226,18 +263,20 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                     // initial structure read from an xyz file
                     char *fi=NULL;
                     fi=strtok(NULL," \n\t'");
-                    
+
                     FILE *start=NULL;
                     start = fopen(fi,"r");
                     if (start==NULL)
                     {
-                      fprintf(stdout,"Error while opening initial structure file %s\n",fi);
-                      exit(-1);
+                        LOG_PRINT(LOG_ERROR,"Error while opening initial structure file %s\n",fi);
+//                         fprintf(stdout,"Error while opening initial structure file %s\n",fi);
+                        exit(-1);
                     }
-       
+
                     read_xyz(at,dat,start);
-//                     steepd_ini(at,dat);
                     
+//                     steepd_ini(at,dat);
+
                     fclose(start);
                 }
                 else
@@ -246,7 +285,7 @@ ATOM* parse_from_file(char fname[], DATA *dat, SPDAT *spdat)
                     build_cluster(at,dat,j,k,1);
                 }
             }
-            
+
             buff2=strtok(NULL," \n\t");
         }
     }

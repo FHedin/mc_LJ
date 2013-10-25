@@ -35,9 +35,15 @@ ffi.cdef[[
         LJPARAMS ljp;
     } ATOM;
     ]]
+    
+-- parameters to tune for adapting the potential
+-- this set is the same than the standard 12,6 potential
+local c = 4
+local n = 12
+local m = 6
 
 -- This function estimates the LJ n-m potential of a whole system
-function lj_v_n_m_ffi(natom, at_list, candidate, c, n, m)
+function lj_v_n_m_ffi(natom, at_list, candidate)
           
 --     print("natom : ",natom)
 --     print("at_list : ",at_list)
