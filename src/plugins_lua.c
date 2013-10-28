@@ -25,7 +25,8 @@ static lua_State* L;
 static uint32_t is_lua_used;
 
 static char lua_file[FILENAME_MAX];
-static char lua_function[2][FILENAME_MAX];
+
+static char lua_function[LUA_MAX_FUNCTIONS_NUMBER][LUA_FUNCTIONS_NAMELEN];
 
 void init_lua(char *plugin_file_name)
 {
@@ -52,13 +53,13 @@ void init_lua(char *plugin_file_name)
 }
 
 // type is 0 for energy, 1 for gradient
-void register_lua_function(char *plugin_function_name, uint32_t type)
+void register_lua_function(char *plugin_function_name, LUA_FUNCTION_TYPE type)
 {
     LOG_PRINT(LOG_INFO,"Registering Lua function : %s \n",plugin_function_name);
     
-    if(type==0)
+    if(type==POTENTIAL)
         strcpy(lua_function[0],plugin_function_name);
-    else if(type==1)
+    else if(type==GRADIENT)
         strcpy(lua_function[1],plugin_function_name);
     else
     {

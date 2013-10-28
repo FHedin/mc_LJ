@@ -17,6 +17,10 @@
 #include "dSFMT.h"
 #endif
 
+#ifndef FILENAME_MAX
+#define FILENAME_MAX    4096
+#endif
+
 // macro for powers
 #define X2(a)   (a)*(a)
 #define X3(a)   X2(a)*(a)

@@ -10,6 +10,10 @@
 #ifndef IO_H_INCLUDED
 #define IO_H_INCLUDED
 
+#ifndef FILENAME_MAX
+#define FILENAME_MAX    4096
+#endif
+
 // structure containing files path and frequency of writting, for things related to the simulation (errors handled separately)
 typedef struct
 {

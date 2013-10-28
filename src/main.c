@@ -85,7 +85,7 @@ LOG_LEVELS LOG_SEVERITY = LOG_WARNING;
  * Type of Lua plugin, i.e. PAIR or FFI (see "plugins_lua.h")
  */
 #ifdef LUA_PLUGINS
-PLUGIN_TYPE lua_plugin_type = PAIR;
+LUA_PLUGIN_TYPE lua_plugin_type = PAIR;
 #endif
 
 /*
@@ -394,13 +394,6 @@ void start_classic(DATA *dat, ATOM at[])
     ener = (*get_ENER)(at,dat,-1);
     fprintf(stdout,"\nStarting METROP Monte-Carlo\n");
     fprintf(stdout,"LJ initial energy is : %lf \n\n",ener);
-
-//     get_ENER = &(get_LJ_V);
-//     ener = (*get_ENER)(at,dat,-1);
-//     fprintf(stdout,"\nStarting METROP Monte-Carlo\n");
-//     fprintf(stdout,"LJ initial energy is : %lf \n\n",ener);
-//
-//     exit(0);
 
     fwrite(&ener,sizeof(double),1,efile);
 

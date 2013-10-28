@@ -16,12 +16,34 @@ typedef enum
 {
     PAIR,
     FFI
-}PLUGIN_TYPE;
+}LUA_PLUGIN_TYPE;
 
-extern PLUGIN_TYPE lua_plugin_type;
+typedef enum
+{
+    POTENTIAL,
+    GRADIENT
+}LUA_FUNCTION_TYPE;
+
+extern LUA_PLUGIN_TYPE lua_plugin_type;
+
+/*
+ * Maximum number of Lua functions it is possible to register
+ * Can be redefined when compiling 
+ */
+#ifndef LUA_MAX_FUNCTIONS_NUMBER
+#define LUA_MAX_FUNCTIONS_NUMBER    12
+#endif
+
+/*
+ * Maximum length for the name of Lua functions registred
+ * Can be redefined when compiling 
+ */
+#ifndef LUA_FUNCTIONS_NAMELEN
+#define LUA_FUNCTIONS_NAMELEN   256
+#endif
 
 void init_lua(char *plugin_file_name);
-void register_lua_function(char *plugin_function_name, uint32_t type);
+void register_lua_function(char *plugin_function_name, LUA_FUNCTION_TYPE type);
 void end_lua();
 
 double get_lua_V(ATOM at[], DATA *dat, int32_t candidate);

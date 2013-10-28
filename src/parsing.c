@@ -100,6 +100,7 @@ void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at)
                     else if (!strcasecmp(buff3,"PLUGIN"))
                     {
                         char *buff4=NULL , *buff5=NULL , *buff6=NULL , *buff7=NULL;
+//                         PLUGIN_TYPE plug_type;
                         buff4=strtok(NULL," \n\t");
                         buff5=strtok(NULL," \n\t");
                         buff6=strtok(NULL," \n\t");
@@ -125,8 +126,8 @@ void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at)
                         
                         // open lua file and register function name
                         init_lua(buff5);
-                        register_lua_function(buff6,0);
-                        register_lua_function(buff7,1);
+                        register_lua_function(buff6,POTENTIAL);
+                        register_lua_function(buff7,GRADIENT);
                     }
 #endif
                 }
