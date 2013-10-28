@@ -278,10 +278,12 @@ int main(int argc, char** argv)
         fprintf(stdout,"Using L-J potential\n");
     else if (get_ENER==&(get_AZIZ_V))
         fprintf(stdout,"Using Aziz potential\n");
+#ifdef LUA_PLUGINS
     else if (get_ENER==&(get_lua_V))
         fprintf(stdout,"Using plugin pair potential\n");
     else if (get_ENER==&(get_lua_V_ffi))
         fprintf(stdout,"Using plugin ffi potential\n");
+#endif
     
     if (charmm_units)
         fprintf(stdout,"Using CHARMM  units.\n\n");

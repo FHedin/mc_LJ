@@ -33,14 +33,14 @@ WFLAGS=-Wall -Wextra
 # OPTIM=-O0 -g
 OPTIM=-O2
 
-CC_OPT=-I"./dSFMT" -I"./include" $(WFLAGS) -std=c99 $(OPTIM) -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS
+CC_OPT=-I"./dSFMT/" -I"./include/" -I"../luajit/" $(WFLAGS) -std=c99 $(OPTIM) -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS
 
 CC_SFMT_OPT=-I"./dSFMT" $(WFLAGS) -std=c99 $(OPTIM) -msse2 -fno-strict-aliasing -DHAVE_SSE2 -DDSFMT_MEXP=19937
 
 FC_OPT=$(WFLAGS) -std=f95 $(OPTIM) -msse2
 
 # LD_OPT= -llua -lm
-LD_OPT= -lluajit-5.1 -lm
+LD_OPT= -L"." -llua51 -lm
 # LD_OPT= -lm
 
 MKDIR=mkdir -p ./obj/dSFMT

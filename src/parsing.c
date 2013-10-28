@@ -96,6 +96,7 @@ void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at)
                         get_ENER = &(get_LJ_V);
                         get_DV = &(get_LJ_DV);
                     }
+#ifdef LUA_PLUGINS
                     else if (!strcasecmp(buff3,"PLUGIN"))
                     {
                         char *buff4=NULL , *buff5=NULL , *buff6=NULL , *buff7=NULL;
@@ -127,6 +128,7 @@ void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at)
                         register_lua_function(buff6,0);
                         register_lua_function(buff7,1);
                     }
+#endif
                 }
             }
             else if (!strcasecmp(buff2,"UNITS"))
