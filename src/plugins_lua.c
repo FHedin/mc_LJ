@@ -57,10 +57,10 @@ void register_lua_function(char *plugin_function_name, LUA_FUNCTION_TYPE type)
 {
     LOG_PRINT(LOG_INFO,"Registering Lua function : %s \n",plugin_function_name);
     
-    if(type==POTENTIAL)
-        strcpy(lua_function[0],plugin_function_name);
-    else if(type==GRADIENT)
-        strcpy(lua_function[1],plugin_function_name);
+    if(type == POTENTIAL)
+        strcpy(lua_function[POTENTIAL],plugin_function_name);
+    else if(type == GRADIENT)
+        strcpy(lua_function[GRADIENT],plugin_function_name);
     else
     {
         LOG_PRINT(LOG_ERROR,"Unknown type %d for register_lua_function.\n",type);
@@ -110,7 +110,7 @@ double get_lua_V(ATOM at[], DATA *dat, int32_t candidate)
                  */
 
                 /* the lua function name */
-                lua_getglobal(L, lua_function[0]);
+                lua_getglobal(L, lua_function[POTENTIAL]);
 
                 // first push arguments to the stack
                 lua_pushnumber(L, dx1);
@@ -214,7 +214,7 @@ void get_lua_DV(ATOM at[], DATA *dat, double fx[], double fy[], double fz[])
             dy2=at[j].y;
             dz2=at[j].z;
             
-            lua_getglobal(L, lua_function[1]);
+            lua_getglobal(L, lua_function[GRADIENT]);
 
             lua_pushnumber(L, dx1);
             lua_pushnumber(L, dy1);
@@ -252,7 +252,7 @@ double get_lua_V_ffi(ATOM at[], DATA *dat, int32_t candidate)
 {
     double energy=0.0;
 
-    lua_getglobal(L, lua_function[0]);
+    lua_getglobal(L, lua_function[POTENTIAL]);
 
     lua_pushinteger(L, dat->natom);
     lua_pushlightuserdata(L, (void*) at);
@@ -270,7 +270,7 @@ double get_lua_V_ffi(ATOM at[], DATA *dat, int32_t candidate)
 
 void get_lua_DV_ffi(ATOM at[], DATA *dat, double fx[], double fy[], double fz[])
 {
-    lua_getglobal(L, lua_function[1]);
+    lua_getglobal(L, lua_function[GRADIENT]);
     
 //     function lj_dv_n_m_ffi(natom, at_list, fx, fy, fz)
     lua_pushinteger(L, dat->natom);

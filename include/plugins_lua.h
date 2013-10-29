@@ -14,14 +14,14 @@
 
 typedef enum
 {
-    PAIR,
-    FFI
+    PAIR=0,
+    FFI=1
 }LUA_PLUGIN_TYPE;
 
 typedef enum
 {
-    POTENTIAL,
-    GRADIENT
+    POTENTIAL=0,
+    GRADIENT=1
 }LUA_FUNCTION_TYPE;
 
 extern LUA_PLUGIN_TYPE lua_plugin_type;
