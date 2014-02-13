@@ -33,8 +33,7 @@ WFLAGS=-Wall -Wextra
 # OPTIM=-O0 -g
 OPTIM=-O2
 
-INC_OPT=-I"./dSFMT/" -I"./include/"
-# -I"../luajit/" 
+INC_OPT=-I"./dSFMT/" -I"./include/" -I"/usr/include/luajit-2.0/"
 
 CC_OPT=$(INC_OPT) $(WFLAGS) -std=c99 $(OPTIM) -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS
 
