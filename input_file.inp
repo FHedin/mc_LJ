@@ -46,6 +46,7 @@ DMAX    0.15    UPDATE  1000 TARGET  30.0
 LJPARAMS    AR  EPSILON 1.0 SIGMA   1.0
 # Currently all parameters for the Aziz potential are hard coded, nothing to specify here
 
+# Build the atomic system
 ATOM	1	TO	END		AR	COOR	RANDOM
 
 #SAVE	ENER			'ener.dat'	EACH    10000

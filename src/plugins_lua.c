@@ -245,8 +245,10 @@ void get_lua_DV(ATOM at[], DATA *dat, double fx[], double fy[], double fz[])
 
 /*
  * This interface calls a lua script evaluating a Lennard Jobes like potential
- * This version directly sends the ATOM structure, the ua side requires LUAJIT/FFI
+ * This version directly sends the ATOM structure, the Lua side requires LUAJIT/FFI
  * see plugins/lj_n_m_ffi.lua
+ * 
+ * This is the recommended way of calling lua script
  */
 double get_lua_V_ffi(ATOM at[], DATA *dat, int32_t candidate)
 {
@@ -268,6 +270,9 @@ double get_lua_V_ffi(ATOM at[], DATA *dat, int32_t candidate)
     return energy;
 }
 
+/*
+ * This is the recommended way of calling lua script 
+ */
 void get_lua_DV_ffi(ATOM at[], DATA *dat, double fx[], double fy[], double fz[])
 {
     lua_getglobal(L, lua_function[GRADIENT]);

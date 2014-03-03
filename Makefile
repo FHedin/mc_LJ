@@ -12,11 +12,11 @@
 #################################################################
 
 # intel compiler
-# CC=icc 
-# FC=ifort
+CC=icc 
+FC=ifort
 
-CC=gcc
-FC=gfortran
+#CC=gcc
+#FC=gfortran
 
 # CC=gcc48
 # FC=gfortran48
@@ -30,10 +30,10 @@ WFLAGS=-Wall -Wextra
 #-Wpointer-arith -Wtype-limits -Wbad-function-cast -Wcast-qual -Wconversion \
 #-Wsign-conversion
 
-# OPTIM=-O0 -g
 OPTIM=-O2
 
-CC_OPT=-I"./dSFMT/" -I"./include/" -I"/home/hedin/bin/luajit_last/include/luajit-2.0" $(WFLAGS) -std=c99 $(OPTIM) -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS
+INC_OPT=-I"./dSFMT/" -I"./include/" -I"/usr/include/luajit-2.0/"
+CC_OPT=$(INC_OPT) $(WFLAGS) -std=c99 $(OPTIM) -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS
 
 CC_SFMT_OPT=-I"./dSFMT" $(WFLAGS) -std=c99 $(OPTIM) -msse2 -fno-strict-aliasing -DHAVE_SSE2 -DDSFMT_MEXP=19937
 
