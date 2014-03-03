@@ -198,7 +198,8 @@ uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
             steepd(at_new,dat);
             double E_sd = (*get_ENER)(at_new,dat,-1);
             fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,(E_sd/at[0].ljp.eps) );
-            (*write_traj)(at,dat,st);
+            //(*write_traj)(at,dat,st);
+	    (*write_traj)(at_new,dat,st);
         }
 
         //energy check
