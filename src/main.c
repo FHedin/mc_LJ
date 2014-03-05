@@ -485,7 +485,7 @@ void help(char **argv)
 
 // -----------------------------------------------------------------------------------------
 /**
- * \brief   This sets variables used when minimising the energy function.
+ * \brief   This sets variables possibly used when minimising the energy function.
  *
  * \details Depending of the value of \b dat->natom this sets the variables \b dat->E_steepD,
  *          which may be used as a threshold for starting Steepest Descent minimisation, and

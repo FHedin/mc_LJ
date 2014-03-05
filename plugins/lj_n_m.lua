@@ -10,7 +10,7 @@
 --
 -- Formula is :
 -- V = C * epsilon * [ (sigma/r)^n - (sigma/r)^m ]
--- Where n and m are integers and n>m ; C is a constant depending of both n and m
+-- Where n and m are integers and n>m ; C is a constant depending on both n and m
 --
 -- See for example : http://www.sklogwiki.org/SklogWiki/index.php/Lennard-Jones_model#n-m_Lennard-Jones_potential
 --

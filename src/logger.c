@@ -23,7 +23,7 @@
 
 #include "logger.h"
 
-// those variabes arepersistent but only accessible from this file
+// those variabes are persisting but only accessible from this file
 static FILE *F_ERROR , *F_WARN , *F_INFO , *F_DEBUG ;
 static time_t rawtime;
 
