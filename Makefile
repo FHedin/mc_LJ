@@ -12,18 +12,20 @@
 #################################################################
 
 # intel compiler
-CC=icc 
-FC=ifort
+# CC=icc 
+# FC=ifort
 
-#CC=gcc
-#FC=gfortran
+# CC=gcc #-static
+# FC=gfortran #-static
 
 # CC=gcc48
 # FC=gfortran48
 
 # For compiling MS-Windows executable on linux 
-# CC=x86_64-w64-mingw32-gcc
-# FC=x86_64-w64-mingw32-gfortran
+#CC=x86_64-w64-mingw32-gcc -static-libgcc
+#FC=x86_64-w64-mingw32-gfortran -static-libgcc
+CC=i686-w64-mingw32-gcc -static-libgcc 
+FC=i686-w64-mingw32-gfortran -static-libgcc
 
 WFLAGS=-Wall -Wextra 
 #-Wdouble-promotion -Wformat -Wimplicit-int -Wuninitialized -Wfloat-equal \
@@ -32,16 +34,23 @@ WFLAGS=-Wall -Wextra
 
 OPTIM=-O2
 
-INC_OPT=-I"./dSFMT/" -I"./include/" -I"/home/hedin/bin/luajit_last/include/luajit-2.0"
+# INC_OPT=-I"./dSFMT/" -I"./include/" -I"/home/hedin/bin/luajit_last/include/luajit-2.0"
+# CC_OPT=$(INC_OPT) $(WFLAGS) -std=c99 $(OPTIM) -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS
+
+INC_OPT=-I"./dSFMT/" -I"./include/" -I"/usr/local/include/luajit-2.0"
 CC_OPT=$(INC_OPT) $(WFLAGS) -std=c99 $(OPTIM) -msse2 -DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS
+
 
 CC_SFMT_OPT=-I"./dSFMT" $(WFLAGS) -std=c99 $(OPTIM) -msse2 -fno-strict-aliasing -DHAVE_SSE2 -DDSFMT_MEXP=19937
 
 FC_OPT=$(WFLAGS) -std=f95 $(OPTIM) -msse2
 
-LD_OPT= -L"/home/hedin/bin/luajit_last/lib" -lluajit-5.1 -lm
-#LD_OPT= -L"." -llua51 -lm
-#LD_OPT= -lm
+# LD_OPT=-lluajit-5.1 -lm -ldl -lrt
+#LD_OPT=-L"./dist/win64" -llua51 -lm
+LD_OPT=-L"./dist/win32" -llua51 -lm
+# LD_OPT= -L"/home/hedin/bin/luajit_last/lib" -lluajit-5.1 -lm
+# LD_OPT= -L"." -llua51 -lm
+# LD_OPT= -lm
 
 MKDIR=mkdir -p ./obj/dSFMT
  
