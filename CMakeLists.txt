@@ -15,7 +15,8 @@ project(${TGT} C Fortran)
 include_directories(
 include
 dSFMT
-/usr/local/include/luajit-2.0
+#/usr/local/include/luajit-2.0
+/home/hedin/bin/luajit_last/include/luajit-2.0
 )
 
 # list all source files
@@ -44,6 +45,7 @@ set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O
 set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O0 -g")
 
 add_definitions(-DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS)
-link_libraries(m rt dl luajit-5.1)
 add_executable(${TGT} ${SRCS})
+link_libraries(m rt dl luajit-5.1)
+target_link_libraries(${TGT} /home/hedin/bin/luajit_last/lib/libluajit-5.1.so)
 

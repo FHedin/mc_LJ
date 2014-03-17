@@ -7,4 +7,8 @@ mc_LJ
 *.xyz
 *.dcd
 *.log
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
 
