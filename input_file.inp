@@ -6,7 +6,7 @@
 # by using blank spaces or tabulations.
 
 # we can use hard coded Lennard-Jones or Aziz potential
-# POTENTIAL   LJ
+POTENTIAL   LJ
 # Aziz potential is currently available only for Argon and Neon (mixtures are allowed)
 # POTENTIAL  AZIZ
 
@@ -17,15 +17,14 @@
 # - FFI  means that the lua function uses LUAJIT/FFI allowing to work on the whole atomic system
 # Examples : 
 # POTENTIAL PLUGIN PAIR plugins/lj_n_m.lua       lj_v_n_m_pair    lj_dv_n_m_pair
-POTENTIAL PLUGIN FFI  plugins/lj_n_m_ffi.lua   lj_v_n_m_ffi     lj_dv_n_m_ffi
+# POTENTIAL PLUGIN FFI  plugins/lj_n_m_ffi.lua   lj_v_n_m_ffi     lj_dv_n_m_ffi
 
 # unit of energy can be REDUCED (k_boltz*t/epsilon) or CHARMM (kcal/mol)
 UNITS   REDUCED
 #UNITS  CHARMM
 
 #set the numb. of atoms
-NATOMS  38
-
+NATOMS  75
 # reduced temperature
 TEMP    0.25
 # or temperature in Kelvin if CHARMM units are used
@@ -33,7 +32,7 @@ TEMP    0.25
 
 # number of steps : coded as an unsigned 64-bits integer so values of several billions
 # are perfectly valid !
-NSTEPS  1000000
+NSTEPS  100000000
 
 #constant correcting factor for MC moves
 #DMAX   0.15
@@ -54,7 +53,7 @@ ATOM	1	TO	END		AR	COOR	RANDOM
 SAVE	COOR	FIRST	XYZ	'init.xyz'
 #SAVE    COOR    LAST   XYZ 'init.xyz'
 
-SAVE	COOR	TRAJ	DCD	'traj.dcd' 	EACH	10000
+SAVE	COOR	TRAJ	DCD	'traj.dcd' 	EACH	100000
 
 #METHOD	SPAV	WEPS	0.15	MEPS	10	NEPS	10
 METHOD	METROP

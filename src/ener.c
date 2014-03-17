@@ -143,13 +143,13 @@ double get_AZIZ_V(ATOM at[], DATA *dat, int32_t candidate)
                 if(!strcmp(at[i].sym,at[j].sym)) //if the same type (strcmp return 0 if identical)
                 {
                     if (!strcmp(at[i].sym,"Ne")) //both are neon
-                        aziz_ne_ne_(&d,&etmp);
+                        etmp=aziz_ne_ne(d);
                     else	//both are argon
-                        aziz_ar_ar_(&d,&etmp);
+                        etmp=aziz_ar_ar(d);
 
                 }
                 else //if different type it means it is 1 Ar and 1 Ne
-                    aziz_ar_ne_(&d,&etmp);
+                    etmp=aziz_ar_ne(d);
 
                 energy += etmp;
             }
@@ -168,13 +168,13 @@ double get_AZIZ_V(ATOM at[], DATA *dat, int32_t candidate)
                 if(!strcmp(at[i].sym,at[j].sym)) //if the same type (strcmp return 0 if identical)
                 {
                     if (!strcmp(at[i].sym,"Ne")) //both are neon
-                        aziz_ne_ne_(&d,&etmp);
+                        etmp=aziz_ne_ne(d);
                     else	//both are argon
-                        aziz_ar_ar_(&d,&etmp);
+                        etmp=aziz_ar_ar(d);
 
                 }
                 else //if different type it means it is 1 Ar and 1 Ne
-                    aziz_ar_ne_(&d,&etmp);
+                    etmp=aziz_ar_ne(d);
 
                 energy += etmp;
             }
@@ -191,8 +191,143 @@ double getExtraPot(double d2, double sig, double eps)
     vc*=eps;
 
     return vc;
-    
+
 //     return 0.0;
+
+}
+
+double aziz_ne_ne(double r)
+{
+    // HFD-B potential from Aziz, Chem. Phys. 130 (1989) p 187
+    // reads r in angstroems gives potential energy in cm-1.
+
+    // local
+    double x;
+    double v_star;
+    double x2,x4,x6,x8,x10,f;
+
+    // local constants
+    const double a_s=8.9571795e+5;
+    const double alpha_s=13.86434671;
+    const double c_6=1.21317545;
+    const double c_8=0.53222749;
+    const double c_10=0.24570703;
+    const double beta_s=-0.12993822;
+    const double d=1.36;
+    const double epsi=42.25*0.695039;
+    const double r_m=3.091;
+
+    // output
+    double pot;
+
+
+    x=r/r_m;
+
+    f=exp(-X2(d/x-1.));
+
+    if (x>=d)
+        f=1.;
+
+    x2=x*x;
+    x4=x2*x2;
+    x6=x2*x4;
+    x8=x4*x4;
+    x10=x4*x6;
+
+    v_star=a_s*exp(-alpha_s*x+beta_s*X2(x))-f*(c_6/x6+c_8/x8+c_10/x10);
+
+    pot=epsi*v_star;
+
+    return pot;
+}
+
+double aziz_ar_ne(double r)
+{
+    // HFD-B potential from Barrow, Aziz, JCP 89, 6189 (1988)
+    // reads r in angstroems gives potential energy in cm-1.
     
+    // local
+    double x;
+    double v_star;
+    double x2,x4,x6,x8,x10,x12,f;
+
+    // local constants
+    const double a_s=1.651205e+5;
+    const double alpha_s=9.69290567;
+    const double c_6=1.09781826;
+    const double c_8=0.34284623;
+    const double c_10=0.30103922;
+    const double c_12=0.74483225;
+    const double beta_s=-2.27380851;
+    const double d=1.44;
+    const double epsi=67.59*0.695039;
+    const double r_m=3.4889;
+    
+    // received
+    double pot;
+
+    x=r/r_m;
+
+    f=exp(-X2(d/x-1.));
+    
+    if (x>=d)
+        f=1.;
+
+    x2=x*x;
+    x4=x2*x2;
+    x6=x2*x4;
+    x8=x4*x4;
+    x10=x4*x6;
+    x12=x6*x6;
+
+    v_star=a_s*exp(-alpha_s*x+beta_s*X2(x))-f*(c_6/x6+c_8/x8+c_10/x10+c_12/x12);
+
+    pot=epsi*v_star;
+
+    return pot;
+}
+
+double aziz_ar_ar(double r)
+{
+    //HFD-B potential from Aziz, JCP 92, 1030 (1990)
+    //reads r in angstroems gives potential energy in cm-1.
+    
+    // local
+    double x;
+    double v_star;
+    double x2,x4,x6,x8,x10,f;
+
+    // local constants
+    const double a_s=1.14211845e+5;
+    const double alpha_s=9.00053441;
+    const double c_6=1.09971113;
+    const double c_8=0.54511632;
+    const double c_10=0.39278653;
+    const double beta_s=-2.60270226;
+    const double d=1.04;
+    const double epsi=143.25*0.695039;
+    const double r_m=3.761;
+    
+    // received
+    double pot;
+
+    x=r/r_m;
+
+    f=exp(-X2(d/x-1.));
+    
+    if (x>=d)
+        f=1.;
+
+    x2=x*x;
+    x4=x2*x2;
+    x6=x2*x4;
+    x8=x4*x4;
+    x10=x4*x6;
+
+    v_star=a_s*exp(-alpha_s*x+beta_s*X2(x))-f*(c_6/x6+c_8/x8+c_10/x10);
+
+    pot=epsi*v_star;
+
+    return pot;
 }
 
