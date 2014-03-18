@@ -24,37 +24,40 @@ UNITS   REDUCED
 #UNITS  CHARMM
 
 #set the numb. of atoms
-NATOMS  75
+NATOMS  29
 # reduced temperature
-TEMP    0.25
+TEMP    0.20
 # or temperature in Kelvin if CHARMM units are used
 #TEMP   110
 
 # number of steps : coded as an unsigned 64-bits integer so values of several billions
 # are perfectly valid !
-NSTEPS  100000000
+NSTEPS  500000000
 
 #constant correcting factor for MC moves
 #DMAX   0.15
 # or automatically optimised dmax : each UPDATE steps dmax is adjust for reaching
 # TARGET (in %) of acceptance
-DMAX    0.15    UPDATE  1000 TARGET  30.0
+DMAX    0.25    UPDATE  1000 TARGET  30.0
 
 # For each type of atom, set the Lennard Jones parameters
 # Here example for reduced units
-LJPARAMS    AR  EPSILON 1.0 SIGMA   1.0
+LJPARAMS    A  EPSILON 1.0 SIGMA   1.00
+LJPARAMS    B  EPSILON 1.0 SIGMA   1.05
+
 # Currently all parameters for the Aziz potential are hard coded, nothing to specify here
 
 # Build the atomic system
-ATOM	1	TO	END		AR	COOR	RANDOM
+ATOM    6   TO  END B   COOR    RANDOM
+ATOM    1   TO  5   A   COOR    RANDOM
 
-#SAVE	ENER			'ener.dat'	EACH    10000
+# SAVE    ENER    'ener.dat'  EACH    10000
 
-SAVE	COOR	FIRST	XYZ	'init.xyz'
-#SAVE    COOR    LAST   XYZ 'init.xyz'
+SAVE    COOR    FIRST   XYZ 'init.xyz'
+# SAVE    COOR    LAST    XYZ 'last.xyz'
 
-SAVE	COOR	TRAJ	DCD	'traj.dcd' 	EACH	100000
+SAVE    COOR    TRAJ    DCD 'traj.dcd'  EACH    100000
 
-#METHOD	SPAV	WEPS	0.15	MEPS	10	NEPS	10
-METHOD	METROP
+# METHOD  SPAV    WEPS    0.15    MEPS    10  NEPS    10
+METHOD  METROP
 

@@ -42,6 +42,18 @@ local c = 4.0
 local n = 12.0
 local m = 6.0
 
+-- an example of parameters for the 9,6 parameters
+-- see http://www.sklogwiki.org/SklogWiki/index.php/9-6_Lennard-Jones_potential
+-- local c = 6.75
+-- local n = 9.0
+-- local m = 6.0
+
+-- an example of parameters for the 9,3 parameters
+-- see http://www.sklogwiki.org/SklogWiki/index.php/9-3_Lennard-Jones_potential
+-- local c = 3.0*math.sqrt(3.0)/2.0
+-- local n = 9.0
+-- local m = 3.0
+
 -- This function estimates the LJ n-m potential of a whole system
 function lj_v_n_m_ffi(natom, at_list, candidate)
           

@@ -1,4 +1,4 @@
 #!/bin/sh
 
-rm -f *.xyz *.ener *.png *.log *.csv *.dat *.dcd
+rm -f *.xyz *.ener *.png *.log *.csv *.dat *.dcd *.out
 
