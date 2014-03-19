@@ -88,7 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2013, Florent Hedin, Markus Meuwly, and the University of Basel</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2014, Florent Hedin, Markus Meuwly, and the University of Basel</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * All rights reserved.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * The 3-clause BSD license is applied to this software.</span></div>
@@ -116,25 +116,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define JTOCAL      0.239005736     // Joules to Calories</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define CM1TOKJM    1.1963e-02    // 1 cm-1 in kJ/mol</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">//pointers to the desired energy and force functions</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// pointers to the desired energy and force functions</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;double (*get_ENER)(<a class="code" href="structATOM.html">ATOM</a> at[], <a class="code" href="structDATA.html">DATA</a> *dat, int32_t candidate);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;void   (*get_DV)(<a class="code" href="structATOM.html">ATOM</a> at[], <a class="code" href="structDATA.html">DATA</a> *dat, <span class="keywordtype">double</span> fx[], <span class="keywordtype">double</span> fy[], <span class="keywordtype">double</span> fz[]);</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">//ener and force for lennard-jones</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">// ener and force for lennard-jones</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">double</span> get_LJ_V(<a class="code" href="structATOM.html">ATOM</a> at[], <a class="code" href="structDATA.html">DATA</a> *dat, int32_t candidate);</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> get_LJ_DV(<a class="code" href="structATOM.html">ATOM</a> at[], <a class="code" href="structDATA.html">DATA</a> *dat, <span class="keywordtype">double</span> fx[], <span class="keywordtype">double</span> fy[], <span class="keywordtype">double</span> fz[]);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//ener for aziz potential</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// ener for aziz potential</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">double</span> get_AZIZ_V(<a class="code" href="structATOM.html">ATOM</a> at[], <a class="code" href="structDATA.html">DATA</a> *dat, int32_t candidate);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//those 3 fortran subroutines returns energy in cm-1</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> aziz_ne_ne_(<span class="keywordtype">double</span> *r, <span class="keywordtype">double</span> *pot);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> aziz_ar_ne_(<span class="keywordtype">double</span> *r, <span class="keywordtype">double</span> *pot);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> aziz_ar_ar_(<span class="keywordtype">double</span> *r, <span class="keywordtype">double</span> *pot);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// constraint for avoiding cluster evaporation</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keywordtype">double</span> getExtraPot(<span class="keywordtype">double</span> d2, <span class="keywordtype">double</span> sig, <span class="keywordtype">double</span> eps);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#endif // ENER_H_INCLUDED</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// those 3 functions returns energy in cm-1 !!</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keywordtype">double</span> aziz_ne_ne(<span class="keywordtype">double</span> r);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">double</span> aziz_ar_ne(<span class="keywordtype">double</span> r);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keywordtype">double</span> aziz_ar_ar(<span class="keywordtype">double</span> r);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">// constraint for avoiding cluster evaporation</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">double</span> getExtraPot(<span class="keywordtype">double</span> d2, <span class="keywordtype">double</span> sig, <span class="keywordtype">double</span> eps);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#endif // ENER_H_INCLUDED</span></div>
 <div class="ttc" id="structDATA_html"><div class="ttname"><a href="structDATA.html">DATA</a></div><div class="ttdef"><b>Definition:</b> <a href="global_8h_source.html#l00046">global.h:46</a></div></div>
 <div class="ttc" id="structATOM_html"><div class="ttname"><a href="structATOM.html">ATOM</a></div><div class="ttdef"><b>Definition:</b> <a href="global_8h_source.html#l00087">global.h:87</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

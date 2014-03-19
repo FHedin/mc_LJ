@@ -6,7 +6,7 @@
  * \authors Florent Hedin (University of Basel, Switzerland) \n
  *          Markus Meuwly (University of Basel, Switzerland)
  *
- * \copyright Copyright (c) 2013, Florent Hedin, Markus Meuwly, and the University of Basel. \n
+ * \copyright Copyright (c) 2014, Florent Hedin, Markus Meuwly, and the University of Basel. \n
  *            All rights reserved. \n
  *            The 3-clause BSD license is applied to this software. \n
  *            See LICENSE.txt

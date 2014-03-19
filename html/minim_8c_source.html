@@ -88,7 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2013, Florent Hedin, Markus Meuwly, and the University of Basel</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright (c) 2014, Florent Hedin, Markus Meuwly, and the University of Basel</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * All rights reserved.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * The 3-clause BSD license is applied to this software.</span></div>
@@ -166,11 +166,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        (*get_DV)(at,dat,fx,fy,fz);</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <a class="code" href="logger_8c.html#a83f416e0cf6a24d3d2206cdd43e2e880">LOG_PRINT</a>(<a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99ab9f002c6ffbfd511da8090213227454e">LOG_DEBUG</a>,<span class="stringliteral">&quot;SteepD alpha vector old = %lf %lf %lf\n&quot;</span>,alpha[0],alpha[1],alpha[2]);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">//         LOG_PRINT(LOG_DEBUG,&quot;SteepD alpha vector old = %lf %lf %lf\n&quot;,alpha[0],alpha[1],alpha[2]);</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        adjust_alpha(dat-&gt;natom,fxo,fx,alpha);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        adjust_alpha(dat-&gt;natom,fyo,fy,alpha+1);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        adjust_alpha(dat-&gt;natom,fzo,fz,alpha+2);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <a class="code" href="logger_8c.html#a83f416e0cf6a24d3d2206cdd43e2e880">LOG_PRINT</a>(<a class="code" href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99ab9f002c6ffbfd511da8090213227454e">LOG_DEBUG</a>,<span class="stringliteral">&quot;SteepD alpha vector new = %lf %lf %lf\n&quot;</span>,alpha[0],alpha[1],alpha[2]);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">//         LOG_PRINT(LOG_DEBUG,&quot;SteepD alpha vector new = %lf %lf %lf\n&quot;,alpha[0],alpha[1],alpha[2]);</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        memcpy(fxo,fx,dat-&gt;natom*<span class="keyword">sizeof</span>(<span class="keywordtype">double</span>));</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        memcpy(fyo,fy,dat-&gt;natom*<span class="keyword">sizeof</span>(<span class="keywordtype">double</span>));</div>
@@ -254,7 +254,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="structDATA_html"><div class="ttname"><a href="structDATA.html">DATA</a></div><div class="ttdef"><b>Definition:</b> <a href="global_8h_source.html#l00046">global.h:46</a></div></div>
 <div class="ttc" id="logger_8h_html_a6cfcf0d1e54151523d73f747ea51ba99a6e98ff471e3ce6c4ef2d75c37ee51837"><div class="ttname"><a href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99a6e98ff471e3ce6c4ef2d75c37ee51837">LOG_INFO</a></div><div class="ttdef"><b>Definition:</b> <a href="logger_8h_source.html#l00059">logger.h:59</a></div></div>
 <div class="ttc" id="structATOM_html"><div class="ttname"><a href="structATOM.html">ATOM</a></div><div class="ttdef"><b>Definition:</b> <a href="global_8h_source.html#l00087">global.h:87</a></div></div>
-<div class="ttc" id="logger_8h_html_a6cfcf0d1e54151523d73f747ea51ba99ab9f002c6ffbfd511da8090213227454e"><div class="ttname"><a href="logger_8h.html#a6cfcf0d1e54151523d73f747ea51ba99ab9f002c6ffbfd511da8090213227454e">LOG_DEBUG</a></div><div class="ttdef"><b>Definition:</b> <a href="logger_8h_source.html#l00060">logger.h:60</a></div></div>
 <div class="ttc" id="logger_8h_html"><div class="ttname"><a href="logger_8h.html">logger.h</a></div><div class="ttdoc">Header file for managing logging, see #logger.c. </div></div>
 <div class="ttc" id="logger_8c_html_a83f416e0cf6a24d3d2206cdd43e2e880"><div class="ttname"><a href="logger_8c.html#a83f416e0cf6a24d3d2206cdd43e2e880">LOG_PRINT</a></div><div class="ttdeci">uint32_t LOG_PRINT(LOG_LEVELS mesg_severity, char *fmt,...)</div><div class="ttdoc">log_print </div><div class="ttdef"><b>Definition:</b> <a href="logger_8c_source.html#l00160">logger.c:160</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
