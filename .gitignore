@@ -1,12 +1,13 @@
 res/
 res_new/
-obj
+build/
 mc_LJ
 *kdev*
 *.dat
 *.xyz
 *.dcd
 *.log
+*.gz
 CMakeCache.txt
 CMakeFiles/
 Makefile

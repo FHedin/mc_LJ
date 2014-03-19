@@ -77,11 +77,11 @@ void steepd(ATOM at[],DATA *dat)
 
         (*get_DV)(at,dat,fx,fy,fz);
 
-        LOG_PRINT(LOG_DEBUG,"SteepD alpha vector old = %lf %lf %lf\n",alpha[0],alpha[1],alpha[2]);
+//         LOG_PRINT(LOG_DEBUG,"SteepD alpha vector old = %lf %lf %lf\n",alpha[0],alpha[1],alpha[2]);
         adjust_alpha(dat->natom,fxo,fx,alpha);
         adjust_alpha(dat->natom,fyo,fy,alpha+1);
         adjust_alpha(dat->natom,fzo,fz,alpha+2);
-        LOG_PRINT(LOG_DEBUG,"SteepD alpha vector new = %lf %lf %lf\n",alpha[0],alpha[1],alpha[2]);
+//         LOG_PRINT(LOG_DEBUG,"SteepD alpha vector new = %lf %lf %lf\n",alpha[0],alpha[1],alpha[2]);
 
         memcpy(fxo,fx,dat->natom*sizeof(double));
         memcpy(fyo,fy,dat->natom*sizeof(double));
