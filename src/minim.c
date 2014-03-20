@@ -136,14 +136,14 @@ void steepd(ATOM at[],DATA *dat)
 //     free(DV);
 // }
 
-void adjust_alpha(const int natom, const double grad_old[], const double grad_new[], double *alpha)
+void adjust_alpha(const uint32_t natom, const double grad_old[], const double grad_new[], double *alpha)
 {
     double dot_prod=0.0;
     double norm_old=0.0;
     double norm_new=0.0;
     double angle;
 
-    int i;
+    uint32_t i;
 
     for(i=0; i<natom; i++)
     {

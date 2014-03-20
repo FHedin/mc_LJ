@@ -142,19 +142,17 @@ void write_dcd(ATOM at[], DATA *dat, uint64_t when)
 
 }
 
-void write_rst(DATA *dat, SPDAT *spdat, ATOM at[])
+void write_rst(ATOM at[], DATA *dat, SPDAT *spdat, uint32_t meth)
 {
+    // if meth=0 : metropolis
+    // if meth=1 : sa-mc
+    
     FILE *rstfile=NULL;
     rstfile=fopen("restart.dat","wb");
 
     /** From global.h **/
     // 1 : write global variables
-    fwrite(&is_stdout_redirected,sizeof(uint32_t),1,rstfile);
     fwrite(&charmm_units,sizeof(uint32_t),1,rstfile);
-#ifdef _OPENMP
-    fwrite(&ncpus,sizeof(uint32_t),1,rstfile);
-    fwrite(&nthreads,sizeof(uint32_t),1,rstfile);
-#endif
 
     // 2 : structure DATA
     fwrite(&dat->natom,sizeof(uint32_t),1,rstfile);
@@ -171,16 +169,29 @@ void write_rst(DATA *dat, SPDAT *spdat, ATOM at[])
     fwrite(&dat->E_expected,sizeof(double),1,rstfile);
     fwrite(&dat->beta,sizeof(double),1,rstfile);
 
-    // 2 : structure SPDAT
-    fwrite(&spdat->meps,sizeof(uint32_t),1,rstfile);
-    fwrite(&spdat->neps,sizeof(uint32_t),1,rstfile);
-    fwrite(&spdat->weps,sizeof(double),1,rstfile);
-    fwrite(&spdat->normalSize,sizeof(uint32_t),1,rstfile);
-    fwrite(spdat->normalNumbs,sizeof(double),spdat->normalSize,rstfile);
+    if(meth==1)
+    {
+        // 2 : structure SPDAT
+        fwrite(&spdat->meps,sizeof(uint32_t),1,rstfile);
+        fwrite(&spdat->neps,sizeof(uint32_t),1,rstfile);
+        fwrite(&spdat->weps,sizeof(double),1,rstfile);
+    }
 
     // 3 : structure ATOM
-    fwrite(at,sizeof(ATOM),dat->natom,rstfile);
+    for(uint32_t i; i<dat->natom; i++)
+    {
+        fwrite(&(at[i].x),sizeof(double),1,rstfile);
+        fwrite(&(at[i].y),sizeof(double),1,rstfile);
+        fwrite(&(at[i].z),sizeof(double),1,rstfile);
+        
+        fwrite(at[i].sym,sizeof(char),4,rstfile);
+        
+        fwrite(at[i].ljp.sym,sizeof(char),4,rstfile);
+        
+        fwrite(&(at[i].ljp.sig),sizeof(double),1,rstfile);
+        fwrite(&(at[i].ljp.eps),sizeof(double),1,rstfile);
+    }
 
     /** END **/
-    //fclose(rstfile);
+    fclose(rstfile);
 }

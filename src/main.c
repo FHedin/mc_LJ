@@ -406,6 +406,8 @@ void start_classic(DATA *dat, ATOM at[])
 
     crdfile=fopen(io.crdtitle_last,"wt");
     write_xyz(at,dat,dat->nsteps,crdfile);
+    
+//     write_rst(at,dat,(SPDAT*)NULL,0);
 
     fclose(crdfile);
     fclose(traj);
@@ -457,6 +459,8 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
 
     crdfile=fopen(io.crdtitle_last,"wt");
     write_xyz(at,dat,dat->nsteps,crdfile);
+    
+//     write_rst(at,dat,spdat,1);
 
     fclose(crdfile);
     fclose(traj);

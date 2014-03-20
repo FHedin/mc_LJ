@@ -8,6 +8,7 @@ mc_LJ
 *.dcd
 *.log
 *.gz
+*.out
 CMakeCache.txt
 CMakeFiles/
 Makefile

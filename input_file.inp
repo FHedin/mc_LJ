@@ -24,21 +24,21 @@ UNITS   REDUCED
 #UNITS  CHARMM
 
 #set the numb. of atoms
-NATOMS  13
+NATOMS  75
 # reduced temperature
-TEMP    0.15
+TEMP    0.25
 # or temperature in Kelvin if CHARMM units are used
 #TEMP   110
 
 # number of steps : coded as an unsigned 64-bits integer so values of several billions
 # are perfectly valid !
-NSTEPS  1000
+NSTEPS  150000000
 
 #constant correcting factor for MC moves
 #DMAX   0.15
 # or automatically optimised dmax : each UPDATE steps dmax is adjust for reaching
 # TARGET (in %) of acceptance
-DMAX    0.25    UPDATE  1000 TARGET  30.0
+DMAX    0.25    UPDATE  1000 TARGET  35.0
 
 # For each type of atom, set the Lennard Jones parameters
 # Here example for reduced units
@@ -56,7 +56,7 @@ ATOM    1   TO  END   A   COOR    RANDOM
 SAVE    COOR    FIRST   XYZ 'init.xyz'
 # SAVE    COOR    LAST    XYZ 'last.xyz'
 
-SAVE    COOR    TRAJ    DCD 'traj.dcd'  EACH    10
+SAVE    COOR    TRAJ    DCD 'traj.dcd'  EACH    10000
 
 # METHOD  SPAV    WEPS    0.15    MEPS    10  NEPS    10
 METHOD  METROP

@@ -47,6 +47,6 @@ void read_xyz(ATOM at[], DATA *dat, FILE *inpf);
 void write_xyz(ATOM at[], DATA *dat, uint64_t when, FILE *outf);
 void write_dcd(ATOM at[], DATA *dat, uint64_t when);
 
-void write_rst(DATA *dat, SPDAT *spdat, ATOM at[]);
+void write_rst(ATOM at[], DATA *dat, SPDAT *spdat, uint32_t meth);
 
 #endif // IO_H_INCLUDED

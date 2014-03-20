@@ -15,6 +15,6 @@ void dealloc_minim();
 
 void steepd(ATOM at[],DATA *dat);
 // void steepd_ini(ATOM at[],DATA *dat);
-void adjust_alpha(const int natom, const double grad_old[], const double grad_new[], double *alpha);
+void adjust_alpha(const uint32_t natom, const double grad_old[], const double grad_new[], double *alpha);
 
 #endif // MINIM_H_INCLUDED

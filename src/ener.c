@@ -88,7 +88,6 @@ double get_LJ_V(ATOM at[], DATA *dat, int32_t candidate)
                 sig_g  = 0.5*( at[i].ljp.sig + at[j].ljp.sig );
 
                 energy += 4.0 * epsi_g *( (X12(sig_g))/(X6(d2)) - (X6(sig_g))/(X3(d2)) );
-//            	dat->E_constr += getExtraPot(d2,sig_g,epsi_g);
             }
         }
     }

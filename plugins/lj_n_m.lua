@@ -77,7 +77,7 @@ function lj_dv_n_m_pair(xa, ya, za, xb, yb, zb, eps_a, eps_b, sig_a, sig_b)
     local fy = dv*dy
     local fz = dv*dz
     
-    -- not that we return fz first and fx last, as lua is stack based.
+    -- note that we return fz first and fx last, as lua is stack based.
     -- By doing that the c code will take first fx as it is on top of the stack
     return fz,fy,fx
     
