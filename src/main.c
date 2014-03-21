@@ -251,6 +251,8 @@ int main(int argc, char** argv)
     }
 #endif
 
+//     exit(0);
+    
     // parse input file, initialise atom list
     parse_from_file(inpf,&dat,&spdat,&at);
 

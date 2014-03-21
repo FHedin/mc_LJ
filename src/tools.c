@@ -35,6 +35,10 @@ void get_vector(DATA *dat, int32_t mv_direction, double vec[3])
     }
     else
         vec[mv_direction] = 2.*get_next(dat)-1.;
+    
+//     fprintf(stdout,"get_vector : mv_direction is %d\n",mv_direction);
+//     fflush(stdout);
+    
 }
 
 /*
@@ -43,6 +47,10 @@ void get_vector(DATA *dat, int32_t mv_direction, double vec[3])
 void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, int32_t mode)
 {
     uint32_t i = 0 ;
+    
+//     fprintf(stdout,"Entered in build cluster : from %d to %d mode %d\n",from,to,mode);
+//     fflush(stdout);
+                    
     if (mode==-1)	//infinite initialisation mode
     {
         for (i=from; i<to; i++)
@@ -60,12 +68,17 @@ void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, int32_t mod
 
         for (i=0; i<dat->natom; i++)
             rtot += at[i].ljp.sig;
+        
         rtot /= (double)dat->natom;
         rtot = (double)dat->natom*4.0*3.14159*X3(rtot)/3.0;
         dat->inid = pow(3.0*rtot/(4.0*3.14159),0.333);
 
         for (i=from; i<to; i++)
         {
+            
+//             fprintf(stdout,"loop %d\n",i);
+//             fflush(stdout);
+            
             do
             {
                 get_vector(dat,-1,randvec);
@@ -81,9 +94,12 @@ void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, int32_t mod
 //returns 0 if no steric clash, -1 otherwise
 int32_t  no_conflict(ATOM at[],uint32_t i)
 {
-
     uint32_t j=0;
     double d=0.0;
+    
+//     fprintf(stdout,"In no_conflict for %d\n",i);
+//     fflush(stdout);
+    
     for (j=0; j<i; j++)
     {
         d = X2(at[i].x-at[j].x) +  X2(at[i].y-at[j].y) + X2(at[i].z-at[j].z) ;

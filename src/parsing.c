@@ -146,6 +146,8 @@ void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at)
             }
             else if (!strcasecmp(buff2,"SAVE"))
             {
+//                 fprintf(stderr,"Entering save\n");
+//                 fflush(stderr);
                 if (!strcasecmp(buff3,"ENER"))
                 {
                     char *title=NULL , *each=NULL;
@@ -154,6 +156,8 @@ void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at)
                     each = strtok(NULL," \n\t"); //junk
                     each = strtok(NULL," \n\t");
                     io.esave = (uint32_t) atoi(each);
+//                     fprintf(stderr,"Save ener file\n");
+//                     fflush(stderr);
                 }
                 else if (!strcasecmp(buff3,"COOR"))
                 {
@@ -164,12 +168,16 @@ void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at)
                         type = strtok(NULL," \n\t");
                         title = strtok(NULL," \n\t\'");
                         sprintf(io.crdtitle_first,"%s",title);
+//                         fprintf(stderr,"Save coor first\n");
+//                         fflush(stderr);
                     }
                     else if (!strcasecmp(what,"LAST"))
                     {
                         type = strtok(NULL," \n\t");
                         title = strtok(NULL," \n\t\'");
                         sprintf(io.crdtitle_last,"%s",title);
+//                         fprintf(stderr,"Save coor last\n");
+//                         fflush(stderr);
                     }
                     else if (!strcasecmp(what,"TRAJ"))
                     {
@@ -180,6 +188,8 @@ void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at)
                         each = strtok(NULL," \n\t"); //junk
                         each = strtok(NULL," \n\t");
                         io.trsave = (uint32_t) atoi(each);
+//                         fprintf(stderr,"Save coor traj\n");
+//                         fflush(stderr);
                     }
                 }
             }
@@ -233,15 +243,23 @@ void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at)
                 uint32_t i=0,j=0,k=0,l=0;
                 char *from=buff3 , *to=NULL , *type=NULL , 	*coor=NULL;
 
+//                 fprintf(stdout,"Building an atom list.\n");
+                
                 to=strtok(NULL," \n\t");
                 to=strtok(NULL," \n\t");
                 type=strtok(NULL," \n\t");
                 coor=strtok(NULL," \n\t");
                 coor=strtok(NULL," \n\t");
 
+//                 fprintf(stdout,"Building an atom list done.\n");
+//                 fflush(stdout);
+                
                 j = (uint32_t) atoi(from) - 1;
                 k = (uint32_t) atoi(to);
 
+//                 fprintf(stdout,"Building an atom list : from to : done.\n");
+//                 fflush(stdout);
+                
                 if (k<=0 || k>dat->natom)
                     k=dat->natom;
 
@@ -258,11 +276,22 @@ void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at)
                         }
                     }
                 }
+                
+//                 fprintf(stdout,"LJ params arrays filled with params\n");
+//                 fflush(stdout);
 
                 if(!strcasecmp(coor,"RANDOM"))
+                {
                     build_cluster(*at,dat,j,k,1);
+//                     fprintf(stdout,"Initial cluster build by random\n");
+//                     fflush(stdout);
+                }
                 else if (!strcasecmp(coor,"ZERO"))
+                {
                     build_cluster(*at,dat,j,k,0);
+//                     fprintf(stdout,"Initial cluster build by zero\n");
+//                     fflush(stdout);
+                }
                 else if (!strcasecmp(coor,"FILE"))
                 {
                     // initial structure read from an xyz file
@@ -283,11 +312,16 @@ void parse_from_file(char fname[], DATA *dat, SPDAT *spdat, ATOM **at)
 //                     steepd_ini(*at,dat);
 
                     fclose(start);
+                    
+//                     fprintf(stdout,"Initial cluster build by file\n");
+//                     fflush(stdout);
                 }
                 else
                 {
                     //random is default
                     build_cluster(*at,dat,j,k,1);
+//                     fprintf(stdout,"Initial cluster build by random\n");
+//                     fflush(stdout);
                 }
             }
 

@@ -32,7 +32,7 @@ TEMP    0.25
 
 # number of steps : coded as an unsigned 64-bits integer so values of several billions
 # are perfectly valid !
-NSTEPS  150000000
+NSTEPS  5000000
 
 #constant correcting factor for MC moves
 #DMAX   0.15
@@ -56,7 +56,7 @@ ATOM    1   TO  END   A   COOR    RANDOM
 SAVE    COOR    FIRST   XYZ 'init.xyz'
 # SAVE    COOR    LAST    XYZ 'last.xyz'
 
-SAVE    COOR    TRAJ    DCD 'traj.dcd'  EACH    10000
+SAVE    COOR    TRAJ    DCD 'traj.dcd'  EACH    1000
 
 # METHOD  SPAV    WEPS    0.15    MEPS    10  NEPS    10
 METHOD  METROP
