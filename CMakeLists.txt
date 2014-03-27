@@ -45,6 +45,9 @@ dSFMT/dSFMT.c
 set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O2")
 set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O0 -g")
 
+# set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -xSSE4.2 -fno-strict-aliasing -O2")
+# set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -xSSE4.2 -fno-strict-aliasing -O0 -g")
+
 add_definitions(-DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS)
 link_libraries(m rt dl luajit-5.1)
 add_executable(${TGT} ${SRCS})

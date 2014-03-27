@@ -50,7 +50,7 @@ void steepd(ATOM at[],DATA *dat)
     uint32_t i=0,/*j=0,*/counter=0;
 
     double alpha[3] = {1.0e-03,1.0e-03,1.0e-03} ;
-    double prec = 1.0e-05 ;
+    const double prec = 1.0e-05 ;
     double e1=0. , e2=0.;
     double diff;
 
