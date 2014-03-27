@@ -20,8 +20,8 @@ project(${TGT} C)
 include_directories(
 include
 dSFMT
-/usr/local/include/luajit-2.0
-#/home/hedin/bin/luajit_last/include/luajit-2.0
+#/usr/local/include/luajit-2.0
+/home/hedin/bin/luajit_last/include/luajit-2.0
 )
 
 # list all source files
@@ -42,17 +42,24 @@ src/tools.c
 dSFMT/dSFMT.c
 )
 
-set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O2")
-set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O0 -g")
+#set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O2")
+#set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O0 -g")
 
-# set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -xSSE4.2 -fno-strict-aliasing -O2")
-# set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -xSSE4.2 -fno-strict-aliasing -O0 -g")
+#set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -xCORE-AVX-I -fno-strict-aliasing -O2")
+#set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -xCORE-AVX-I -fno-strict-aliasing -O0 -g")
+
+#set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -msse2 -axMIC-AVX512,CORE-AVX2,CORE-AVX-I,AVX,SSE4.2,SSE4.1,SSSE3,SSE3 -fno-strict-aliasing -O2")
+#set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -msse2 -axMIC-AVX512,CORE-AVX2,CORE-AVX-I,AVX,SSE4.2,SSE4.1,SSSE3,SSE3 -fno-strict-aliasing -O0 -g")
+
+set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -fno-strict-aliasing -O0 -g")
+set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -fno-strict-aliasing -O3 -xHost")
 
 add_definitions(-DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS)
-link_libraries(m rt dl luajit-5.1)
+
+link_directories(/home/hedin/bin/luajit_last/lib/)
+#link_directories(/usr/local/include/luajit-2.0/libluajit-5.1.so)
+
 add_executable(${TGT} ${SRCS})
-
-#target_link_libraries(${TGT} /home/hedin/bin/luajit_last/lib/libluajit-5.1.so)
-#target_link_libraries(${TGT} /usr/local/include/luajit-2.0/libluajit-5.1.so)
-
+target_link_libraries(${TGT} m rt dl luajit-5.1)
+#target_link_libraries(${TGT} luajit-5.1)
 

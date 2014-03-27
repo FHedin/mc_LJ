@@ -15,7 +15,8 @@
  * University and The University of Tokyo.
  * All rights reserved.
  *
- * The 3-clause BSD License is applied to this software, see LICENSE_DSFMT.txt
+ * The 3-clause BSD License is applied to this software, see
+ * LICENSE.txt
  */
 #ifndef DSFMT_COMMON_H
 #define DSFMT_COMMON_H
@@ -38,7 +39,7 @@ static const union X128I_T sse2_param_mask = {{DSFMT_MSK1, DSFMT_MSK2}};
 
 #if defined(HAVE_ALTIVEC)
 inline static void do_recursion(w128_t *r, w128_t *a, w128_t * b,
-                                w128_t *lung) {
+				w128_t *lung) {
     const vector unsigned char sl1 = ALTI_SL1;
     const vector unsigned char sl1_perm = ALTI_SL1_PERM;
     const vector unsigned int sl1_msk = ALTI_SL1_MSK;
@@ -98,7 +99,7 @@ inline static void do_recursion(w128_t *r, w128_t *a, w128_t *b, w128_t *u) {
  * @param lung a 128-bit part of the internal state array (I/O)
  */
 inline static void do_recursion(w128_t *r, w128_t *a, w128_t * b,
-                                w128_t *lung) {
+				w128_t *lung) {
     uint64_t t0, t1, L0, L1;
 
     t0 = a->u[0];

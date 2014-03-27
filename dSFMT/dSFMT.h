@@ -14,7 +14,8 @@
  * Hiroshima University and The University of Tokyo.
  * All rights reserved.
  *
- * The 3-clause BSD License is applied to this software, see LICENSE_DSFMT.txt
+ * The new BSD License is applied to this software.
+ * see LICENSE.txt
  *
  * @note We assume that your system has inttypes.h.  If your system
  * doesn't have inttypes.h, you have to typedef uint32_t and uint64_t,
@@ -42,9 +43,9 @@ extern "C" {
 
 #if !defined(DSFMT_MEXP)
 #ifdef __GNUC__
-#warning "DSFMT_MEXP is not defined. I assume DSFMT_MEXP is 19937."
+  #warning "DSFMT_MEXP is not defined. I assume DSFMT_MEXP is 19937."
 #endif
-#define DSFMT_MEXP 19937
+  #define DSFMT_MEXP 19937
 #endif
 /*-----------------
   BASIC DEFINITIONS
@@ -201,33 +202,33 @@ int dsfmt_get_min_array_size(void);
 #endif
 DSFMT_PRE_INLINE uint32_t dsfmt_genrand_uint32(dsfmt_t *dsfmt) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE double dsfmt_genrand_close1_open2(dsfmt_t *dsfmt)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE double dsfmt_genrand_close_open(dsfmt_t *dsfmt)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE double dsfmt_genrand_open_close(dsfmt_t *dsfmt)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE double dsfmt_genrand_open_open(dsfmt_t *dsfmt)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE uint32_t dsfmt_gv_genrand_uint32(void) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE double dsfmt_gv_genrand_close1_open2(void) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE double dsfmt_gv_genrand_close_open(void) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE double dsfmt_gv_genrand_open_close(void) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE double dsfmt_gv_genrand_open_open(void) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void dsfmt_gv_fill_array_open_close(double array[], int size)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void dsfmt_gv_fill_array_close_open(double array[], int size)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void dsfmt_gv_fill_array_open_open(double array[], int size)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void dsfmt_gv_fill_array_close1_open2(double array[], int size)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void dsfmt_gv_init_gen_rand(uint32_t seed) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void dsfmt_gv_init_by_array(uint32_t init_key[],
-        int key_length) DSFMT_PST_INLINE;
+                                             int key_length) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void dsfmt_init_gen_rand(dsfmt_t *dsfmt, uint32_t seed)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void dsfmt_init_by_array(dsfmt_t *dsfmt, uint32_t init_key[],
-        int key_length) DSFMT_PST_INLINE;
+                                          int key_length) DSFMT_PST_INLINE;
 
 /**
  * This function generates and returns unsigned 32-bit integer.
@@ -485,19 +486,19 @@ DSFMT_PRE_INLINE const char *get_idstring(void) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE int get_min_array_size(void) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void init_gen_rand(uint32_t seed) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void init_by_array(uint32_t init_key[], int key_length)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE double genrand_close1_open2(void) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE double genrand_close_open(void) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE double genrand_open_close(void) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE double genrand_open_open(void) DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void fill_array_open_close(double array[], int size)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void fill_array_close_open(double array[], int size)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void fill_array_open_open(double array[], int size)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 DSFMT_PRE_INLINE void fill_array_close1_open2(double array[], int size)
-DSFMT_PST_INLINE;
+    DSFMT_PST_INLINE;
 
 /**
  * This function is just the same as dsfmt_get_idstring().

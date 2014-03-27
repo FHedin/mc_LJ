@@ -24,9 +24,9 @@ UNITS   REDUCED
 #UNITS  CHARMM
 
 #set the numb. of atoms
-NATOMS  75
+NATOMS  135
 # reduced temperature
-TEMP    0.25
+TEMP    0.30
 # or temperature in Kelvin if CHARMM units are used
 #TEMP   110
 
@@ -54,7 +54,7 @@ ATOM    1   TO  END   A   COOR    RANDOM
 # SAVE    ENER    'ener.dat'  EACH    10000
 
 SAVE    COOR    FIRST   XYZ 'init.xyz'
-# SAVE    COOR    LAST    XYZ 'last.xyz'
+SAVE    COOR    LAST    XYZ 'last.xyz'
 
 SAVE    COOR    TRAJ    DCD 'traj.dcd'  EACH    50000
 
