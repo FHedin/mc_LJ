@@ -1,9 +1,12 @@
-/*
- * Copyright (c) 2014, Florent Hedin, Markus Meuwly, and the University of Basel
- * All rights reserved.
- *
- * The 3-clause BSD license is applied to this software.
- * see LICENSE.txt
+/**
+ * \file io.c
+ * 
+ * \brief I/O related code
+ * 
+ * \copyright Copyright (c) 2011-2015, Florent Hédin, Markus Meuwly, and the University of Basel. \n
+ *            All rights reserved. \n
+ *            The 3-clause BSD license is applied to this software. \n
+ *            See LICENSE.txt
  *
  */
 
@@ -16,8 +19,17 @@
 #include "io.h"
 #include "tools.h"
 
+/// header has to be written only once at the beginning of the dcd
 static uint32_t dcd_header_empty=1;
 
+/**
+ * Writes one xyz file
+ * 
+ * @param at ATOM array where to store coordinates
+ * @param dat common simulation data
+ * @param when Step at which we save data
+ * @param outf FILE where to save xyz
+ */
 void write_xyz(ATOM at[], DATA *dat, uint64_t when, FILE *outf)
 {
     recentre(at,dat);
@@ -28,6 +40,13 @@ void write_xyz(ATOM at[], DATA *dat, uint64_t when, FILE *outf)
         fprintf(outf,"%s\t%10.5lf\t%10.5lf\t%10.5lf\n",at[i].sym,at[i].x,at[i].y,at[i].z);
 }
 
+/**
+ * Reads one xyz file
+ * 
+ * @param at ATOM array where to store coordinates
+ * @param dat common simulation data
+ * @param inpf FILE where to read xyz from
+ */
 void read_xyz(ATOM at[], DATA *dat, FILE *inpf)
 {
     uint32_t i;
@@ -48,6 +67,12 @@ void read_xyz(ATOM at[], DATA *dat, FILE *inpf)
 
 }
 
+/**
+ * Writes a CHARMM like dcd
+ * @param at ATOM array where to store coordinates
+ * @param dat common simulation data
+ * @param when At which step function was called
+ */
 void write_dcd(ATOM at[], DATA *dat, uint64_t when)
 {
     recentre(at,dat);
@@ -141,12 +166,18 @@ void write_dcd(ATOM at[], DATA *dat, uint64_t when)
     fwrite(&sizeB,sizeof(uint32_t),1,traj);
 
 }
-
+/**
+ * Writes a restart file : DO NOT USE for the moment there is a bug somewhere !
+ * 
+ * @bug This function is bugged for the moment please don't use it !!
+ * 
+ * @param at Atom array
+ * @param dat Data structure
+ * @param spdat Spatial Averaging Data structure
+ * @param meth method used : 0 = metropolis and 1 = SA-MC
+ */
 void write_rst(ATOM at[], DATA *dat, SPDAT *spdat, uint32_t meth)
 {
-    // if meth=0 : metropolis
-    // if meth=1 : sa-mc
-    
     FILE *rstfile=NULL;
     rstfile=fopen("restart.dat","wb");
 

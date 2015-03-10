@@ -1,9 +1,18 @@
-/*
- * Copyright (c) 2014, Florent Hedin, Markus Meuwly, and the University of Basel
- * All rights reserved.
+/**
+ * \file rand.c
  *
- * The 3-clause BSD license is applied to this software.
- * see LICENSE.txt
+ * \brief File containing functions related to random number generators
+ *        If -DSTDRAND the standard C generator is used (NOT RECOMMANDED)
+ *        If not by default the dSFMT generator is used (high quality, HIGHLY RECOMMENDED)
+ *        Code for dSFMT is included in a subdirectory (unmodified, please avoid modifying excepted if you really know what you do as you may induce a severe bias)
+ *
+ * \authors Florent Hedin (University of Basel, Switzerland) \n
+ *          Markus Meuwly (University of Basel, Switzerland)
+ *
+ * \copyright Copyright (c) 2011-2015, Florent Hédin, Markus Meuwly, and the University of Basel. \n
+ *            All rights reserved. \n
+ *            The 3-clause BSD license is applied to this software. \n
+ *            See LICENSE.txt
  *
  */
 
@@ -15,8 +24,15 @@
 #include "rand.h"
 #include "logger.h"
 
+/**
+ * @brief Call this function for obtaining a uniformly distributed random number in the range (0, 1)
+ * 
+ * @param dat Common simulation data
+ * @return A random number uniformly distributed in the range (0, 1)
+ */
 double get_next(DATA *dat)
 {
+    // if array empty of fully used re-fill it
     if (dat->nrn==2048)
     {
 #ifdef STDRAND
@@ -24,14 +40,25 @@ double get_next(DATA *dat)
         for (i=0; i<2048; i++)
             dat->rn[i]=rand()/(double)RAND_MAX;
 #else
-        dsfmt_fill_array_close_open(&dat->dsfmt,dat->rn,(int32_t)dat->nrn);
+        dsfmt_fill_array_open_open(&dat->dsfmt,dat->rn,(int32_t)dat->nrn);
 #endif
         dat->nrn=0;
     }
+    // return a number from the array and increase the counter
     dat->nrn += 1;
     return dat->rn[dat->nrn-1] ;
 }
 
+/**
+ * @brief Returns a double precision number normally distributed around 0,
+ *  following a standard deviation taken from spdat->weps
+ *  It uses the Box Muller algorithm, see http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+ * 
+ * @param dat Common simulation data
+ * @param spdat Spatial-Averaging simulation data
+ * 
+ * @return A random number normally distributed around 0 and following a standard deviation taken from spdat->weps
+ */
 double get_BoxMuller(DATA *dat, SPDAT *spdat)
 {
     //returns a double normal-distributed around 0, according to a std_dev = spdat->weps
@@ -59,9 +86,15 @@ double get_BoxMuller(DATA *dat, SPDAT *spdat)
     return spdat->normalNumbs[spdat->normalSize-1];
 }
 
-// This is a test function for evaluating the quality of the normal random numbers generator.
-// generate 'n' normal distributed rand numbers centred around 0 and with spdat->weps as stddev
-// numbers are saved in a file norm.dat
+/**
+ * @brief This is a test function for evaluating the quality of the normal random numbers generator.
+ *          generates n normal distributed rand numbers centred around 0 and with spdat->weps as stddev
+ *          numbers are saved in a file norm.dat
+ * 
+ * @param dat Common simulation data
+ * @param spdat Spatial-Averaging simulation data
+ * @param n How many random numbers are required
+ */
 void test_norm_distrib(DATA *dat, SPDAT *spdat, uint32_t n)
 {
     uint32_t i;

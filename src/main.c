@@ -1,16 +1,15 @@
 /**
  * \file main.c
  *
- * \brief C program for MC simulations applied to Lennard Jones clusters only.
+ * \brief C program for MC simulations of Lennard Jones clusters.
  *
  * \authors Florent Hedin (University of Basel, Switzerland) \n
  *          Markus Meuwly (University of Basel, Switzerland)
  *
- * \copyright Copyright (c) 2014, Florent Hedin, Markus Meuwly, and the University of Basel. \n
+ * \copyright Copyright (c) 2011-2015, Florent Hédin, Markus Meuwly, and the University of Basel. \n
  *            All rights reserved. \n
  *            The 3-clause BSD license is applied to this software. \n
  *            See LICENSE.txt
- *
  *
  */
 
@@ -94,7 +93,7 @@ LUA_PLUGIN_TYPE lua_plugin_type = PAIR;
 
 // -----------------------------------------------------------------------------------------
 
-//prototypes of functions present in this main.c
+//prototypes of functions written in this main.c
 void start_classic(DATA *dat, ATOM at[]);
 void start_spav(DATA *dat, SPDAT *spdat, ATOM at[]);
 void help(char **argv);
@@ -102,7 +101,7 @@ void getValuesFromDB(DATA *dat);
 
 // -----------------------------------------------------------------------------------------
 /**
- * \brief   Main entry of the programm
+ * \brief   Main entry of the program
  * \details The 2 variables \b argc and \b argv are used for extracting
  *          command line parameters.
  * \param   argc Number of arguments, at least one as \b argv contains at least the program's name.
@@ -180,14 +179,14 @@ int main(int argc, char** argv)
                 fprintf(stdout,"[Warning] Unknown log level '%s' : default value used.\n\n",argv[i]);
         }
 #ifdef _OPENMP
-        // if compiled with openMP the usr can specify a number of cpu to use
+        // if compiled with openMP the user can specify a maximum number of cpus to use
         // check if it is not higher than the real amount of cpus
         else if (!strcasecmp(argv[i],"-np"))
         {
             nthreads=atoi(argv[++i]);
             ncpus=omp_get_num_procs();
             (nthreads < ncpus) ? omp_set_num_threads(nthreads) : omp_set_num_threads(ncpus);
-            omp_set_num_threads(nthreads);
+            //omp_set_num_threads(nthreads);
         }
 #endif
         // print help and proper exit
@@ -208,7 +207,7 @@ int main(int argc, char** argv)
     //prepare log files if necessary
     init_logfiles();
 
-    // Print date and some env. variables only for information purposes
+    // Print date and some env. variables
     fprintf(stdout,"Welcome to %s ! Command line arguments succesfully parsed, now intialising parameters...\n\n",argv[0]);
     fprintf(stdout,"Logging level is : %s : see the documentation to see which .log files are generated, and what they contain.\n\n",get_loglevel_string());
     fprintf(stdout,"Now printing some local informations : \n");
@@ -250,13 +249,11 @@ int main(int argc, char** argv)
         LOG_PRINT(LOG_INFO,"dat.seeds[%d] = %d \n",strlen(seed)-1-i,dat.seeds[strlen(seed)-1-i]);
     }
 #endif
-
-//     exit(0);
     
     // parse input file, initialise atom list
     parse_from_file(inpf,&dat,&spdat,&at);
 
-    // set the pointer to the default energy function
+    // set the pointer to the default V and dV functions
     if(get_ENER==NULL)
         get_ENER = &(get_LJ_V);
 

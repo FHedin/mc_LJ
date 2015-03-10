@@ -1,9 +1,15 @@
-/*
- * Copyright (c) 2014, Florent Hedin, Markus Meuwly, and the University of Basel
- * All rights reserved.
+/**
+ * \file tools.c
  *
- * The 3-clause BSD license is applied to this software.
- * see LICENSE.txt
+ * \brief File containing tool functions called across the program
+ *
+ * \authors Florent Hedin (University of Basel, Switzerland) \n
+ *          Markus Meuwly (University of Basel, Switzerland)
+ *
+ * \copyright Copyright (c) 2011-2015, Florent Hédin, Markus Meuwly, and the University of Basel. \n
+ *            All rights reserved. \n
+ *            The 3-clause BSD license is applied to this software. \n
+ *            See LICENSE.txt
  *
  */
 
@@ -21,6 +27,14 @@
 #define CONFLICT -1
 #define NO_CONFLICT 0
 
+/**
+ * @brief Fills partially or fully a X,Y,Z vector whith random numbers distributed 
+ * in the (-0.5;0.5) range (Reversible Markov Chain, Detailed Balance).
+ * 
+ * @param dat Common data for simulation
+ * @param mv_direction -1 if we want 3 random numbers stored in vec, 0 or 1 or 2 if we want a random X or Y or Z, respectively
+ * @param vec A X,Y,Z coordinates vector
+ */
 void get_vector(DATA *dat, int32_t mv_direction, double vec[3])
 {
     vec[0] = 0.0 ;
@@ -41,8 +55,14 @@ void get_vector(DATA *dat, int32_t mv_direction, double vec[3])
     
 }
 
-/*
- * Generates a cluster for the atoms
+/**
+ * @brief Generates an initial cluster of atoms for starting simulation
+ * 
+ * @param at Atom array
+ * @param dat Common data for simulation
+ * @param from first atom of the list on which to work
+ * @param to last atom of the list on which to work
+ * @param mode Building mode : -1 sets coordinates to 9999.9 (infinity), 0 sets all atom at the origin, 1 sets atom at a random position (with constraints)
  */
 void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, int32_t mode)
 {
@@ -91,7 +111,13 @@ void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, int32_t mod
     }
 }
 
-//returns 0 if no steric clash, -1 otherwise
+
+/**
+ * @brief 
+ * @param at Atom array
+ * @param i Atomic index
+ * @return 0 if no steric clash, -1 otherwise
+ */
 int32_t  no_conflict(ATOM at[],uint32_t i)
 {
     uint32_t j=0;
