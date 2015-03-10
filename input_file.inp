@@ -9,55 +9,70 @@
 POTENTIAL   LJ
 # Aziz potential is currently available only for Argon and Neon (mixtures are allowed)
 # POTENTIAL  AZIZ
-
 # ... or a user defined potential written in LUA
-# it as to be : POTENTIAL PLUGIN {type} {path to plugin file} {potential function name} {gradient function name}
+# it has to be : POTENTIAL PLUGIN {type} {path to plugin file} {potential function name} {gradient function name}
 # for the moment {type} is PAIR or FFI :
 # - PAIR means that the lua function just works on a pair of atoms
 # - FFI  means that the lua function uses LUAJIT/FFI allowing to work on the whole atomic system
 # Examples : 
 # POTENTIAL PLUGIN PAIR plugins/lj_n_m.lua       lj_v_n_m_pair    lj_dv_n_m_pair
 # POTENTIAL PLUGIN FFI  plugins/lj_n_m_ffi.lua   lj_v_n_m_ffi     lj_dv_n_m_ffi
+# see the provided files in the plugins subdirectory
 
-# unit of energy can be REDUCED (k_boltz*t/epsilon) or CHARMM (kcal/mol)
+# unit of energy can be REDUCED (k_boltz*T/epsilon) or CHARMM (kcal/mol)
 UNITS   REDUCED
 #UNITS  CHARMM
 
 #set the numb. of atoms
-NATOMS  135
+NATOMS  19
 # reduced temperature
-TEMP    0.30
+TEMP    0.25
 # or temperature in Kelvin if CHARMM units are used
 #TEMP   110
 
 # number of steps : coded as an unsigned 64-bits integer so values of several billions
 # are perfectly valid !
-NSTEPS  500000000
+NSTEPS  10000000
 
-#constant correcting factor for MC moves
+#MAXIMAL distance move in Angstroems for MC moves
 #DMAX   0.15
 # or automatically optimised dmax : each UPDATE steps dmax is adjust for reaching
 # TARGET (in %) of acceptance
-DMAX    0.25    UPDATE  1000 TARGET  30.0
+DMAX    0.25    UPDATE  100 TARGET  30.0
 
 # For each type of atom, set the Lennard Jones parameters
 # Here example for reduced units
 LJPARAMS    A  EPSILON 1.0 SIGMA   1.00
-#LJPARAMS    B  EPSILON 1.0 SIGMA   1.05
+LJPARAMS    B  EPSILON 1.0 SIGMA   1.05
 
 # Currently all parameters for the Aziz potential are hard coded, nothing to specify here
 
 # Build the atomic system
-#ATOM    6   TO  END B   COOR    RANDOM
-ATOM    1   TO  END   A   COOR    RANDOM
 
-# SAVE    ENER    'ener.dat'  EACH    10000
+#one type of atom, initial coordinates randomly generated
+#ATOM    1   TO  END B   COOR    RANDOM
+#or coordinates read from a xyz file
+#ATOM    1   TO  END B   COOR    FILE   'file.xyz'   
 
+# example of binary system built by hand
+# BUG : need to define the end of the list first otherwise infinite loop somewhere !
+ATOM    3   TO  END   B   COOR    RANDOM
+ATOM    1   TO  2     A   COOR    RANDOM
+
+# regularly save energy to a file
+SAVE    ENER    'ener.dat'  EACH    1000
+
+# save initial and final coordinates to xyz files
 SAVE    COOR    FIRST   XYZ 'init.xyz'
 SAVE    COOR    LAST    XYZ 'last.xyz'
 
-SAVE    COOR    TRAJ    DCD 'traj.dcd'  EACH    50000
+# regularly save the trajectory to a dcd file
+SAVE    COOR    TRAJ    DCD 'traj.dcd'  EACH    1000
 
-# METHOD  SPAV    WEPS    0.15    MEPS    10  NEPS    10
+# monte carlo method to use :
+# metropolis, no extra argument required
 METHOD  METROP
+
+# spatial averaging 
+# METHOD  SPAV    WEPS    0.15    MEPS    10  NEPS    10
 

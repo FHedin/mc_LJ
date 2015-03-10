@@ -397,7 +397,7 @@ void start_classic(DATA *dat, ATOM at[])
     fprintf(stdout,"\nStarting METROP Monte-Carlo\n");
     fprintf(stdout,"LJ initial energy is : %lf \n\n",ener);
 
-    fwrite(&ener,sizeof(double),1,efile);
+//     fwrite(&ener,sizeof(double),1,efile);
 
     acc=make_MC_moves(at,dat,&ener);
 
@@ -450,7 +450,7 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
 
     fprintf(stdout,"\nStarting SPAV\n");
     fprintf(stdout,"LJ initial energy is : %lf \n\n",ener);
-    fwrite(&ener,sizeof(double),1,efile);
+//     fwrite(&ener,sizeof(double),1,efile);
 
     acc=launch_SPAV(at,dat,spdat,&ener);
 

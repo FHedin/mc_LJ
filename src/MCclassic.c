@@ -146,14 +146,29 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 //               fprintf(stdout,"Minimum not reached : continuing ...\n\n");
 //         }
 
+	uint32_t sddone = 0;
+	double E_sd = 0.;
         if (st!=0 && st%io.trsave==0)
         {
             steepd(at_new,dat);
-            double E_sd = (*get_ENER)(at_new,dat,-1);
-            fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,E_sd/at[0].ljp.eps);
+	    sddone=1;
+            E_sd = (*get_ENER)(at_new,dat,-1);
+//             fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,E_sd);
             //(*write_traj)(at,dat,st);
 	    (*write_traj)(at_new,dat,st);
         }
+        
+        if (st!=0 && st%io.esave==0)
+	{
+	    if(!sddone)
+	    {
+	      steepd(at_new,dat);
+	      sddone=1;
+	      E_sd = (*get_ENER)(at_new,dat,-1);
+// 	      fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,E_sd);
+	    }
+	    fwrite(&E_sd,sizeof(double),1,efile);
+	}
 
         //energy check
 //         if (st!=0 && st%1000==0)
@@ -221,8 +236,8 @@ int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, do
     if ( (Ediff + EconstrDiff) < 0.0 )
     {
         *ener+=Ediff;
-        if((*step)!=0 && (*step)%io.esave==0)
-            fwrite(ener,sizeof(double),1,efile);
+//         if((*step)!=0 && (*step)%io.esave==0)
+//             fwrite(ener,sizeof(double),1,efile);
 
         LOG_PRINT(LOG_DEBUG,"MOVE ACCEPTED\n");
 
@@ -238,8 +253,8 @@ int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, do
         if (alpha < rejParam)
         {
             *ener+=Ediff;
-            if((*step)!=0 && (*step)%io.esave==0)
-                fwrite(ener,sizeof(double),1,efile);
+//             if((*step)!=0 && (*step)%io.esave==0)
+//                 fwrite(ener,sizeof(double),1,efile);
 
             LOG_PRINT(LOG_DEBUG,"MOVE ACCEPTED\n");
 
@@ -247,8 +262,8 @@ int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, do
         }
         else
         {
-            if((*step)!=0 && (*step)%io.esave==0)
-                fwrite(ener,sizeof(double),1,efile);
+//             if((*step)!=0 && (*step)%io.esave==0)
+//                 fwrite(ener,sizeof(double),1,efile);
 
             LOG_PRINT(LOG_DEBUG,"MOVE REJECTED\n");
 

@@ -20,8 +20,9 @@ project(${TGT} C)
 include_directories(
 include
 dSFMT
+# if later -DLUA_PLUGINS is used for enabling external lua scripts for energy please add here path where to find lua.h
 #/usr/local/include/luajit-2.0
-/home/hedin/bin/luajit_last/include/luajit-2.0
+#/home/hedin/bin/luajit_last/include/luajit-2.0
 )
 
 # list all source files
@@ -42,24 +43,33 @@ src/tools.c
 dSFMT/dSFMT.c
 )
 
-#set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O2")
+# gnu compiler : should perform well on all cpus
+set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O3")
+set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O0 -g")
+
+# gnu compiler : optimise for current machine
+#set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O3 -march=native")
 #set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O0 -g")
 
-#set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -xCORE-AVX-I -fno-strict-aliasing -O2")
-#set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -xCORE-AVX-I -fno-strict-aliasing -O0 -g")
+# when using intel compiler : optimise for modern intel cpus
+#set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -msse2 -ax,CORE-AVX2,CORE-AVX-I,AVX,SSE4.2,SSE4.1,SSSE3,SSE3 -fno-strict-aliasing -O2")
+#set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -msse2 -ax,CORE-AVX2,CORE-AVX-I,AVX,SSE4.2,SSE4.1,SSSE3,SSE3 -fno-strict-aliasing -O0 -g")
 
-#set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -msse2 -axMIC-AVX512,CORE-AVX2,CORE-AVX-I,AVX,SSE4.2,SSE4.1,SSSE3,SSE3 -fno-strict-aliasing -O2")
-#set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -msse2 -axMIC-AVX512,CORE-AVX2,CORE-AVX-I,AVX,SSE4.2,SSE4.1,SSSE3,SSE3 -fno-strict-aliasing -O0 -g")
+# when using intel compiler : optimise for current machine
+#set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -fno-strict-aliasing -O0 -g")
+#set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -fno-strict-aliasing -O3 -xHost")
 
-set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -fno-strict-aliasing -O0 -g")
-set(CMAKE_C_FLAGS_RELEASE "-std=c99 -Wall -Wextra -fno-strict-aliasing -O3 -xHost")
+# never remove -DHAVE_SSE2 -DDSFMT_MEXP=19937 as they are necessary for the dSFMT random numbers generator
+# uncomment line with -DLUA_PLUGINS if you want to enable use of external lua scripts for energy evaluation
+#add_definitions(-DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS)
+add_definitions(-DHAVE_SSE2 -DDSFMT_MEXP=19937)
 
-add_definitions(-DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS)
-
-link_directories(/home/hedin/bin/luajit_last/lib/)
+# if -DLUA_PLUGINS was added we need the path where to find liblua*.so of libluajit*.so
+#link_directories(/home/hedin/bin/luajit_last/lib/)
 #link_directories(/usr/local/include/luajit-2.0/libluajit-5.1.so)
 
 add_executable(${TGT} ${SRCS})
-target_link_libraries(${TGT} m rt dl luajit-5.1)
-#target_link_libraries(${TGT} luajit-5.1)
+target_link_libraries(${TGT} m rt dl)
+
+#target_link_libraries(${TGT} m rt dl luajit-5.1)
 
