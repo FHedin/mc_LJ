@@ -212,7 +212,7 @@ void write_rst(ATOM at[], DATA *dat, SPDAT *spdat, uint32_t meth)
     }
 
     // 3 : structure ATOM
-    for(uint32_t i; i<dat->natom; i++)
+    for(uint32_t i=0; i<dat->natom; i++)
     {
         fwrite(&(at[i].x),sizeof(double),1,rstfile);
         fwrite(&(at[i].y),sizeof(double),1,rstfile);

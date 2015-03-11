@@ -28,9 +28,27 @@
 #include "io.h"
 #include "logger.h"
 
+/**
+ * \def MV_ACC 1
+ * \brief A macro indicating that the mc move was accepted
+ */
 #define MV_ACC 1
+/**
+ * \def MV_REJ -1
+ * \brief A macro indicating that the mc move was rejected
+ */
 #define MV_REJ -1
 
+/**
+ * @brief This is the core function for Metropolis MC simulation 
+ *        where the main loop is located, 
+ * 
+ * @param at Atom list
+ * @param dat Common data
+ * @param ener Variable containing total energy of the system
+ * 
+ * @return The number of moves accepted
+ */
 uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 {
     uint32_t /*i,*/j,k;
@@ -213,6 +231,19 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
     return acc2;
 }
 
+/**
+ * @bried This function is in charge of checking the energy difference between the new and old atomic configurations
+ *          and then return if the move is accepted or rejected
+ * 
+ * @param at Atom list
+ * @param at_new Modifed atom lsit
+ * @param dat Common data
+ * @param candidate List of atoms that were moving
+ * @param ener Variable where energy difference will be stored
+ * @param step The current simulation step
+ * 
+ * @return MV_ACC or MV_REJ if the move is either accepted or rejected
+ */
 int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, double *ener, uint64_t *step)
 {
     //return 1 if move accepted, -1 if rejected
