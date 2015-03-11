@@ -1,9 +1,15 @@
-/*
- * Copyright (c) 2014, Florent Hedin, Markus Meuwly, and the University of Basel
- * All rights reserved.
+/**
+ * \file MCspav.c
  *
- * The 3-clause BSD license is applied to this software.
- * see LICENSE.txt
+ * \brief Functions for running Spatial Averaging Monte Carlo simulations
+ *
+ * \authors Florent Hedin (University of Basel, Switzerland) \n
+ *          Markus Meuwly (University of Basel, Switzerland)
+ *
+ * \copyright Copyright (c) 2011-2015, Florent Hedin, Markus Meuwly, and the University of Basel. \n
+ *            All rights reserved. \n
+ *            The 3-clause BSD license is applied to this software. \n
+ *            See LICENSE.txt
  *
  */
 

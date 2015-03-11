@@ -1,9 +1,12 @@
 /**
  * \file io.c
- * 
- * \brief I/O related code
- * 
- * \copyright Copyright (c) 2011-2015, Florent Hédin, Markus Meuwly, and the University of Basel. \n
+ *
+ * \brief Input/Output related functions
+ *
+ * \authors Florent Hedin (University of Basel, Switzerland) \n
+ *          Markus Meuwly (University of Basel, Switzerland)
+ *
+ * \copyright Copyright (c) 2011-2015, Florent Hedin, Markus Meuwly, and the University of Basel. \n
  *            All rights reserved. \n
  *            The 3-clause BSD license is applied to this software. \n
  *            See LICENSE.txt
