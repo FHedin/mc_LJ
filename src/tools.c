@@ -24,7 +24,16 @@
 #include "ener.h"
 #include "logger.h"
 
+/**
+ * \def CONFLICT -1
+ * \brief A macro that indicates that there is a steric clash (2 atoms too closed) when the system is randomly generated
+ */
 #define CONFLICT -1
+
+/**
+ * \def NO_CONFLICT 0
+ * \brief A macro that indicates that there is no steric clash 
+ */
 #define NO_CONFLICT 0
 
 /**
@@ -84,15 +93,16 @@ void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, int32_t mod
     else if (mode==1)	//random mode
     {
         double randvec[3] = {0.0} ;
-        double rtot=0.0;
-
-        for (i=0; i<dat->natom; i++)
-            rtot += at[i].ljp.sig;
+//        double rtot=0.0;
+//
+//        for (i=0; i<dat->natom; i++)
+//            rtot += at[i].ljp.sig;
+//        
+//        rtot /= (double)dat->natom;
+//        rtot = (double)dat->natom*4.0*3.14159*X3(rtot)/3.0;
+//        dat->inid = pow(3.0*rtot/(4.0*3.14159),0.333);
+        dat->inid = dat->natom/4.0;
         
-        rtot /= (double)dat->natom;
-        rtot = (double)dat->natom*4.0*3.14159*X3(rtot)/3.0;
-        dat->inid = pow(3.0*rtot/(4.0*3.14159),0.333);
-
         for (i=from; i<to; i++)
         {
             
@@ -113,10 +123,11 @@ void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, int32_t mod
 
 
 /**
- * @brief 
+ * @brief Checks if an atom randomly placed is not far enough from the other ones.
+ *          Positioning is valid if the distance is larger than their sigma_i_j LJ interaction term
  * @param at Atom array
  * @param i Atomic index
- * @return 0 if no steric clash, -1 otherwise
+ * @return NO_CONFLICT if no steric clash, CONFLICT otherwise
  */
 int32_t  no_conflict(ATOM at[],uint32_t i)
 {
@@ -140,6 +151,14 @@ int32_t  no_conflict(ATOM at[],uint32_t i)
     return NO_CONFLICT;
 }
 
+/**
+ * @brief Adjusts the d_max parameter i.e. the maximum move in Angstroems applied to a coordinate
+ *      Value is adjusted for reaching d_max_tgt
+ *      
+ * @param dat Common data for simulation
+ * @param step Step at which adjustment is done
+ * @param acc The current number of accepted move since last call to this function
+ */
 void adj_dmax(DATA *dat, uint64_t *step, uint64_t *acc)
 {
     if (*step != 0 && *step%dat->d_max_when==0)
@@ -160,6 +179,14 @@ void adj_dmax(DATA *dat, uint64_t *step, uint64_t *acc)
     }
 }
 
+/**
+ * @brief Get the center of mass of the system.
+ * As we don't really have mass here this is in fact the barycentre of the system
+ * 
+ * @param at Atom list
+ * @param dat Common data
+ * @return The center of mass of the system
+ */
 CM getCM(ATOM at[],DATA *dat)
 {
     CM cm;
@@ -181,6 +208,13 @@ CM getCM(ATOM at[],DATA *dat)
     return cm;
 }
 
+/**
+ * Substracts the center of mass of the system from the coordinates so that 
+ * the system is centred at the origin
+ * 
+ * @param at Atom list
+ * @param dat Common data
+ */
 void recentre(ATOM at[],DATA *dat)
 {
     CM cm = getCM(at,dat);
