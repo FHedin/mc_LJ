@@ -55,9 +55,8 @@ LJPARAMS    B  EPSILON 1.0 SIGMA   1.05
 #ATOM    1   TO  END B   COOR    FILE   'file.xyz'   
 
 # example of binary system built by hand
-# BUG : need to define the end of the list first otherwise infinite loop somewhere !
-ATOM    3   TO  END   B   COOR    RANDOM
 ATOM    1   TO  2     A   COOR    RANDOM
+ATOM    3   TO  END   B   COOR    RANDOM
 
 # regularly save energy to a file
 SAVE    ENER    'ener.dat'  EACH    1000
