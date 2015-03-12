@@ -55,29 +55,24 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
     uint64_t st, acc=0, acc2=0;
     int32_t accParam=0;
 
+    // a copy of the atom list
     ATOM *at_new;
 
-//     double *dmax;
-    int32_t candidate=-1;
-    uint32_t n_moving=   1    ;//dat->natom;
+    //the candidate moving atom
+    int32_t candidate =-1;
+    //number of simultaneously moving atoms
+    uint32_t n_moving = 1;
+    //a list of moving atoms
     int32_t *ismoving = NULL;
-    //int32_t unicMove=    1;//-1;
+    //move direction : 0=x 1=y 2=z -1=all
     int32_t mv_direction= -1;
 
     double randvec[3] = {0.0,0.0,0.0};
 
-//     uint64_t progress=dat->nsteps/1000;
-//     clock_t start,now;
-
-//     start=clock();
-
     at_new=malloc(dat->natom*sizeof *at_new);
     ismoving=calloc(dat->natom,sizeof *ismoving);
 
-//     dmax=malloc(dat->natom*sizeof *dmax);
-//     for (i=0; i<(dat->natom); i++)
-//       dmax[i] = dat->d_max;
-
+    // main iteration over all steps
     for (st=1; st<=(dat->nsteps); st++) //main loop
     {
 
@@ -87,8 +82,10 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
         for (j=0; j<(dat->natom); j++)
             memcpy(&at_new[j],&at[j],sizeof(ATOM));
 
+        // choose how many atoms will move at this step
 //         n_moving=(int) dat->natom*get_next(dat) + 1;
 
+        // randomly choose atom(s) moving at this step
         j=0;
         do
         {
@@ -117,10 +114,12 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
             LOG_PRINT_SHORT(LOG_DEBUG,"%d ",ismoving[j]);
         LOG_PRINT_SHORT(LOG_DEBUG,"\n");
 
+        //apply random moves to moving atoms
         k=0;
         do
         {
             j = (uint32_t) ismoving[k];
+            //uncomment if anisotropic moves required (i.e. in only one direction)
 //            mv_direction = (int)3*get_next(dat);
             get_vector(dat,mv_direction,randvec);
 
@@ -131,14 +130,17 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
         }
         while(k<n_moving);
 
+        //get acceptance criterion
         accParam=apply_Metrop(at,at_new,dat,&ismoving[0],ener,&st);
-//         accParam=apply_Metrop(at,at_new,dat,&unicMove,ener,&st);
 
+        //if accepted
         if (accParam == MV_ACC)
         {
+            // increase acceptance counters
             acc++;
             acc2++;
 
+            //copy new coordinates of the moving atom(s)
             k=0;
             do
             {
@@ -149,9 +151,11 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
             while(k<n_moving);
         }
 
+        //if required adjust dmax
         if (dat->d_max_when != 0)
             adj_dmax(dat,&st,&acc);
 
+        // old code should consider to remove
 //         if ((*ener)/at[0].ljp.eps <= dat->E_steepD)
 //         {
 //           fprintf(stdout,"Running Steepest Descent at step %d : E = %lf.\n",st,(*ener)/at[0].ljp.eps);
@@ -170,6 +174,9 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 //               fprintf(stdout,"Minimum not reached : continuing ...\n\n");
 //         }
 
+        
+        //if necessary save coordinates
+        //energy is minimised so we get something similar to D Wales Basin Hopping
 	uint32_t sddone = 0;
 	double E_sd = 0.;
         if (st!=0 && st%io.trsave==0)
@@ -182,6 +189,7 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 	    (*write_traj)(at_new,dat,st);
         }
         
+        //if necessary save energy and run steepest descent if not done yet
         if (st!=0 && st%io.esave==0)
 	{
 	    if(!sddone)
@@ -193,33 +201,6 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 	    }
 	    fwrite(&E_sd,sizeof(double),1,efile);
 	}
-
-        //energy check
-//         if (st!=0 && st%1000==0)
-//         {
-//           static double cum_err = 0.0;
-//           double de = (*ener)-((*get_ENER)(at,dat,-1));
-//           cum_err += de;
-// //           fprintf(stderr,"At step %d DeltaE is : %g ; cumulated : %g\n",st,de,cum_err);
-//         }
-
-//        if(!is_stdout_redirected && st%progress==0)
-//        {
-//            double elapsed=0.0 , remaining =0.0 , pr=0.0 ;
-//            int n = 1;
-//#ifdef _OPENMP
-//            n = nthreads;
-//#endif
-//
-//            now = clock();
-//            elapsed = (double)(now-start)/(n*CLOCKS_PER_SEC);
-//            pr = 0.1+st/(double)progress/10.0;
-//            remaining = ((double)progress*elapsed*10.0/(double)st)*(100.0-pr);
-//            fprintf(stdout,"Progress : %5.1lf %% done \t Estimated remaining time : %8.1lf seconds\r",pr,remaining);
-//            fflush(stdout);
-//        }
-
-
 
     }//end of main loop
 
@@ -273,8 +254,6 @@ int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, do
     if ( (Ediff + EconstrDiff) < 0.0 )
     {
         *ener+=Ediff;
-//         if((*step)!=0 && (*step)%io.esave==0)
-//             fwrite(ener,sizeof(double),1,efile);
 
         LOG_PRINT(LOG_DEBUG,"MOVE ACCEPTED\n");
 
@@ -290,8 +269,6 @@ int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, do
         if (alpha < rejParam)
         {
             *ener+=Ediff;
-//             if((*step)!=0 && (*step)%io.esave==0)
-//                 fwrite(ener,sizeof(double),1,efile);
 
             LOG_PRINT(LOG_DEBUG,"MOVE ACCEPTED\n");
 
@@ -299,8 +276,6 @@ int32_t apply_Metrop(ATOM at[], ATOM at_new[], DATA *dat, int32_t *candidate, do
         }
         else
         {
-//             if((*step)!=0 && (*step)%io.esave==0)
-//                 fwrite(ener,sizeof(double),1,efile);
 
             LOG_PRINT(LOG_DEBUG,"MOVE REJECTED\n");
 

@@ -381,33 +381,33 @@ void start_classic(DATA *dat, ATOM at[])
     double ener = 0.0 ;
     uint64_t acc=0;
 
+    //open required files
     crdfile=fopen(io.crdtitle_first,"wt");
     efile=fopen(io.etitle,"wb");
     traj=fopen(io.trajtitle,"wb");
 
+    //write initial coordinates
     write_xyz(at,dat,0,crdfile);
     fclose(crdfile);
 
-    freopen(io.trajtitle,"wb",traj);
-
+    //get initial energy of whole system
     ener = (*get_ENER)(at,dat,-1);
     fprintf(stdout,"\nStarting METROP Monte-Carlo\n");
     fprintf(stdout,"LJ initial energy is : %lf \n\n",ener);
 
-//     fwrite(&ener,sizeof(double),1,efile);
-
+    //CALL TO MAIN mc FUNCTION
     acc=make_MC_moves(at,dat,&ener);
-
+    //simulation finished here
+    
     fprintf(stdout,"\n\nLJ final energy is : %lf\n",ener);
     fprintf(stdout,"Acceptance ratio is %lf %% \n",100.0*(double)acc/(double)dat->nsteps);
     fprintf(stdout,"Final dmax = %lf\n",dat->d_max);
     fprintf(stdout,"End of METROP Monte-Carlo\n\n");
 
+    //write last coordinates
     crdfile=fopen(io.crdtitle_last,"wt");
     write_xyz(at,dat,dat->nsteps,crdfile);
     
-//     write_rst(at,dat,(SPDAT*)NULL,0);
-
     fclose(crdfile);
     fclose(traj);
     fclose(efile);
@@ -430,25 +430,29 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
     fprintf(stdout,"SPAV parameters are :\n");
     fprintf(stdout,"W_EPSILON = %lf\nM_EPSILON = %d\nN_EPSILON = %d\n\n",spdat->weps,spdat->meps,spdat->neps);
 
+    // rand numbers related stuff
     spdat->normalSize=2048;
     spdat->normalNumbs=malloc(spdat->normalSize*sizeof spdat->normalNumbs);
 
     double ener = 0.0 ;
     uint64_t acc=0;
 
+    //open files
     crdfile=fopen(io.crdtitle_first,"wt");
     efile=fopen(io.etitle,"wb");
     traj=fopen(io.trajtitle,"wb");
 
+    //write ini crds
     write_xyz(at,dat,0,crdfile);
     fclose(crdfile);
 
+    //get E of whole system
     ener = (*get_ENER)(at,dat,-1);
 
     fprintf(stdout,"\nStarting SPAV\n");
     fprintf(stdout,"LJ initial energy is : %lf \n\n",ener);
-//     fwrite(&ener,sizeof(double),1,efile);
 
+    //run sp avg simulation
     acc=launch_SPAV(at,dat,spdat,&ener);
 
     fprintf(stdout,"LJ final energy is : %lf\n",ener);
@@ -456,10 +460,9 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
     fprintf(stdout,"final dmax = %lf\n",dat->d_max);
     fprintf(stdout,"End of SPAV\n\n");
 
+    //write final crds
     crdfile=fopen(io.crdtitle_last,"wt");
     write_xyz(at,dat,dat->nsteps,crdfile);
-    
-//     write_rst(at,dat,spdat,1);
 
     fclose(crdfile);
     fclose(traj);
