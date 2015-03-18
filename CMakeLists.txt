@@ -21,8 +21,8 @@ include_directories(
 include
 dSFMT
 # if later -DLUA_PLUGINS is used for enabling external lua scripts for energy please add here path where to find lua.h
-#/usr/local/include/luajit-2.0
-#/home/hedin/bin/luajit_last/include/luajit-2.0
+#/usr/local/include/lua53
+/usr/local/include/luajit-2.0
 )
 
 # list all source files
@@ -61,15 +61,27 @@ set(CMAKE_C_FLAGS_DEBUG   "-std=c99 -Wall -Wextra -msse2 -fno-strict-aliasing -O
 
 # never remove -DHAVE_SSE2 -DDSFMT_MEXP=19937 as they are necessary for the dSFMT random numbers generator
 # uncomment line with -DLUA_PLUGINS if you want to enable use of external lua scripts for energy evaluation
-#add_definitions(-DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS)
-add_definitions(-DHAVE_SSE2 -DDSFMT_MEXP=19937)
+add_definitions(-DHAVE_SSE2 -DDSFMT_MEXP=19937 -DLUA_PLUGINS)
+#add_definitions(-DHAVE_SSE2 -DDSFMT_MEXP=19937)
 
 # if -DLUA_PLUGINS was added we need the path where to find liblua*.so of libluajit*.so
-#link_directories(/home/hedin/bin/luajit_last/lib/)
-#link_directories(/usr/local/include/luajit-2.0/libluajit-5.1.so)
+#link_directories(/usr/local/include/luajit-2.0)
+link_directories(/usr/local/lib)
 
 add_executable(${TGT} ${SRCS})
-target_link_libraries(${TGT} m rt dl)
 
+# clang with luajit
+target_link_libraries(${TGT} m luajit-5.1)
+
+# clang
+#target_link_libraries(${TGT} m)
+
+# clang with lua
+#target_link_libraries(${TGT} m lua-5.3)
+
+# gcc
+#target_link_libraries(${TGT} m rt dl)
+
+# gcc with luajit
 #target_link_libraries(${TGT} m rt dl luajit-5.1)
 
