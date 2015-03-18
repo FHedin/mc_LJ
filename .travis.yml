@@ -1,13 +1,28 @@
+env:
+  global:
+   - secure: "I8urgFgxyAEszCMvnMGR8FT7Egsx1iS079tqRf5ePvbOwOpehj00QfiO6HwKb9lyxh1FKyttcK+eJa851m8NzgxrJqFwiHfloFIHozK4dFyGa17xh0DRfKGTxzTYopwm3Y9q+CYXubJoGLHsXHbRtEI+TGXozWiDE8lf/wq3GLQ="
+
+
 language: c
 
 compiler:
-        - gcc
-        - clang
+    - gcc
+    - clang
+
+addons:
+  coverity_scan:
+    project:
+      name: "FHedin/mc_LJ"
+      description: "Build submitted via Travis CI"
+    notification_email: hedin.florent@gmail.com
+    build_command_prepend: "cmake --version; mkdir build && cd build; cmake .."
+    build_command: "make VERBOSE=1"
+    branch_pattern: devel
 
 script:
-        - cmake
-        - mkdir build && cd build
-        - cmake -DCMAKE_BUILD_TYPE=Release ..
-        - make VERBOSE=1
+    - cmake --version
+    - mkdir build && cd build
+    - cmake ..
+    - make VERBOSE=1
 
 

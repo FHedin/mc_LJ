@@ -101,7 +101,7 @@ void build_cluster(ATOM at[], DATA *dat, uint32_t from, uint32_t to, int32_t mod
 //        rtot /= (double)dat->natom;
 //        rtot = (double)dat->natom*4.0*3.14159*X3(rtot)/3.0;
 //        dat->inid = pow(3.0*rtot/(4.0*3.14159),0.333);
-        dat->inid = dat->natom/4.0;
+        dat->inid = dat->natom/8.0;
         
         for (i=from; i<to; i++)
         {
