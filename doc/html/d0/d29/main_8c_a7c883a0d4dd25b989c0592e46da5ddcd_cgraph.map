@@ -1,0 +1,5 @@
+<map id="start_spav" name="start_spav">
+<area shape="rect" id="node2" href="$df/d0a/io_8c.html#a21c4ded9f766f29e88a2b3e806239234" title="Writes one xyz file. " alt="" coords="137,5,215,32"/>
+<area shape="rect" id="node3" href="$d1/d9e/tools_8c.html#afea39380eac73a6c38b0f8f9b84a2b09" title="Substracts the center of mass of the system from the coordinates so that the system is centred at the..." alt="" coords="264,5,333,32"/>
+<area shape="rect" id="node4" href="$d1/d9e/tools_8c.html#a664db142ff035e89f6e78da0bb39ae1c" title="Get the center of mass of the system. " alt="" coords="381,5,443,32"/>
+</map>

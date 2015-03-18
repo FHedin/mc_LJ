@@ -1,0 +1,12 @@
+<map id="start_classic" name="start_classic">
+<area shape="rect" id="node2" href="$d0/d87/MCclassic_8h.html#a92523fd3629d00b5c624eb0244ed081f" title="This is the core function for Metropolis MC simulation where the main loop is located,. " alt="" coords="149,135,277,161"/>
+<area shape="rect" id="node9" href="$df/d0a/io_8c.html#a21c4ded9f766f29e88a2b3e806239234" title="Writes one xyz file. " alt="" coords="174,249,253,276"/>
+<area shape="rect" id="node3" href="$d1/d22/logger_8c.html#a83f416e0cf6a24d3d2206cdd43e2e880" title="log_print " alt="" coords="526,185,623,212"/>
+<area shape="rect" id="node4" href="$d6/df4/rand_8c.html#af5bbf86a33e4215921937826ab382418" title="Call this function for obtaining a uniformly distributed random number in the range (0..." alt="" coords="539,33,611,60"/>
+<area shape="rect" id="node5" href="$d1/d22/logger_8c.html#a6d64436351a68136fd3916160500fbcb" title="Same as LOG_PRINT but without the date appended at the beginning of the line. " alt="" coords="326,135,477,161"/>
+<area shape="rect" id="node6" href="$d1/d9e/tools_8c.html#a4ac78dad5265289eaba610be5def33c4" title="Fills partially or fully a X,Y,Z vector whith random numbers distributed in the (&#45;0.5;0.5) range (Reversible Markov Chain, Detailed Balance). " alt="" coords="360,33,443,60"/>
+<area shape="rect" id="node7" href="$d0/d87/MCclassic_8h.html#a3a56dc7026ef6d7b35bb4536ccd962e2" title="This function is in charge of checking the energy difference between the new and old atomic configura..." alt="" coords="351,84,451,111"/>
+<area shape="rect" id="node8" href="$d1/d9e/tools_8c.html#a82e670bff47fd3e91425bc4833db7f80" title="Adjusts the d_max parameter i.e. " alt="" coords="362,236,441,263"/>
+<area shape="rect" id="node10" href="$d1/d9e/tools_8c.html#afea39380eac73a6c38b0f8f9b84a2b09" title="Substracts the center of mass of the system from the coordinates so that the system is centred at the..." alt="" coords="367,287,436,313"/>
+<area shape="rect" id="node11" href="$d1/d9e/tools_8c.html#a664db142ff035e89f6e78da0bb39ae1c" title="Get the center of mass of the system. " alt="" coords="544,287,605,313"/>
+</map>

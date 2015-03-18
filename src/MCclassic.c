@@ -182,9 +182,9 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
         if (st!=0 && st%io.trsave==0)
         {
             steepd(at_new,dat);
-	    sddone=1;
+            sddone=1;
             E_sd = (*get_ENER)(at_new,dat,-1);
-//             fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,E_sd);
+            fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,E_sd);
             //(*write_traj)(at,dat,st);
 	    (*write_traj)(at_new,dat,st);
         }
@@ -197,7 +197,7 @@ uint64_t make_MC_moves(ATOM at[], DATA *dat, double *ener)
 	      steepd(at_new,dat);
 	      sddone=1;
 	      E_sd = (*get_ENER)(at_new,dat,-1);
-// 	      fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,E_sd);
+	      fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,E_sd);
 	    }
 	    fwrite(&E_sd,sizeof(double),1,efile);
 	}

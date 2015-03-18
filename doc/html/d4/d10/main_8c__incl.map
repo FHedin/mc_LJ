@@ -1,0 +1,13 @@
+<map id="main.c" name="main.c">
+<area shape="rect" id="node8" href="$d2/d49/global_8h.html" title="Header file included everywhere and containing variables / macros / structures of common use..." alt="" coords="536,80,603,107"/>
+<area shape="rect" id="node12" href="$d0/d87/MCclassic_8h.html" title="Header file for MCclassic.c. " alt="" coords="627,80,721,107"/>
+<area shape="rect" id="node13" href="$de/d2b/MCspav_8h.html" title="Header file for MCspav.c. " alt="" coords="747,80,829,107"/>
+<area shape="rect" id="node14" href="$d5/da5/tools_8h.html" title="Header file for tools.c. " alt="" coords="853,80,915,107"/>
+<area shape="rect" id="node15" href="$d5/d66/rand_8h.html" title="Header file of rand.c file. " alt="" coords="939,80,997,107"/>
+<area shape="rect" id="node16" href="$dd/dca/ener_8h.html" title="Header file for ener.c. " alt="" coords="1021,80,1080,107"/>
+<area shape="rect" id="node17" href="$d3/da5/minim_8h.html" title="Header file for minim.c. " alt="" coords="1105,80,1172,107"/>
+<area shape="rect" id="node18" href="$dc/dac/io_8h.html" title="Header file : I/O related functions, structures and a few global variables. " alt="" coords="1197,80,1240,107"/>
+<area shape="rect" id="node19" href="$d3/de8/parsing_8h.html" title="Header File of parsing.c. " alt="" coords="1264,80,1339,107"/>
+<area shape="rect" id="node20" href="$d1/d8c/logger_8h.html" title="Header file for managing logging, see #logger.c. " alt="" coords="1363,80,1431,107"/>
+<area shape="rect" id="node21" href="$db/d64/plugins__lua_8h.html" title="Header file for plugins_lua.c. " alt="" coords="1456,80,1555,107"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="parsing.c" name="parsing.c">
+<area shape="rect" id="node6" href="$d2/d49/global_8h.html" title="Header file included everywhere and containing variables / macros / structures of common use..." alt="" coords="365,80,432,107"/>
+<area shape="rect" id="node10" href="$dc/dac/io_8h.html" title="Header file : I/O related functions, structures and a few global variables. " alt="" coords="456,80,499,107"/>
+<area shape="rect" id="node11" href="$dd/dca/ener_8h.html" title="Header file for ener.c. " alt="" coords="523,80,581,107"/>
+<area shape="rect" id="node12" href="$d5/da5/tools_8h.html" title="Header file for tools.c. " alt="" coords="605,80,667,107"/>
+<area shape="rect" id="node13" href="$d1/d8c/logger_8h.html" title="Header file for managing logging, see #logger.c. " alt="" coords="691,80,759,107"/>
+<area shape="rect" id="node14" href="$db/d64/plugins__lua_8h.html" title="Header file for plugins_lua.c. " alt="" coords="784,80,883,107"/>
+</map>

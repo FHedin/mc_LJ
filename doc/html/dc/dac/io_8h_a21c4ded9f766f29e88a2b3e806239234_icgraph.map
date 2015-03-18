@@ -1,0 +1,5 @@
+<map id="write_xyz" name="write_xyz">
+<area shape="rect" id="node2" href="$d0/d29/main_8c.html#a2a4c71f955b6d59b5772ec1e94aab94b" title="This function starts a standard Metropolis Monte Carlo simulation. " alt="" coords="133,5,229,32"/>
+<area shape="rect" id="node4" href="$d0/d29/main_8c.html#a7c883a0d4dd25b989c0592e46da5ddcd" title="This function starts a Spatial Averaging Monte Carlo (SA&#45;MC) simulation. " alt="" coords="140,56,223,83"/>
+<area shape="rect" id="node3" href="$d0/d29/main_8c.html#a3c04138a5bfe5d72780bb7e82a18e627" title="Main entry of the program. " alt="" coords="277,31,328,57"/>
+</map>

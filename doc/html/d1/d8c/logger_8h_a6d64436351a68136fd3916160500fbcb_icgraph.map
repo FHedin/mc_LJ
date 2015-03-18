@@ -1,0 +1,5 @@
+<map id="LOG_PRINT_SHORT" name="LOG_PRINT_SHORT">
+<area shape="rect" id="node2" href="$d0/d87/MCclassic_8h.html#a92523fd3629d00b5c624eb0244ed081f" title="This is the core function for Metropolis MC simulation where the main loop is located,. " alt="" coords="205,5,333,32"/>
+<area shape="rect" id="node3" href="$d0/d29/main_8c.html#a2a4c71f955b6d59b5772ec1e94aab94b" title="This function starts a standard Metropolis Monte Carlo simulation. " alt="" coords="381,5,477,32"/>
+<area shape="rect" id="node4" href="$d0/d29/main_8c.html#a3c04138a5bfe5d72780bb7e82a18e627" title="Main entry of the program. " alt="" coords="525,5,576,32"/>
+</map>

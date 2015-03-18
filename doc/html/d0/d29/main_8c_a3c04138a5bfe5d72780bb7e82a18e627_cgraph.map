@@ -1,0 +1,25 @@
+<map id="main" name="main">
+<area shape="rect" id="node2" href="$d1/d22/logger_8c.html#a8eb5adfe35f04d99790bc18f64fda17c" title="Before exiting the program, closes properly the logging files. " alt="" coords="119,5,220,32"/>
+<area shape="rect" id="node3" href="$d1/d22/logger_8c.html#a2c2db3d641ad3450911faa7dcc2f22dd" title="Returns a string corresponding to the logging level. " alt="" coords="104,56,235,83"/>
+<area shape="rect" id="node4" href="$d1/d22/logger_8c.html#aa03e009b6b7f47ccf8ac193872ce74a9" title="Puts in a string the current date, and returns it. " alt="" coords="133,107,205,133"/>
+<area shape="rect" id="node5" href="$d0/d29/main_8c.html#a615b073b56c47d081fa023abfe46d6a9" title="This sets variables possibly used when minimising the energy function. " alt="" coords="105,157,234,184"/>
+<area shape="rect" id="node6" href="$d0/d29/main_8c.html#a6d6a48e3841bf9007929f691d654614c" title="This function simply prints a basic help message. " alt="" coords="146,208,193,235"/>
+<area shape="rect" id="node7" href="$d1/d22/logger_8c.html#a8e14d2d7ea0c11faa1c12698d09713c9" title="Prepares LOGGING I/O if necessary, depending of the value of #LOG_SEVERITY. " alt="" coords="126,259,213,285"/>
+<area shape="rect" id="node8" href="$d1/d22/logger_8c.html#a83f416e0cf6a24d3d2206cdd43e2e880" title="log_print " alt="" coords="659,448,757,475"/>
+<area shape="rect" id="node9" href="$d1/d04/parsing_8c.html#a84639baf7adaf0c844f21f5844635907" title="his function parses the input file, fills many fields of the DATA and SPDAT structures, and allocates the ATOM list. " alt="" coords="114,385,225,412"/>
+<area shape="rect" id="node15" href="$d0/d29/main_8c.html#a2a4c71f955b6d59b5772ec1e94aab94b" title="This function starts a standard Metropolis Monte Carlo simulation. " alt="" coords="121,549,217,576"/>
+<area shape="rect" id="node23" href="$d0/d29/main_8c.html#a7c883a0d4dd25b989c0592e46da5ddcd" title="This function starts a Spatial Averaging Monte Carlo (SA&#45;MC) simulation. " alt="" coords="128,600,211,627"/>
+<area shape="rect" id="node24" href="$df/d0a/io_8c.html#ab0835185414a77bfefd5da0f39b2109e" title="Writes a CHARMM like dcd. " alt="" coords="307,727,386,753"/>
+<area shape="rect" id="node10" href="$d1/d9e/tools_8c.html#aca152f47cd928d6956a1af41b8c81850" title="Generates an initial cluster of atoms for starting simulation. " alt="" coords="299,397,394,424"/>
+<area shape="rect" id="node14" href="$df/d0a/io_8c.html#a444ba92b9414c3a42c0d131487bc74f5" title="Reads one xyz file. " alt="" coords="309,448,384,475"/>
+<area shape="rect" id="node11" href="$d1/d9e/tools_8c.html#a4ac78dad5265289eaba610be5def33c4" title="Fills partially or fully a X,Y,Z vector whith random numbers distributed in the (&#45;0.5;0.5) range (Reversible Markov Chain, Detailed Balance). " alt="" coords="493,448,576,475"/>
+<area shape="rect" id="node13" href="$d1/d9e/tools_8c.html#a98ca691292b7742f5af5e51d99cdec46" title="Checks if an atom randomly placed is not far enough from the other ones. " alt="" coords="492,397,577,424"/>
+<area shape="rect" id="node12" href="$d6/df4/rand_8c.html#af5bbf86a33e4215921937826ab382418" title="Call this function for obtaining a uniformly distributed random number in the range (0..." alt="" coords="672,600,744,627"/>
+<area shape="rect" id="node16" href="$df/d0a/io_8c.html#a21c4ded9f766f29e88a2b3e806239234" title="Writes one xyz file. " alt="" coords="307,600,386,627"/>
+<area shape="rect" id="node19" href="$d0/d87/MCclassic_8h.html#a92523fd3629d00b5c624eb0244ed081f" title="This is the core function for Metropolis MC simulation where the main loop is located,. " alt="" coords="283,549,411,576"/>
+<area shape="rect" id="node17" href="$d1/d9e/tools_8c.html#afea39380eac73a6c38b0f8f9b84a2b09" title="Substracts the center of mass of the system from the coordinates so that the system is centred at the..." alt="" coords="500,752,569,779"/>
+<area shape="rect" id="node18" href="$d1/d9e/tools_8c.html#a664db142ff035e89f6e78da0bb39ae1c" title="Get the center of mass of the system. " alt="" coords="677,752,739,779"/>
+<area shape="rect" id="node20" href="$d1/d22/logger_8c.html#a6d64436351a68136fd3916160500fbcb" title="Same as LOG_PRINT but without the date appended at the beginning of the line. " alt="" coords="459,701,610,728"/>
+<area shape="rect" id="node21" href="$d0/d87/MCclassic_8h.html#a3a56dc7026ef6d7b35bb4536ccd962e2" title="This function is in charge of checking the energy difference between the new and old atomic configura..." alt="" coords="485,600,585,627"/>
+<area shape="rect" id="node22" href="$d1/d9e/tools_8c.html#a82e670bff47fd3e91425bc4833db7f80" title="Adjusts the d_max parameter i.e. " alt="" coords="495,499,574,525"/>
+</map>

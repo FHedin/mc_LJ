@@ -1,0 +1,5 @@
+<map id="adj_dmax" name="adj_dmax">
+<area shape="rect" id="node2" href="$d0/d87/MCclassic_8h.html#a92523fd3629d00b5c624eb0244ed081f" title="This is the core function for Metropolis MC simulation where the main loop is located,. " alt="" coords="133,5,261,32"/>
+<area shape="rect" id="node3" href="$d0/d29/main_8c.html#a2a4c71f955b6d59b5772ec1e94aab94b" title="This function starts a standard Metropolis Monte Carlo simulation. " alt="" coords="309,5,405,32"/>
+<area shape="rect" id="node4" href="$d0/d29/main_8c.html#a3c04138a5bfe5d72780bb7e82a18e627" title="Main entry of the program. " alt="" coords="453,5,504,32"/>
+</map>

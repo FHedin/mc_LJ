@@ -1,0 +1,8 @@
+<map id="parse_from_file" name="parse_from_file">
+<area shape="rect" id="node2" href="$d1/d9e/tools_8c.html#aca152f47cd928d6956a1af41b8c81850" title="Generates an initial cluster of atoms for starting simulation. " alt="" coords="166,56,261,83"/>
+<area shape="rect" id="node6" href="$d1/d22/logger_8c.html#a83f416e0cf6a24d3d2206cdd43e2e880" title="log_print " alt="" coords="443,81,541,108"/>
+<area shape="rect" id="node7" href="$df/d0a/io_8c.html#a444ba92b9414c3a42c0d131487bc74f5" title="Reads one xyz file. " alt="" coords="176,157,251,184"/>
+<area shape="rect" id="node3" href="$d1/d9e/tools_8c.html#a4ac78dad5265289eaba610be5def33c4" title="Fills partially or fully a X,Y,Z vector whith random numbers distributed in the (&#45;0.5;0.5) range (Reversible Markov Chain, Detailed Balance). " alt="" coords="311,5,393,32"/>
+<area shape="rect" id="node5" href="$d1/d9e/tools_8c.html#a98ca691292b7742f5af5e51d99cdec46" title="Checks if an atom randomly placed is not far enough from the other ones. " alt="" coords="309,56,395,83"/>
+<area shape="rect" id="node4" href="$d6/df4/rand_8c.html#af5bbf86a33e4215921937826ab382418" title="Call this function for obtaining a uniformly distributed random number in the range (0..." alt="" coords="456,5,528,32"/>
+</map>
