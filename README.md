@@ -41,15 +41,18 @@ For specifying another compiler on linux (for example clang or Intel icc):
     
 It is possible for the user to define custom energy functions using the Lua scripting language (http://www.lua.org/).
 See input_file.inp and the ./plugins directory for more details.
+
 For enabling Lua plugins files use when compiling: 
   * cmake -DUSE_LUA=1 ..
-You will most probably have to edit the CMakeLists.txt file for adding paths to the Lua include and library directories
+
+You will most probably have to edit the CMakeLists.txt file for adding paths to the Lua include and library directories.
 For best performances you can use the LuaJIT implementation : http://luajit.org/
 
 ----------------------------------------------
 ## DOCUMENTATION
 ----------------------------------------------
 Check the doc directory that contains programming documentation.
+
 For updating the documentation, run doxygen in the current directory (http://www.doxygen.org)
 
 ----------------------------------------------
@@ -57,7 +60,9 @@ For updating the documentation, run doxygen in the current directory (http://www
 ----------------------------------------------
 Copyright (c) 2011-2015, Florent Hedin, Markus Meuwly, and the University of Basel.
 All rights reserved.
+
 The 3-clause BSD license is applied to this software.
+
 See LICENSE.txt
 
 ----------------------------------------------
@@ -65,8 +70,10 @@ See LICENSE.txt
 ----------------------------------------------
 This project uses as random numbers generator the dSFMT code : 
 http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/
+
 All files in the subdirectory dSFMT are licensed with a 3-clause BSD license and copyrighted as following :
 Copyright (C) 2007,2008 Mutsuo Saito, Makoto Matsumoto and Hiroshima
 University. All rights reserved.
+
 See dSFMT/LICENSE_dSFMT.txt
 
