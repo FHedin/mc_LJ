@@ -32,6 +32,13 @@
 #define MV_ACC 1
 #define MV_REJ -1
 
+static double *Smnew=NULL;
+static double *Smold=NULL;
+static double *deltaM=NULL;
+
+static double **EI=NULL;
+static double **EF=NULL;
+
 uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
 {
     uint64_t acc=0, acc2=0 ;
@@ -48,6 +55,9 @@ uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
     double randvec[3] = {0.0,0.0,0.0};
 
     int32_t is_accepted = 0 ;
+
+    double bmx=0.,bmy=0.,bmz=0.;
+
 //     uint64_t progress=dat->nsteps/1000;
 //     clock_t start,now;
 
@@ -66,23 +76,16 @@ uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
         LOG_PRINT(LOG_DEBUG,"----------------------"
                   " STEP %"PRIu64" ----------------------\n",st);
 
-        for (i=0; i<spdat->meps; i++)
+        for (k=0; k<dat->natom; k++)
         {
-            for (j=0; j<spdat->neps; j++)
-            {
-                for (k=0; k<dat->natom; k++)
-                {
-                    memcpy(&(at_new[k]),&(at[k]),sizeof(ATOM));
-                    memcpy(&(iniArray[i][j][k]),&(at[k]),sizeof(ATOM));
-                    memcpy(&(finArray[i][j][k]),&(at[k]),sizeof(ATOM));
+            memcpy(&(at_new[k]),&(at[k]),sizeof(ATOM));
 
-//                    at_new[k].x = at[k].x;
-//                    at_new[k].y = at[k].y;
-//                    at_new[k].y = at[k].y;
-//                    strcpy(at_new[k].sym,at[k].sym);
-//                    at_new[k].ljp.eps = at[k].ljp.eps;
-//                    at_new[k].ljp.sig = at[k].ljp.sig;
-//                    strcpy(at_new[k].ljp.sym,at[k].ljp.sym);
+            for (i=0; i<spdat->meps; i++)
+            {
+                for (j=0; j<spdat->neps; j++)
+                {
+                    memcpy(&(iniArray[i][j][k]),&(at[k]),sizeof(ATOM));
+                    //memcpy(&(finArray[i][j][k]),&(at[k]),sizeof(ATOM));
                 }
             }
         }
@@ -132,24 +135,27 @@ uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
             {
                 for (j=0; j<spdat->neps; j++)
                 {
-                    iniArray[i][j][k].x += get_BoxMuller(dat,spdat);
-                    iniArray[i][j][k].y += get_BoxMuller(dat,spdat);
-                    iniArray[i][j][k].z += get_BoxMuller(dat,spdat);
+                    bmx = get_BoxMuller(dat,spdat);
+                    bmy = get_BoxMuller(dat,spdat);
+                    bmz = get_BoxMuller(dat,spdat);
 
-//               memcpy(&finArray[i][j][k],&at_new[k],sizeof(ATOM));
+                    iniArray[i][j][k].x += bmx;
+                    iniArray[i][j][k].y += bmy;
+                    iniArray[i][j][k].z += bmz;
 
-//              finArray[i][j][k].x = at_new[k].x +  (dat->d_max)*get_BoxMuller(dat,spdat);
-//              finArray[i][j][k].y = at_new[k].x +  (dat->d_max)*get_BoxMuller(dat,spdat);
-//              finArray[i][j][k].z = at_new[k].x +  (dat->d_max)*get_BoxMuller(dat,spdat);
-                    finArray[i][j][k].x = iniArray[i][j][k].x + (dat->d_max)*randvec[0];
-                    finArray[i][j][k].y = iniArray[i][j][k].y + (dat->d_max)*randvec[1];
-                    finArray[i][j][k].z = iniArray[i][j][k].z + (dat->d_max)*randvec[2];
+                    memcpy(&finArray[i][j][k],&at_new[k],sizeof(ATOM));
+
+                    finArray[i][j][k].x += bmx;
+                    finArray[i][j][k].y += bmy;
+                    finArray[i][j][k].z += bmz;
+
                 }
             }
 
         }
 
         is_accepted = apply_SPAV_Criterion(dat,spdat,at,at_new,iniArray,finArray,&ismoving[0],ener,&st);
+        
 //         is_accepted = apply_SPAV_Criterion(dat,spdat,at,at_new,iniArray,finArray,&unicMove,ener,&st);
 
 //        for (k=0; k<dat->natom; k++)
@@ -180,6 +186,7 @@ uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
                 at[j].z = at_new[j].z ;
             }
         }
+        
         if (dat->d_max_when != 0)
             adj_dmax(dat,&st,&acc);
 
@@ -201,22 +208,27 @@ uint64_t launch_SPAV(ATOM at[], DATA *dat, SPDAT *spdat, double *ener)
 
         if (st!=0 && st%io.trsave==0)
         {
-            steepd(at_new,dat);
-            double E_sd = (*get_ENER)(at_new,dat,-1);
-            fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,(E_sd/at[0].ljp.eps) );
-            //(*write_traj)(at,dat,st);
-	    (*write_traj)(at_new,dat,st);
+//             steepd(at_new,dat);
+//             double E_sd = (*get_ENER)(at_new,dat,-1);
+//             fprintf(stdout,"Steepest Descent done (step %"PRIu64"): E = %.3lf\n",st,(E_sd/at[0].ljp.eps) );
+//             (*write_traj)(at_new,dat,st);
         }
-
-        //energy check
-        if (st!=0 && st%1000==0)
+        
+        if (st!=0 && st%io.trsave==0)
         {
-            static double cum_err = 0.0;
-            double de = (*ener)-((*get_ENER)(at,dat,-1));
-            cum_err += de;
+            (*write_traj)(at,dat,st);
+            fprintf(stdout,"Energy at step %"PRIu64" : E = %.3lf\n",st,*ener );
+        }
+        
+        //energy check
+//         if (st!=0 && st%1000==0)
+//         {
+//             static double cum_err = 0.0;
+//             double de = (*ener)-((*get_ENER)(at,dat,-1));
+//             cum_err += de;
 //           fprintf(stderr,"At step %"PRIu64" DeltaE is : %g cumulated : %g\n",st,de,cum_err);
 //           LOG_PRINT(LOG_INFO,"At step %"PRIu64" DeltaE is : %g cumulated : %g\n",st,de,cum_err);
-        }
+//         }
 
 //        if(!is_stdout_redirected && st%progress==0)
 //        {
@@ -259,8 +271,6 @@ int32_t apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
     Enew=(*get_ENER)(at_new,dat,*candidate);
     EconstrNew=dat->E_constr;
 
-
-
     Ediff = (Enew - Eold) ;
     EconstrDiff = (EconstrNew - EconstrOld) ;
 
@@ -281,19 +291,9 @@ int32_t apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
         double rejParam = 0. ;
         double alpha = 0. ;
 
-        double *Smnew=NULL;
-        double *Smold=NULL;
-        double *deltaM=NULL;
 
-        double **EI=NULL;
-        double **EF=NULL;
 
-        Smnew=calloc(spdat->meps,sizeof *Smnew);
-        Smold=calloc(spdat->meps,sizeof *Smold);
-        deltaM=calloc(spdat->meps,sizeof *deltaM);
 
-        EI=(double**)calloc_2D(spdat->meps,spdat->neps,sizeof **EI);
-        EF=(double**)calloc_2D(spdat->meps,spdat->neps,sizeof **EF);
 
 #ifdef _OPENMP
         #pragma omp parallel default(shared) firstprivate(i,j)
@@ -356,11 +356,6 @@ int32_t apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
 
         LOG_PRINT(LOG_DEBUG,"alpha : %lf ; \t rejp : %lf\n",alpha,rejParam);
 
-        free(Smnew);
-        free(Smold);
-        free(deltaM);
-        free_2D(spdat->meps,EI,EF,NULL);
-
         if (alpha < rejParam)
         {
             *ener+=Ediff;
@@ -377,3 +372,20 @@ int32_t apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
     }
 }
 
+void alloc_SAMC(SPDAT *spdat)
+{
+    Smnew=calloc(spdat->meps,sizeof *Smnew);
+    Smold=calloc(spdat->meps,sizeof *Smold);
+    deltaM=calloc(spdat->meps,sizeof *deltaM);
+
+    EI=(double**)calloc_2D(spdat->meps,spdat->neps,sizeof **EI);
+    EF=(double**)calloc_2D(spdat->meps,spdat->neps,sizeof **EF);
+}
+
+void dealloc_SAMC(SPDAT *spdat)
+{
+    free(Smnew);
+    free(Smold);
+    free(deltaM);
+    free_2D(spdat->meps,EI,EF,NULL);
+}

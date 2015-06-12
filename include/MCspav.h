@@ -21,4 +21,7 @@ int32_t apply_SPAV_Criterion(DATA *dat, SPDAT *spdat, ATOM at[], ATOM at_new[],
                              ATOM ***iniArray, ATOM ***finArray, int32_t *candidate,
                              double *ener, uint64_t *currStep);
 
+void alloc_SAMC(SPDAT *spdat);
+void dealloc_SAMC(SPDAT *spdat);
+
 #endif // MCSPAV_H_INCLUDED

@@ -18,6 +18,11 @@ A C compiler compatible with the C99 standard or newer is required.
 
 Be sure to have CMAKE installed (http://www.cmake.org/), available on most repositories.
 
+Tested compilers:
+	* gcc 4.6.3 and newer versions
+	* clang 3.4 and newer versions
+	* icc 15.0.1
+
 Create a build directory and move to that directory: 
   * mkdir build && cd build
 

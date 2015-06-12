@@ -436,6 +436,8 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
 
     double ener = 0.0 ;
     uint64_t acc=0;
+    
+    alloc_SAMC(spdat);
 
     //open files
     crdfile=fopen(io.crdtitle_first,"wt");
@@ -463,6 +465,8 @@ void start_spav(DATA *dat, SPDAT *spdat, ATOM at[])
     //write final crds
     crdfile=fopen(io.crdtitle_last,"wt");
     write_xyz(at,dat,dat->nsteps,crdfile);
+
+    dealloc_SAMC(spdat);
 
     fclose(crdfile);
     fclose(traj);
